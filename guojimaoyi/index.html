@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>委内瑞拉化妆品贸易项目方案（修订版）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #e84a6f; /* 美妆主色-玫瑰红 */
+            --secondary: #f9c74f; /* 辅助色-金橘色 */
+            --neutral: #f8f5f2; /* 背景色-米白 */
+            --dark: #272343; /* 文字深色 */
+            --light: #ffffff; /* 卡片白色 */
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: var(--neutral);
+            color: var(--dark);
+            scroll-behavior: smooth;
+        }
+        .section-title {
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background: var(--light);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .highlight-box {
+            background: linear-gradient(120deg, var(--primary)/10, var(--secondary)/10);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 3px solid var(--primary);
+        }
+    </style>
+</head>
+<body class="pb-16">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm z-50 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="text-xl font-bold text-primary flex items-center">
+                <i class="fa fa-diamond mr-2"></i>
+                <span>VenCosmetic SCaaS</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#background" class="nav-link text-dark hover:text-primary">市场背景</a>
+                <a href="#strategy" class="nav-link text-dark hover:text-primary">核心战略</a>
+                <a href="#payment" class="nav-link text-dark hover:text-primary">支付结算</a>
+                <a href="#channel" class="nav-link text-dark hover:text-primary">渠道运营</a>
+                <a href="#product" class="nav-link text-dark hover:text-primary">产品品牌</a>
+                <a href="#compliance" class="nav-link text-dark hover:text-primary">合规物流</a>
+                <a href="#risk" class="nav-link text-dark hover:text-primary">风险行动</a>
+            </div>
+            <button class="md:hidden text-dark text-xl">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <header class="pt-32 pb-20 bg-gradient-to-r from-primary/10 to-secondary/10">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-dark mb-6">
+                委内瑞拉<span class="text-primary">精细化供应链服务</span>方案
+            </h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-10">
+                香港金融优势 + 本地强势电商伙伴 · 从"高风险开拓"到"优势集中"的战略升级
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#action" class="bg-primary text-white px-8 py-3 rounded-full font-medium hover:bg-primary/90 transition">
+                    <i class="fa fa-rocket mr-2"></i>启动行动计划
+                </a>
+                <a href="#contact" class="bg-white text-primary border-2 border-primary px-8 py-3 rounded-full font-medium hover:bg-primary/5 transition">
+                    <i class="fa fa-envelope mr-2"></i>咨询细节
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <!-- 市场背景与机遇分析 -->
+        <section id="background" class="mb-20">
+            <h2 class="section-title text-3xl font-bold mb-8">市场背景与机遇分析</h2>
+            
+            <!-- 核心机遇亮点 -->
+            <div class="highlight-box mb-8">
+                <h3 class="text-xl font-bold text-primary mb-3">项目核心逻辑：风险对冲 + 优势利用</h3>
+                <p class="text-gray-700 mb-0">
+                    委内瑞拉是高复杂但蕴含特殊机遇的市场，化妆品作为「口红效应」典型载体，成为经济波动期的刚性需求。中资背景的政治保障、香港金融中转优势、本地电商渠道赋能，共同构成项目核心竞争力。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- 宏观环境分析 -->
+                <div class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                        <i class="fa fa-globe text-primary mr-3"></i>
+                        宏观环境分析
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-dark mb-1">政治与经济特征</h4>
+                            <ul class="text-gray-700 text-sm space-y-1 pl-5 list-disc">
+                                <li>政治局势高压，经济长期处于恶性通货膨胀</li>
+                                <li>「事实美元化」：商业活动以USD、Zelle、USDT为主</li>
+                                <li>本国货币玻利瓦尔（VED）价值极低，汇率风险极高</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-dark mb-1">国际制裁与中委关系</h4>
+                            <ul class="text-gray-700 text-sm space-y-1 pl-5 list-disc">
+                                <li>受美国主导制裁，SWIFT美元系统结算受限</li>
+                                <li>中委「全面战略伙伴」，有政府间合作框架保障</li>
+                                <li>中资企业在特定领域享有「特许经营」优势，规避部分政治风险</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-dark mb-1">贸易基础设施</h4>
+                            <ul class="text-gray-700 text-sm space-y-1 pl-5 list-disc">
+                                <li>主要港口：拉瓜伊拉（La Guaira）、卡贝略港（Puerto Cabello）</li>
+                                <li>清关流程繁琐，效率低下，存在灰色操作空间</li>
+                                <li>对中国日用消费品进口依赖度高，关税壁垒有限</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 国内市场深度解析 -->
+                <div class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                        <i class="fa fa-shopping-bag text-primary mr-3"></i>
+                        国内市场深度解析
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-dark mb-1">市场结构与消费者画像</h4>
+                            <ul class="text-gray-700 text-sm space-y-1 pl-5 list-disc">
+                                <li>两极分化：精英美元阶层（追欧美品牌）与大众玻利瓦尔阶层（刚需为主）</li>
+                                <li>「口红效应」显著：女性对基础彩妆、护肤品有「买得起的体面」需求</li>
+                                <li>价格敏感度极高，性价比是核心决策因素</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-dark mb-1">核心销售渠道</h4>
+                            <ul class="text-gray-700 text-sm space-y-1 pl-5 list-disc">
+                                <li>Bodegones（博德贡）：专营进口商品的美元计价超市，核心分销渠道</li>
+                                <li>传统药店（如Farmatodo）：基础护肤品与卫生用品主要渠道</li>
+                                <li>社交电商：Instagram/WhatsApp销售+本地即时配送，增长迅速</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-dark mb-1">竞争格局</h4>
+                            <ul class="text-gray-700 text-sm space-y-1 pl-5 list-disc">
+                                <li>欧美品牌：灰色渠道进口，价格昂贵，服务顶层市场</li>
+                                <li>邻国品牌：哥伦比亚、巴西品牌（如Natura）有一定渗透</li>
+                                <li>中国同行：廉价白牌产品，通过中东裔商人批量引入</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 市场机遇核心逻辑 -->
+            <div class="card p-8">
+                <h3 class="text-2xl font-semibold mb-6 text-primary">项目机遇核心逻辑</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="p-5 bg-primary/5 rounded-lg text-center">
+                        <i class="fa fa-line-chart text-4xl text-primary mb-4"></i>
+                        <h4 class="font-semibold mb-2">需求刚性</h4>
+                        <p class="text-gray-600 text-sm">卫生用品刚需+彩妆「尊严需求」，不受经济波动大幅影响</p>
+                    </div>
+                    <div class="p-5 bg-primary/5 rounded-lg text-center">
+                        <i class="fa fa-handshake-o text-4xl text-primary mb-4"></i>
+                        <h4 class="font-semibold mb-2">优势叠加</h4>
+                        <p class="text-gray-600 text-sm">中资背景+香港金融+本地电商，构建独特竞争壁垒</p>
+                    </div>
+                    <div class="p-5 bg-primary/5 rounded-lg text-center">
+                        <i class="fa fa-lightbulb-o text-4xl text-primary mb-4"></i>
+                        <h4 class="font-semibold mb-2">模式创新</h4>
+                        <p class="text-gray-600 text-sm">从「单纯出口」转向「供应链即服务」，绑定核心伙伴</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心战略 -->
+        <section id="strategy" class="mb-20">
+            <h2 class="section-title text-3xl font-bold mb-8">核心战略调整</h2>
+            <div class="card p-8">
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="w-full md:w-1/2">
+                        <h3 class="text-2xl font-semibold text-primary mb-4">从"全链条风险对冲"到"优势集中赋能"</h3>
+                        <p class="text-gray-700 mb-6 leading-relaxed">
+                            借助香港自由贸易港的金融优势，联合委内瑞拉本地强势电商伙伴，您的角色升级为：
+                            <span class="font-bold text-dark">独家供应链即服务（SCaaS）提供商</span>
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span>香港作为支付结算与贸易中转核心</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span>伙伴负责本地合规、清关与终端销售</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fa fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span>您聚焦供应链柔性化与电商营销支持</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <div class="bg-white p-6 rounded-xl shadow-inner border border-gray-100">
+                            <h4 class="font-semibold mb-4 text-center">项目性质转变</h4>
+                            <div class="flex justify-between items-center mb-6">
+                                <span class="text-gray-500">原方案：高风险开拓型</span>
+                                <i class="fa fa-arrow-right text-primary text-xl"></i>
+                                <span class="font-bold text-dark">现方案：优势集中型</span>
+                            </div>
+                            <div class="h-4 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-primary to-secondary h-full rounded-full" style="width: 100%"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mt-8">
+                                <div class="text-center p-4 bg-primary/5 rounded-lg">
+                                    <div class="text-3xl font-bold text-primary mb-1">低风险</div>
+                                    <div class="text-sm text-gray-600">合规可控</div>
+                                </div>
+                                <div class="text-center p-4 bg-secondary/5 rounded-lg">
+                                    <div class="text-3xl font-bold text-secondary mb-1">高赋能</div>
+                                    <div class="text-sm text-gray-600">伙伴依赖度低</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 支付结算方案 -->
+        <section id="payment" class="mb-20">
+            <h2 class="section-title text-3xl font-bold mb-8">支付结算方案（重大优势）</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 首选路径 -->
+                <div class="card p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                            <i class="fa fa-university text-primary text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold">首选路径：香港银行账户</h3>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="font-semibold mb-2 text-dark">操作流程：</h4>
+                        <ol class="list-decimal list-inside text-gray-700 space-y-2 pl-4">
+                            <li>香港公司作为贸易主体</li>
+                            <li>伙伴通过海外关联公司（巴拿马/迈阿密等）T/T电汇USD</li>
+                            <li>资金存入香港银行账户（汇丰/中银香港等）</li>
+                            <li>自由调配支付工厂货款或留存利润</li>
+                        </ol>
+                    </div>
+                    <div class="bg-primary/5 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">核心优势：</h4>
+                        <ul class="text-gray-700 space-y-1">
+                            <li>✅ 金融合规，单据流向清晰</li>
+                            <li>✅ 规避美国金融系统直接监管</li>
+                            <li>✅ 无外汇管制，资金自由</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 备选路径 + 付款比例 -->
+                <div class="flex flex-col gap-8">
+                    <div class="card p-8 flex-grow">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mr-4">
+                                <i class="fa fa-bitcoin text-secondary text-xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-semibold">备选路径：数字货币（USDT）</h3>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-semibold mb-2 text-dark">操作流程：</h4>
+                            <p class="text-gray-700">企业级加密货币钱包接收USDT → 香港兑换为USD/HKD</p>
+                        </div>
+                        <div class="bg-secondary/5 p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">核心优势：</h4>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>⚡ T+0即时到账</li>
+                                <li>⚡ 极低手续费</li>
+                                <li>⚡ 完全绕开SWIFT系统</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-center">建议付款方式</h3>
+                        <div class="flex flex-col items-center">
+                            <div class="w-48 h-48 mb-4">
+                                <canvas id="paymentChart"></canvas>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-gray-700 mb-1">30% T/T 预付（香港账户）</p>
+                                <p class="text-gray-700">70% 见提单副本（BL Copy）付款</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 渠道与运营模式 -->
+        <section id="channel" class="mb-20">
+            <h2 class="section-title text-3xl font-bold mb-8">渠道与运营模式（精确定位）</h2>
+            <div class="card p-8 mb-8">
+                <h3 class="text-2xl font-semibold mb-6 text-primary">电商渠道特性</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-5 bg-primary/5 rounded-lg text-center">
+                        <i class="fa fa-instagram text-4xl text-primary mb-4"></i>
+                        <h4 class="font-semibold mb-2">社交电商主导</h4>
+                        <p class="text-gray-600 text-sm">Instagram / WhatsApp 销售 + 本地即时配送</p>
+                    </div>
+                    <div class="p-5 bg-primary/5 rounded-lg text-center">
+                        <i class="fa fa-fire text-4xl text-primary mb-4"></i>
+                        <h4 class="font-semibold mb-2">爆款逻辑</h4>
+                        <p class="text-gray-600 text-sm">需求量瞬间爆发，生命周期较短</p>
+                    </div>
+                    <div class="p-5 bg-primary/5 rounded-lg text-center">
+                        <i class="fa fa-refresh text-4xl text-primary mb-4"></i>
+                        <h4 class="font-semibold mb-2">高频上新</h4>
+                        <p class="text-gray-600 text-sm">需持续推出新产品刺激消费</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 供应链角色 -->
+                <div class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                        <i class="fa fa-cubes text-primary mr-3"></i>
+                        供应链角色：柔性快反
+                    </h3>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold mb-2 text-dark">小单快反能力</h4>
+                            <p class="text-gray-700">整合国内工厂，支持多SKU混合订单（1个货柜含50+单品）</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2 text-dark">发货方案</h4>
+                            <div class="flex gap-4">
+                                <div class="flex-1 p-3 bg-gray-50 rounded-lg text-center">
+                                    <span class="block font-medium">LCL 拼箱</span>
+                                    <span class="text-xs text-gray-500">小批量多品类</span>
+                                </div>
+                                <div class="flex-1 p-3 bg-gray-50 rounded-lg text-center">
+                                    <span class="block font-medium">FCL 整柜</span>
+                                    <span class="text-xs text-gray-500">爆款集中备货</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 内容支持 -->
+                <div class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                        <i class="fa fa-picture-o text-primary mr-3"></i>
+                        内容支持：素材中心
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fa fa-file-image-o text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">产品图片</h4>
+                                <p class="text-gray-700 text-sm">白底图（上架）、场景图、模特试用图</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fa fa-film text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">视频素材</h4>
+                                <p class="text-gray-700 text-sm">无声短视频（供伙伴配西班牙语剪辑）</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fa fa-file-text-o text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">文字内容</h4>
+                                <p class="text-gray-700 text-sm">专业西班牙语产品描述（基于INCI成分表）</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 产品与品牌策略 -->
+        <section id="product" class="mb-20">
+            <h2 class="section-title text-3xl font-bold mb-8">产品与品牌策略（适配电商）</h2>
+            <div class="card p-8 mb-8">
+                <h3 class="text-2xl font-semibold mb-6 text-primary">选品重点：视觉优先 + 平替 + 新奇特</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- 彩妆主力 -->
+                    <div class="relative overflow-hidden rounded-xl shadow-md group">
+                        <img src="https://picsum.photos/id/999/600/400" alt="彩妆产品" class="w-full h-64 object-cover transition-transform group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent flex flex-col justify-end p-6">
+                            <h4 class="text-white text-xl font-bold mb-2">彩妆（主力）</h4>
+                            <ul class="text-white/90 text-sm space-y-1">
+                                <li>哑光丝绒口红</li>
+                                <li>多色眼影盘</li>
+                                <li>高光修容</li>
+                                <li>定妆喷雾</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 护肤新奇 -->
+                    <div class="relative overflow-hidden rounded-xl shadow-md group">
+                        <img src="https://picsum.photos/id/21/600/400" alt="护肤产品" class="w-full h-64 object-cover transition-transform group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent flex flex-col justify-end p-6">
+                            <h4 class="text-white text-xl font-bold mb-2">护肤（新奇）</h4>
+                            <ul class="text-white/90 text-sm space-y-1">
+                                <li>泡泡面膜</li>
+                                <li>动物面膜</li>
+                                <li>安瓶精华</li>
+                                <li>礼盒套装</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 包装设计 -->
+                    <div class="relative overflow-hidden rounded-xl shadow-md group">
+                        <img src="https://picsum.photos/id/1060/600/400" alt="包装设计" class="w-full h-64 object-cover transition-transform group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent flex flex-col justify-end p-6">
+                            <h4 class="text-white text-xl font-bold mb-2">包装要求</h4>
+                            <ul class="text-white/90 text-sm space-y-1">
+                                <li>精美时尚</li>
+                                <li>高级质感</li>
+                                <li>模仿欧美大牌</li>
+                                <li>差异化设计</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-8">
+                <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                    <i class="fa fa-tags text-primary mr-3"></i>
+                    品牌策略：ODM贴牌优先
+                </h3>
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="w-full md:w-2/3">
+                        <p class="text-gray-700 mb-6 leading-relaxed">
+                            最大化利用伙伴本地影响力，采用ODM贴牌生产模式，使用伙伴在当地注册的品牌或您授权的品牌，符合电商平台"自有品牌"趋势。
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-1">优势1：降低推广成本</h4>
+                                    <p class="text-sm text-gray-600">借力伙伴现有品牌认知</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-1">优势2：提高转化效率</h4>
+                                    <p class="text-sm text-gray-600">本地品牌更易获得信任</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-1">优势3：灵活调整产品</h4>
+                                    <p class="text-sm text-gray-600">根据市场反馈快速迭代</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-3"></i>
+                                <div>
+                                    <h4 class="font-semibold mb-1">优势4：绑定伙伴关系</h4>
+                                    <p class="text-sm text-gray-600">提升替换成本，深化合作</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/3 bg-primary/5 p-6 rounded-xl">
+                        <h4 class="font-semibold text-center mb-4">平替策略核心</h4>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700">对标国际大牌</span>
+                                <i class="fa fa-arrow-right text-primary"></i>
+                                <span class="font-medium">Fenty Beauty</span>
+                            </div>
+                            <div class="w-full h-px bg-gray-200"></div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700">复制热门色号</span>
+                                <i class="fa fa-arrow-right text-primary"></i>
+                                <span class="font-medium">Huda Beauty</span>
+                            </div>
+                            <div class="w-full h-px bg-gray-200"></div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700">极致性价比</span>
+                                <i class="fa fa-arrow-right text-primary"></i>
+                                <span class="font-medium">价格≤1/3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 合规与物流 -->
+        <section id="compliance" class="mb-20">
+            <h2 class="section-title text-3xl font-bold mb-8">合规与物流（责任转移）</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 合规责任 -->
+                <div class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                        <i class="fa fa-shield text-primary mr-3"></i>
+                        合规责任：伙伴主导
+                    </h3>
+                    <div class="mb-6">
+                        <p class="text-gray-700 mb-4">
+                            利用伙伴"强大本地背景"，100%由其负责委内瑞拉本地合规事务：
+                        </p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-green-500 mr-3"></i>
+                                <span>SENCAMER 注册</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-green-500 mr-3"></i>
+                                <span>卫生注册（CPE）</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-green-500 mr-3"></i>
+                                <span>MPPS 相关许可</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-green-500 mr-3"></i>
+                                <span>海关（SENIAT）关系协调</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">您的配合：提供合规文件包</h4>
+                        <ul class="text-gray-700 space-y-2">
+                            <li>• 自由销售证明（FSC）</li>
+                            <li>• GMP 认证</li>
+                            <li>• 成分分析表（COA）+ INCI配方</li>
+                            <li>• 使馆认证文件（西语翻译）</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 物流方案 -->
+                <div class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                        <i class="fa fa-ship text-primary mr-3"></i>
+                        物流方案：CIF 到港
+                    </h3>
+                    <div class="mb-8">
+                        <h4 class="font-semibold mb-3 text-dark">物流责任划分</h4>
+                        <div class="relative">
+                            <!-- 流程线 -->
+                            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-primary/30"></div>
+                            
+                            <!-- 您的责任 -->
+                            <div class="relative pl-12 mb-8">
+                                <div class="absolute left-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <h5 class="font-semibold mb-2">您的责任（香港公司）</h5>
+                                <p class="text-gray-700">负责 CIF 条款下的：成本 + 保险 + 海运至指定港口</p>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    港口选项：拉瓜伊拉（La Guaira）/ 卡贝略港（Puerto Cabello）
+                                </div>
+                            </div>
+                            
+                            <!-- 伙伴责任 -->
+                            <div class="relative pl-12">
+                                <div class="absolute left-0 w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-white">
+                                    <i class="fa fa-handshake-o"></i>
+                                </div>
+                                <h5 class="font-semibold mb-2">伙伴责任（本地）</h5>
+                                <p class="text-gray-700">负责：清关 + 内陆运输 + 终端配送</p>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    利用其本地资源快速通关，规避物流风险
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-secondary/5 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">核心优势</h4>
+                        <p class="text-gray-700">
+                            货物到港后您的责任即完成，将本地物流风险完全转移给伙伴，聚焦核心供应链能力。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 风险与行动 -->
+        <section id="risk" class="mb-20">
+            <h2 class="section-title text-3xl font-bold mb-8">风险与行动建议</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- 核心风险 -->
+                <div class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                        <i class="fa fa-exclamation-triangle text-primary mr-3"></i>
+                        核心风险（可控）
+                    </h3>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold text-lg mb-2">1. 伙伴依赖风险</h4>
+                            <p class="text-gray-700 mb-3">业务系于单一伙伴，关系破裂将导致本地业务归零</p>
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <h5 class="font-medium mb-1">应对方案：</h5>
+                                <p class="text-sm text-gray-600">深度绑定利益，提供极致供应链服务（价格、速度、内容支持），提升其替换成本</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg mb-2">2. 电商库存风险</h4>
+                            <p class="text-gray-700 mb-3">爆款逻辑可能导致库存积压，伙伴可能转移压力</p>
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <h5 class="font-medium mb-1">应对方案：</h5>
+                                <p class="text-sm text-gray-600">严格执行预付款制度，控制发货节奏，爆款订单额外商定付款条件</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg mb-2">3. 支付与制裁风险</h4>
+                            <p class="text-gray-700 mb-3">国际制裁可能影响支付通道稳定性，需持续关注政策变化</p>
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <h5 class="font-medium mb-1">应对方案：</h5>
+                                <p class="text-sm text-gray-600">保持支付方式多元化，香港账户+USDT双轨并行，避免单一通道依赖</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 行动建议 -->
+                <div id="action" class="card p-8">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                        <i class="fa fa-tasks text-primary mr-3"></i>
+                        行动建议（Action Plan）
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="flex">
+                            <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-4 flex-shrink-0">1</div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">激活香港银行账户</h4>
+                                <p class="text-gray-700 text-sm">确保香港公司美元账户活跃、信誉良好，测试收款通道</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-4 flex-shrink-0">2</div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">准备合规文件包</h4>
+                                <p class="text-gray-700 text-sm">办理FSC、GMP等认证，完成西语翻译与使馆认证（1-2个月）</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-4 flex-shrink-0">3</div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">组建电商选品团队</h4>
+                                <p class="text-gray-700 text-sm">按视觉优先原则筛选产品，制作西语数字目录与样品包</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-4 flex-shrink-0">4</div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">启动首次试单</h4>
+                                <p class="text-gray-700 text-sm">小柜/拼箱测试全流程（付款、清关、市场反馈），不追求规模</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-4 flex-shrink-0">5</div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">渠道拓展与合规升级</h4>
+                                <p class="text-gray-700 text-sm">试单成功后拓展SKU，启动核心单品SENCAMER/MPPS正式注册</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 行动召唤 -->
+            <div class="card p-8 bg-gradient-to-r from-primary/90 to-primary text-white text-center">
+                <h3 class="text-2xl font-bold mb-4">立即启动您的委内瑞拉美妆供应链服务</h3>
+                <p class="max-w-2xl mx-auto mb-8 opacity-90">
+                    香港金融优势 + 本地电商赋能 + 中资背景保障，风险可控、优势集中的精细化贸易方案
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#contact" class="bg-white text-primary px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition">
+                        <i class="fa fa-comments mr-2"></i>咨询方案细节
+                    </a>
+                    <a href="#" class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white/10 transition">
+                        <i class="fa fa-download mr-2"></i>下载PDF方案
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 联系表单 -->
+    <section id="contact" class="bg-white py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-3xl font-bold mb-8 text-center">咨询方案细节</h2>
+            <div class="max-w-2xl mx-auto">
+                <div class="card p-8">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-gray-700 mb-2">您的姓名</label>
+                                <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入姓名">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-gray-700 mb-2">联系电话</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入电话">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="company" class="block text-gray-700 mb-2">公司名称</label>
+                            <input type="text" id="company" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入公司名称">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-700 mb-2">咨询内容</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请描述您的需求或疑问..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary/90 transition flex items-center justify-center">
+                            <i class="fa fa-paper-plane mr-2"></i>提交咨询
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fa fa-diamond text-secondary mr-2"></i>
+                        VenCosmetic SCaaS
+                    </h3>
+                    <p class="text-gray-400 mb-4">
+                        委内瑞拉化妆品供应链服务方案，助力企业开拓南美市场
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-secondary transition">
+                            <i class="fa fa-weixin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-secondary transition">
+                            <i class="fa fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-secondary transition">
+                            <i class="fa fa-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">快速导航</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#background" class="text-gray-400 hover:text-white transition">市场背景</a></li>
+                        <li><a href="#strategy" class="text-gray-400 hover:text-white transition">核心战略</a></li>
+                        <li><a href="#payment" class="text-gray-400 hover:text-white transition">支付结算</a></li>
+                        <li><a href="#channel" class="text-gray-400 hover:text-white transition">渠道运营</a></li>
+                        <li><a href="#product" class="text-gray-400 hover:text-white transition">产品品牌</a></li>
+                        <li><a href="#risk" class="text-gray-400 hover:text-white transition">风险行动</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">联系我们</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fa fa-envelope text-secondary mt-1 mr-3"></i>
+                            <span class="text-gray-400">contact@vencosmetic.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-phone text-secondary mt-1 mr-3"></i>
+                            <span class="text-gray-400">+86 138 **** 8888</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker text-secondary mt-1 mr-3"></i>
+                            <span class="text-gray-400">香港中环金融街8号</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-10 pt-6 text-center text-gray-500 text-sm">
+                © 2024 VenCosmetic SCaaS. 保留所有权利。
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 付款比例图表
+        const ctx = document.getElementById('paymentChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['30% 预付', '70% 见提单付款'],
+                datasets: [{
+                    data: [30, 70],
+                    backgroundColor: [
+                        '#e84a6f',
+                        '#f9c74f'
+                    ],
+                    borderWidth: 0,
+                    cutout: '70%'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                }
+            }
+        });
+
+        // 移动端菜单切换（简化版）
+        document.querySelector('.md\\:hidden').addEventListener('click', function() {
+            const nav = document.querySelector('.md\\:flex');
+            nav.classList.toggle('hidden');
+            nav.classList.toggle('flex');
+            nav.classList.toggle('flex-col');
+            nav.classList.toggle('absolute');
+            nav.classList.toggle('top-16');
+            nav.classList.toggle('left-0');
+            nav.classList.toggle('right-0');
+            nav.classList.toggle('bg-white');
+            nav.classList.toggle('shadow-lg');
+            nav.classList.toggle('p-4');
+            nav.classList.toggle('space-y-4');
+        });
+    </script>
+</body>
+</html>

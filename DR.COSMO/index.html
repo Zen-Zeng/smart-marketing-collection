@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DR.COSMO 品牌中国市场执行框架</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            gold: '#D4AF37',
+                            black: '#1a1a1a',
+                            gray: '#f5f5f5',
+                            accent: '#C5A028',
+                            darkGray: '#2d2d2d'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-in-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(to right, #D4AF37, #FFE5B4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2.5rem;
+        }
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 3.125rem;
+            }
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+        .roadmap-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            border-top-width: 4px;
+        }
+        @media (min-width: 768px) {
+            .roadmap-card {
+                width: 41.666667%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold tracking-widest text-brand-black">DR.COSMO</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#positioning" class="text-gray-600 hover:text-brand-gold transition">品牌定位</a>
+                    <a href="#market" class="text-gray-600 hover:text-brand-gold transition">市场分析</a>
+                    <a href="#product" class="text-gray-600 hover:text-brand-gold transition">产品策略</a>
+                    <a href="#marketing" class="text-gray-600 hover:text-brand-gold transition">营销传播</a>
+                    <a href="#roadmap" class="text-gray-600 hover:text-brand-gold transition">执行路线</a>
+                    <a href="#financials" class="text-gray-600 hover:text-brand-gold transition">预算回报</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative bg-brand-black h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30"></div>
+        <div class="relative max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-brand-gold tracking-[0.2em] uppercase text-base md:text-lg mb-4 animate-fade-in">China Market Execution Framework</h2>
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 animate-slide-up">不是单点技术<br><span class="gradient-text">而是豪华成分矩阵</span></h1>
+            <p class="text-gray-300 text-xl max-w-2xl mx-auto mb-10 animate-slide-up" style="animation-delay: 0.2s;">
+                以 506,770ppm 压倒性浓度，重塑 25-40 岁精致女性的功效护肤标准。
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up" style="animation-delay: 0.4s;">
+                <a href="#financials" class="px-8 py-3 bg-brand-gold text-white font-semibold rounded hover:bg-brand-accent transition">查看ROI预测</a>
+                <a href="#roadmap" class="px-8 py-3 border border-white text-white font-semibold rounded hover:bg-white hover:text-brand-black transition">查看执行路线</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Positioning Section -->
+    <section id="positioning" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="section-title">品牌定位与核心价值</h2>
+                <div class="w-20 h-1 bg-brand-gold mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="p-8 bg-gray-50 rounded-xl shadow-sm">
+                    <h3 class="card-title">品牌定位</h3>
+                    <p class="text-gray-600 mb-4">高端功效护肤品牌</p>
+                    <div class="flex items-center text-brand-gold font-bold text-2xl">
+                        <span>506,770ppm</span>
+                        <span class="text-sm text-gray-500 ml-2">压倒性浓度</span>
+                    </div>
+                </div>
+                <div class="p-8 bg-gray-50 rounded-xl shadow-sm">
+                    <h3 class="card-title">目标客群</h3>
+                    <p class="text-gray-600">25-40岁精致女性</p>
+                    <ul class="mt-4 space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>注重产品成分与功效</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>有一定消费能力</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>关注肌肤修护与抗老</li>
+                    </ul>
+                </div>
+                <div class="p-8 bg-gray-50 rounded-xl shadow-sm">
+                    <h3 class="card-title">核心价值</h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>奢华成分矩阵</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>专利技术背书</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>科学护肤理念</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>高端用户体验</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-brand-black text-white p-10 rounded-2xl">
+                <div class="md:flex items-center justify-between">
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-bold mb-6">品牌标语</h3>
+                        <p class="text-gray-300 text-lg">不是单点技术，而是豪华成分矩阵</p>
+                    </div>
+                    <div class="md:w-1/3 mt-8 md:mt-0">
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <div class="text-3xl font-bold text-brand-gold">6+3</div>
+                                <div class="text-sm text-gray-400">专利集群</div>
+                            </div>
+                            <div>
+                                <div class="text-3xl font-bold text-brand-gold">24k</div>
+                                <div class="text-sm text-gray-400">纯金胶体</div>
+                            </div>
+                            <div>
+                                <div class="text-3xl font-bold text-brand-gold">506k+</div>
+                                <div class="text-sm text-gray-400">ppm浓度</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Analysis Section -->
+    <section id="market" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="section-title">市场分析与竞争格局</h2>
+                <div class="w-20 h-1 bg-brand-gold mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10 mb-16">
+                <div>
+                    <h3 class="card-title">市场机会</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white rounded-lg shadow-sm">
+                            <div class="font-semibold mb-2">功效护肤市场增长</div>
+                            <p class="text-sm text-gray-600">中国功效护肤市场年复合增长率超过25%，高端市场需求强劲。</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm">
+                            <div class="font-semibold mb-2">成分党崛起</div>
+                            <p class="text-sm text-gray-600">消费者越来越关注产品成分与科学依据，愿意为高浓度、专利成分支付溢价。</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm">
+                            <div class="font-semibold mb-2">竞品弱点</div>
+                            <p class="text-sm text-gray-600">GENABELLE等竞品浓度仅55,000ppm，缺乏真正的奢华成分背书。</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="card-title">竞争格局</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white rounded-lg shadow-sm border-l-4 border-gray-300">
+                            <div class="font-semibold">GENABELLE</div>
+                            <p class="text-sm text-gray-500">浓度：55,000ppm | 价格带：100-250元 | 渠道：抖音为主</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm border-l-4 border-gray-300">
+                            <div class="font-semibold">OGANACELL</div>
+                            <p class="text-sm text-gray-500">浓度：48,000ppm | 价格带：80-200元 | 渠道：抖音为主</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm border-l-4 border-brand-gold">
+                            <div class="font-semibold text-brand-black">DR.COSMO</div>
+                            <p class="text-sm text-gray-700">浓度：506,770ppm | 价格带：500-1500元 | 渠道：全渠道布局</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h3 class="card-title">破局策略</h3>
+                <div class="grid md:grid-cols-3 gap-6 mt-6">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-brand-gold font-bold mb-2">数据碾压</div>
+                        <p class="text-sm text-gray-600">506,770ppm vs 竞品 55,000ppm，10倍的物料诚意，建立数字壁垒。</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-brand-gold font-bold mb-2">奢华背书</div>
+                        <p class="text-sm text-gray-600">24k纯金胶体 + 六重专利复合物，构建“贵妇级”信任状。</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="text-brand-gold font-bold mb-2">系统护肤</div>
+                        <p class="text-sm text-gray-600">“日间救火（精华）+ 夜间筑墙（面霜）”的全天候CP策略。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Strategy Section -->
+    <section id="product" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="section-title">产品策略与核心卖点</h2>
+                <div class="w-20 h-1 bg-brand-gold mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10 mb-16">
+                <div class="p-8 bg-gray-50 rounded-xl">
+                    <h3 class="card-title">核心产品矩阵</h3>
+                    <div class="space-y-6 mt-6">
+                        <div class="flex items-start">
+                            <div class="w-16 h-16 bg-brand-gold rounded-full flex items-center justify-center text-white font-bold mr-4">1</div>
+                            <div>
+                                <div class="font-semibold">日间修护精华</div>
+                                <p class="text-sm text-gray-600 mt-1">506,770ppm高浓度复合物，快速修护肌肤屏障。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-16 h-16 bg-brand-gold rounded-full flex items-center justify-center text-white font-bold mr-4">2</div>
+                            <div>
+                                <div class="font-semibold">夜间滋养面霜</div>
+                                <p class="text-sm text-gray-600 mt-1">24k纯金胶体 + 三重透明质酸，深度滋养抗老。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-16 h-16 bg-brand-gold rounded-full flex items-center justify-center text-white font-bold mr-4">3</div>
+                            <div>
+                                <div class="font-semibold">奢华CP套装</div>
+                                <p class="text-sm text-gray-600 mt-1">精华+面霜组合，提供完整的肌肤修护方案。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-8 bg-gray-50 rounded-xl">
+                    <h3 class="card-title">专利技术集群</h3>
+                    <div class="grid grid-cols-2 gap-4 mt-6">
+                        <div class="p-4 bg-white rounded-lg shadow-sm">
+                            <div class="font-semibold text-sm mb-2">Eosidin专利</div>
+                            <p class="text-xs text-gray-500">提升肌肤屏障功能，增强抵抗力。</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm">
+                            <div class="font-semibold text-sm mb-2">RiFerm专利</div>
+                            <p class="text-xs text-gray-500">促进胶原蛋白生成，减少皱纹。</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm">
+                            <div class="font-semibold text-sm mb-2">三重透明质酸</div>
+                            <p class="text-xs text-gray-500">多层次补水锁水，保持肌肤水润。</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-lg shadow-sm">
+                            <div class="font-semibold text-sm mb-2">24k纯金胶体</div>
+                            <p class="text-xs text-gray-500">奢华成分，提升产品质感与功效。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-brand-black text-white p-10 rounded-2xl">
+                <h3 class="text-3xl font-bold mb-8">价格策略</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-brand-gold">¥599</div>
+                        <div class="text-sm text-gray-400 mt-1">日间精华</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-brand-gold">¥799</div>
+                        <div class="text-sm text-gray-400 mt-1">夜间面霜</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-brand-gold">¥1,299</div>
+                        <div class="text-sm text-gray-400 mt-1">奢华CP套装</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketing Strategy Section -->
+    <section id="marketing" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="section-title">营销传播策略</h2>
+                <div class="w-20 h-1 bg-brand-gold mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="p-8 bg-white rounded-xl shadow-sm">
+                    <h3 class="card-title">内容策略</h3>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>成分科普内容</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>功效对比测试</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>用户真实反馈</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>专家背书合作</li>
+                    </ul>
+                </div>
+                <div class="p-8 bg-white rounded-xl shadow-sm">
+                    <h3 class="card-title">渠道策略</h3>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>抖音KOL/KOC</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>小红书种草</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>品牌自播</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>私域运营</li>
+                    </ul>
+                </div>
+                <div class="p-8 bg-white rounded-xl shadow-sm">
+                    <h3 class="card-title">传播节奏</h3>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>1-2月：认知种草</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>3月：3.8节爆发</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>6月：618大促</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-brand-gold rounded-full mr-2"></span>11月：双11冲刺</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h3 class="card-title">达人合作策略</h3>
+                <div class="grid md:grid-cols-3 gap-6 mt-6">
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <div class="text-2xl font-bold text-brand-gold mb-2">50+</div>
+                        <div class="text-sm">头部KOL</div>
+                    </div>
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <div class="text-2xl font-bold text-brand-gold mb-2">500+</div>
+                        <div class="text-sm">腰部KOL</div>
+                    </div>
+                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                        <div class="text-2xl font-bold text-brand-gold mb-2">2000+</div>
+                        <div class="text-sm">KOC</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Execution Roadmap Section -->
+    <section id="roadmap" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="section-title">七阶段执行路线图</h2>
+                <div class="w-20 h-1 bg-brand-gold mx-auto"></div>
+                <p class="text-gray-600 mt-4">从0到1，精准把控每一个营销节点</p>
+            </div>
+
+            <div class="relative">
+                <div class="border-l-2 border-brand-gold absolute h-full top-0 left-1/2 transform -translate-x-1/2 hidden md:block"></div>
+                
+                <!-- Stage 1 -->
+                <div class="mb-12 flex justify-between items-center w-full right-timeline">
+                    <div class="order-1 w-5/12 hidden md:block"></div>
+                    <div class="z-20 flex items-center order-1 bg-brand-gold shadow-xl w-10 h-10 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">1</h1>
+                    </div>
+                    <div class="roadmap-card border-t-4 border-gray-300">
+                        <h3 class="font-bold text-gray-800 text-2xl">第1阶段：认知种草期 (1-2月)</h3>
+                        <p class="text-sm text-gray-500 mt-1">目标：建立认知，测试模型</p>
+                        <div class="mt-3 space-y-2">
+                            <div class="text-sm text-gray-600">
+                                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 mr-2">不自播</span>
+                                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700">KOC/KOL铺量</span>
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                • 完成500+ KOC种草<br>
+                                • 测试不同内容模型<br>
+                                • 建立初步品牌认知
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 2 -->
+                <div class="mb-12 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                    <div class="order-1 w-5/12 hidden md:block"></div>
+                    <div class="z-20 flex items-center order-1 bg-brand-gold shadow-xl w-10 h-10 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">2</h1>
+                    </div>
+                    <div class="roadmap-card border-t-4 border-brand-gold">
+                        <h3 class="font-bold text-brand-black text-2xl">第2阶段：3.8节爆发 & 自播启动 (3月)</h3>
+                        <p class="text-sm text-gray-500 mt-1">关键动作：达人集中爆发 + 开启品牌自播</p>
+                        <div class="mt-3">
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs mb-2">
+                                <div class="bg-blue-50 p-2 rounded">达人 50%</div>
+                                <div class="bg-green-50 p-2 rounded">自播 启动</div>
+                                <div class="bg-red-50 p-2 rounded">投流 30%</div>
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                • 3.8节达人集中投放<br>
+                                • 启动品牌自播间<br>
+                                • 优化投流模型
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 3 -->
+                <div class="mb-12 flex justify-between items-center w-full right-timeline">
+                    <div class="order-1 w-5/12 hidden md:block"></div>
+                    <div class="z-20 flex items-center order-1 bg-brand-gold shadow-xl w-10 h-10 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">3</h1>
+                    </div>
+                    <div class="roadmap-card border-t-4 border-gray-300">
+                        <h3 class="font-bold text-gray-800 text-2xl">第3阶段：模型优化期 (4-5月)</h3>
+                        <p class="text-sm text-gray-500 mt-1">目标：提升转化，优化模型</p>
+                        <div class="mt-3">
+                            <div class="text-xs text-gray-500">
+                                • 优化内容模型<br>
+                                • 提升自播转化<br>
+                                • 建立私域流量池
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 4 -->
+                <div class="mb-12 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                    <div class="order-1 w-5/12 hidden md:block"></div>
+                    <div class="z-20 flex items-center order-1 bg-brand-black shadow-xl w-10 h-10 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">4</h1>
+                    </div>
+                    <div class="roadmap-card border-t-4 border-brand-black">
+                        <h3 class="font-bold text-gray-800 text-2xl">第4阶段：618大促 (6月)</h3>
+                        <p class="text-sm text-gray-500 mt-1">年度首个销量峰值冲击</p>
+                        <div class="mt-3">
+                            <div class="text-sm mt-2 font-bold text-brand-gold">预算峰值：180万/月</div>
+                            <div class="text-xs text-gray-500 mt-2">
+                                • 618大促全面爆发<br>
+                                • 多渠道联动推广<br>
+                                • 冲击销量目标
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 5 -->
+                <div class="mb-12 flex justify-between items-center w-full right-timeline">
+                    <div class="order-1 w-5/12 hidden md:block"></div>
+                    <div class="z-20 flex items-center order-1 bg-brand-gold shadow-xl w-10 h-10 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">5</h1>
+                    </div>
+                    <div class="roadmap-card border-t-4 border-gray-300">
+                        <h3 class="font-bold text-gray-800 text-2xl">第5阶段：复购优化期 (7-8月)</h3>
+                        <p class="text-sm text-gray-500 mt-1">目标：提升复购，加强私域</p>
+                        <div class="mt-3">
+                            <div class="text-xs text-gray-500">
+                                • 优化复购策略<br>
+                                • 加强私域运营<br>
+                                • 准备双11预热
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 6 -->
+                <div class="mb-12 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                    <div class="order-1 w-5/12 hidden md:block"></div>
+                    <div class="z-20 flex items-center order-1 bg-red-600 shadow-xl w-10 h-10 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">6</h1>
+                    </div>
+                    <div class="roadmap-card border-t-4 border-red-600">
+                        <h3 class="font-bold text-gray-800 text-2xl">第6阶段：双11大促 (9-11月)</h3>
+                        <p class="text-sm text-gray-500 mt-1">9月预热 -> 10月预售 -> 11月全面爆发</p>
+                        <div class="mt-3">
+                            <div class="text-sm mt-2 font-bold text-red-600">ROI 目标：2.5</div>
+                            <div class="text-xs text-gray-500 mt-2">
+                                • 9月：预热种草<br>
+                                • 10月：定金预售<br>
+                                • 11月：全面爆发
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 7 -->
+                <div class="mb-12 flex justify-between items-center w-full right-timeline">
+                    <div class="order-1 w-5/12 hidden md:block"></div>
+                    <div class="z-20 flex items-center order-1 bg-brand-gold shadow-xl w-10 h-10 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">7</h1>
+                    </div>
+                    <div class="roadmap-card border-t-4 border-gray-300">
+                        <h3 class="font-bold text-gray-800 text-2xl">第7阶段：稳定长期运营 (12月)</h3>
+                        <p class="text-sm text-gray-500 mt-1">目标：总结复盘，规划明年</p>
+                        <div class="mt-3">
+                            <div class="text-xs text-gray-500">
+                                • 年度总结复盘<br>
+                                • 优化全年策略<br>
+                                • 规划下一年度
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Financial Forecast Section -->
+    <section id="financials" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="section-title">预算与回报预测</h2>
+                <div class="w-20 h-1 bg-brand-gold mx-auto"></div>
+            </div>
+
+            <div class="bg-brand-black rounded-2xl p-10 text-white mb-16">
+                <div class="md:flex justify-between items-end mb-10">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-4">年度财务预测</h3>
+                        <p class="text-gray-400">基于 1000万 营销预算的投放模型</p>
+                    </div>
+                    <div class="text-right mt-6 md:mt-0">
+                        <div class="text-5xl font-bold text-brand-gold">¥2,500万</div>
+                        <div class="text-sm text-gray-400 mt-1">年度 GMV 目标</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <div class="text-gray-400 text-sm mb-1">总营销预算</div>
+                        <div class="text-2xl font-bold">¥1,000万</div>
+                        <div class="text-xs text-gray-500 mt-2">不含服务费与佣金</div>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <div class="text-gray-400 text-sm mb-1">达人投放占比</div>
+                        <div class="text-2xl font-bold">50%</div>
+                        <div class="text-xs text-gray-500 mt-2">约 ¥500万</div>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <div class="text-gray-400 text-sm mb-1">前期 ROI 目标</div>
+                        <div class="text-2xl font-bold">2.0</div>
+                        <div class="text-xs text-gray-500 mt-2">认知种草期</div>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <div class="text-gray-400 text-sm mb-1">综合 ROI 目标</div>
+                        <div class="text-2xl font-bold">2.5</div>
+                        <div class="text-xs text-gray-500 mt-2">全年拉平后</div>
+                    </div>
+                </div>
+
+                <div class="mt-10 pt-10 border-t border-gray-700">
+                    <h4 class="text-2xl font-bold mb-6">服务费结构</h4>
+                    <div class="grid md:grid-cols-2 gap-8 text-sm text-gray-300">
+                        <div class="flex justify-between border-b border-gray-700 pb-2">
+                            <span>1-2月 (不自播期)</span>
+                            <span class="text-white">10万/月 + 8%佣金</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-700 pb-2">
+                            <span>3-12月 (自播启动后)</span>
+                            <span class="text-white">20万/月 + 8%佣金</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="p-8 bg-white rounded-xl shadow-lg">
+                    <h3 class="card-title">预算分配</h3>
+                    <div class="space-y-4 mt-6">
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm font-medium">达人投放</div>
+                            <div class="text-sm text-gray-600">¥500万 (50%)</div>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-brand-gold h-2 rounded-full" style="width: 50%"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm font-medium">品牌自播</div>
+                            <div class="text-sm text-gray-600">¥300万 (30%)</div>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-brand-gold h-2 rounded-full" style="width: 30%"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm font-medium">广告投放</div>
+                            <div class="text-sm text-gray-600">¥150万 (15%)</div>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-brand-gold h-2 rounded-full" style="width: 15%"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm font-medium">其他费用</div>
+                            <div class="text-sm text-gray-600">¥50万 (5%)</div>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-brand-gold h-2 rounded-full" style="width: 5%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-8 bg-white rounded-xl shadow-lg">
+                    <h3 class="card-title">ROI预测</h3>
+                    <div class="space-y-4 mt-6">
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm font-medium">1-2月 (认知期)</div>
+                            <div class="text-sm text-gray-600">1.5</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm font-medium">3-5月 (成长期)</div>
+                            <div class="text-sm text-gray-600">2.0</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm font-medium">6月 (618)</div>
+                            <div class="text-sm text-gray-600">2.2</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm font-medium">7-8月 (复购期)</div>
+                            <div class="text-sm text-gray-600">2.3</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm font-medium">9-11月 (双11)</div>
+                            <div class="text-sm text-gray-600">2.5</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm font-medium">12月 (复盘期)</div>
+                            <div class="text-sm text-gray-600">2.4</div>
+                        </div>
+                        <div class="pt-4 border-t border-gray-200">
+                            <div class="flex justify-between items-center font-bold">
+                                <div class="text-sm">全年综合ROI</div>
+                                <div class="text-sm text-brand-gold">2.5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Metrics Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="section-title">绩效指标与KPI</h2>
+                <div class="w-20 h-1 bg-brand-gold mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="p-8 bg-gray-50 rounded-xl shadow-sm">
+                    <div class="text-2xl font-bold text-brand-gold mb-2">2500万</div>
+                    <div class="text-sm text-gray-600 mb-4">年度GMV</div>
+                    <div class="text-xs text-gray-500">核心业务指标</div>
+                </div>
+                <div class="p-8 bg-gray-50 rounded-xl shadow-sm">
+                    <div class="text-2xl font-bold text-brand-gold mb-2">2.5</div>
+                    <div class="text-sm text-gray-600 mb-4">综合ROI</div>
+                    <div class="text-xs text-gray-500">投资回报指标</div>
+                </div>
+                <div class="p-8 bg-gray-50 rounded-xl shadow-sm">
+                    <div class="text-2xl font-bold text-brand-gold mb-2">30%</div>
+                    <div class="text-sm text-gray-600 mb-4">复购率</div>
+                    <div class="text-xs text-gray-500">用户留存指标</div>
+                </div>
+                <div class="p-8 bg-gray-50 rounded-xl shadow-sm">
+                    <div class="text-2xl font-bold text-brand-gold mb-2">50万+</div>
+                    <div class="text-sm text-gray-600 mb-4">私域用户</div>
+                    <div class="text-xs text-gray-500">用户资产指标</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-black text-gray-500 py-12 text-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-2xl font-bold tracking-widest text-white">DR.COSMO</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#positioning" class="text-gray-400 hover:text-brand-gold transition">品牌定位</a>
+                    <a href="#market" class="text-gray-400 hover:text-brand-gold transition">市场分析</a>
+                    <a href="#roadmap" class="text-gray-400 hover:text-brand-gold transition">执行路线</a>
+                    <a href="#financials" class="text-gray-400 hover:text-brand-gold transition">预算回报</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="mb-2">DR.COSMO China Strategy Proposal</p>
+                <p class="text-xs">Brand China Market Execution Framework | © 2025 All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

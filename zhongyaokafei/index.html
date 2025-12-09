@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中国大陆中药成分类咖啡市场研究报告</title>
+  <!-- 引入Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- 引入Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  
+  <!-- Tailwind配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#8B5A2B',     // 咖啡棕色作为主色调
+            secondary: '#D2B48C',   // 浅棕色作为辅助色
+            accent: '#CD853F',      // 秘鲁棕色作为强调色
+            light: '#F5F5DC',       // 米色作为浅色背景
+            dark: '#3E2723',        // 深棕色作为深色文本
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Georgia', 'serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <!-- 自定义工具类 -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      }
+      .bg-blur {
+        backdrop-filter: blur(8px);
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+    }
+  </style>
+  
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* 动画效果 */
+    .fade-in {
+      animation: fadeIn 0.8s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* 进度条动画 */
+    .progress-bar {
+      height: 6px;
+      background: linear-gradient(90deg, #8B5A2B 0%, #CD853F 100%);
+      border-radius: 3px;
+      width: 0;
+      animation: progress 1.5s ease-out forwards;
+    }
+    
+    @keyframes progress {
+      to { width: var(--width, 100%); }
+    }
+    
+    /* 导航栏滚动效果 */
+    .nav-scrolled {
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body class="bg-light text-dark font-sans">
+  <!-- 顶部导航栏 -->
+  <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/80 bg-blur">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-coffee text-primary text-2xl"></i>
+        <h1 class="text-xl font-bold text-primary hidden md:block">中药咖啡市场研究</h1>
+      </div>
+      
+      <!-- 桌面导航 -->
+      <nav class="hidden md:flex space-x-6">
+        <a href="#overview" class="hover:text-primary transition-colors">项目概况</a>
+        <a href="#industry" class="hover:text-primary transition-colors">行业分析</a>
+        <a href="#market" class="hover:text-primary transition-colors">市场规模</a>
+        <a href="#products" class="hover:text-primary transition-colors">产品分析</a>
+        <a href="#brands" class="hover:text-primary transition-colors">品牌解析</a>
+      </nav>
+      
+      <!-- 移动端菜单按钮 -->
+      <button id="menu-toggle" class="md:hidden text-dark focus:outline-none">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+      <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+        <a href="#overview" class="py-2 hover:text-primary transition-colors">项目概况</a>
+        <a href="#industry" class="py-2 hover:text-primary transition-colors">行业分析</a>
+        <a href="#market" class="py-2 hover:text-primary transition-colors">市场规模</a>
+        <a href="#products" class="py-2 hover:text-primary transition-colors">产品分析</a>
+        <a href="#brands" class="py-2 hover:text-primary transition-colors">品牌解析</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 英雄区域 -->
+  <section class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-primary/10 to-secondary/20">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-3xl md:text-5xl font-bold mb-6 text-primary text-shadow">
+          中国大陆中药成分类咖啡市场研究报告
+        </h1>
+        <p class="text-lg md:text-xl text-gray-700 mb-8">
+          2022-2025年 | 传统与创新的完美融合
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="#overview" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg transition-colors shadow-lg">
+            开始阅读 <i class="fa fa-arrow-down ml-2"></i>
+          </a>
+          <a href="#market" class="bg-white hover:bg-gray-100 text-primary px-6 py-3 rounded-lg transition-colors shadow-md border border-primary/30">
+            查看市场数据 <i class="fa fa-chart-line ml-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 项目概况 -->
+  <section id="overview" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex items-center mb-8">
+          <div class="w-12 h-1 bg-primary mr-4"></div>
+          <h2 class="text-2xl md:text-3xl font-bold">项目概况与研究背景</h2>
+        </div>
+        
+        <div class="fade-in">
+          <p class="mb-6 text-gray-700 leading-relaxed">
+            中药成分类咖啡作为中国咖啡市场的创新品类，正经历着前所未有的发展机遇。在消费升级和健康化趋势的双重驱动下，传统咖啡与中医药文化的跨界融合成为行业新的增长引擎。
+          </p>
+          
+          <p class="mb-8 text-gray-700 leading-relaxed">
+            本报告聚焦2022年10月至2025年10月期间中国大陆中药成分类咖啡市场的发展状况，通过对行业地位、市场规模、产品细分、品牌竞争、渠道分布等多维度的深入分析，为相关企业的产品开发和市场策略提供决策参考。
+          </p>
+          
+          <div class="bg-light p-6 rounded-xl shadow-md border border-secondary/20">
+            <h3 class="font-bold text-lg mb-4 flex items-center">
+              <i class="fa fa-database text-primary mr-2"></i> 数据来源
+            </h3>
+            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+              <li>《2025中国城市咖啡发展报告》</li>
+              <li>艾媒咨询、中商产业研究院、欧睿国际等权威机构</li>
+              <li>同仁堂、瑞幸咖啡、库迪咖啡等主要品牌公开信息</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 行业分析 -->
+  <section id="industry" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex items-center mb-8">
+          <div class="w-12 h-1 bg-primary mr-4"></div>
+          <h2 class="text-2xl md:text-3xl font-bold">行业分析</h2>
+        </div>
+        
+        <!-- 中国咖啡市场整体发展 -->
+        <div class="mb-16 fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">中国咖啡市场整体发展现状</h3>
+          <p class="mb-6 text-gray-700 leading-relaxed">
+            中国咖啡市场正处于高速增长期，2024年产业规模首次突破3000亿元大关，达到3133亿元，较前一年增长率高达18.1%，远超全球咖啡市场约6%的平均增速。
+          </p>
+          
+          <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+            <canvas id="coffeeMarketChart" height="250"></canvas>
+          </div>
+          
+          <p class="text-gray-700 leading-relaxed">
+            人均消费量方面，中国人均年饮用咖啡数从2016年的9杯上升至2023年的16.74杯，2024年进一步提升至22.24杯，显示出消费习惯的快速养成。
+          </p>
+        </div>
+        
+        <!-- 中药成分类咖啡定义 -->
+        <div class="mb-16 fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">中药成分类咖啡的定义与产品形态</h3>
+          <p class="mb-6 text-gray-700 leading-relaxed">
+            中药成分类咖啡，也称为<strong>药食同源咖啡</strong>，是将传统中药材与现代咖啡文化相结合的创新饮品。这类产品在咖啡的基础上加入人参、红参、灵芝、西洋参、党参、枸杞等有助于体力、脑力恢复的原料。
+          </p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 card-hover">
+              <div class="flex items-center mb-2">
+                <i class="fa fa-bottle text-accent mr-2"></i>
+                <h4 class="font-semibold">即饮瓶装咖啡</h4>
+              </div>
+              <p class="text-sm text-gray-600">便捷性强，适合快节奏生活方式</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 card-hover">
+              <div class="flex items-center mb-2">
+                <i class="fa fa-flask text-accent mr-2"></i>
+                <h4 class="font-semibold">咖啡浓缩液</h4>
+              </div>
+              <p class="text-sm text-gray-600">浓度高，可根据个人口味调配</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 card-hover">
+              <div class="flex items-center mb-2">
+                <i class="fa fa-cube text-accent mr-2"></i>
+                <h4 class="font-semibold">速溶咖啡</h4>
+              </div>
+              <p class="text-sm text-gray-600">传统形态，市场接受度高</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 card-hover">
+              <div class="flex items-center mb-2">
+                <i class="fa fa-snowflake-o text-accent mr-2"></i>
+                <h4 class="font-semibold">冻干咖啡</h4>
+              </div>
+              <p class="text-sm text-gray-600">保留营养成分，口感更佳</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 消费趋势 -->
+        <div class="mb-16 fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">消费升级与健康化趋势</h3>
+          <p class="mb-6 text-gray-700 leading-relaxed">
+            后疫情时代，中国咖啡产业正经历从"提神刚需"向"健康刚需"的根本性转变。90后、95后群体呈现"朋克养生"特征，62%的消费者期待咖啡具备抗氧化、调节肠道等健康属性。
+          </p>
+          
+          <div class="bg-primary/5 p-6 rounded-xl border border-primary/10 mb-6">
+            <h4 class="font-bold mb-3 flex items-center">
+              <i class="fa fa-line-chart text-primary mr-2"></i> 健康咖啡搜索量增长
+            </h4>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium">健康养生咖啡</span>
+                  <span class="text-sm font-medium">424%</span>
+                </div>
+                <div class="progress-bar" style="--width: 100%"></div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium">减肥黑咖啡</span>
+                  <span class="text-sm font-medium">212%</span>
+                </div>
+                <div class="progress-bar" style="--width: 50%"></div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium">生酮咖啡</span>
+                  <span class="text-sm font-medium">146%</span>
+                </div>
+                <div class="progress-bar" style="--width: 34%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 市场地位 -->
+        <div class="fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">中药成分类咖啡的市场地位</h3>
+          <p class="mb-6 text-gray-700 leading-relaxed">
+            根据最新市场数据，2025年养生咖啡市场规模预计达800亿元，占整体咖啡市场8%。虽然目前占比相对较小，但增长速度远超行业平均水平。
+          </p>
+          
+          <div class="bg-white p-6 rounded-xl shadow-md">
+            <canvas id="growthRateChart" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 市场规模 -->
+  <section id="market" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex items-center mb-8">
+          <div class="w-12 h-1 bg-primary mr-4"></div>
+          <h2 class="text-2xl md:text-3xl font-bold">市场规模与消费分析</h2>
+        </div>
+        
+        <!-- 市场规模演变 -->
+        <div class="mb-16 fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">2022-2025年市场规模演变</h3>
+          
+          <div class="overflow-x-auto mb-6">
+            <table class="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+              <thead class="bg-primary/10">
+                <tr>
+                  <th class="py-3 px-4 text-left">年份</th>
+                  <th class="py-3 px-4 text-left">市场类型</th>
+                  <th class="py-3 px-4 text-left">市场规模</th>
+                  <th class="py-3 px-4 text-left">同比增长率</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr>
+                  <td class="py-3 px-4">2023年</td>
+                  <td class="py-3 px-4">保健咖啡</td>
+                  <td class="py-3 px-4">超过200亿元</td>
+                  <td class="py-3 px-4 text-green-600">20%以上</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4">2024年</td>
+                  <td class="py-3 px-4">草本咖啡</td>
+                  <td class="py-3 px-4">18.3亿元</td>
+                  <td class="py-3 px-4 text-green-600">26.7%</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4">2024年</td>
+                  <td class="py-3 px-4">养生咖啡</td>
+                  <td class="py-3 px-4">超过50亿元</td>
+                  <td class="py-3 px-4 text-green-600">120%</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4">2025年</td>
+                  <td class="py-3 px-4">养生咖啡(预计)</td>
+                  <td class="py-3 px-4">800亿元</td>
+                  <td class="py-3 px-4">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="bg-white p-6 rounded-xl shadow-md">
+            <canvas id="marketSizeChart" height="250"></canvas>
+          </div>
+        </div>
+        
+        <!-- 消费人群画像 -->
+        <div class="mb-16 fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">消费人群画像分析</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+            <div>
+              <h4 class="font-bold mb-3 text-gray-800">年龄分布</h4>
+              <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 h-64">
+                <canvas id="ageChart"></canvas>
+              </div>
+            </div>
+            
+            <div>
+              <h4 class="font-bold mb-3 text-gray-800">职业分布</h4>
+              <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 h-64">
+                <canvas id="occupationChart"></canvas>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-light p-5 rounded-lg shadow-sm border border-secondary/20">
+            <h4 class="font-bold mb-3 flex items-center">
+              <i class="fa fa-users text-primary mr-2"></i> 消费群体特征
+            </h4>
+            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+              <li><strong>25-35岁</strong>消费者占比达78%，既需要咖啡因提神，又渴望通过人参、黄芪等成分缓解亚健康状态</li>
+              <li><strong>70后</strong>更偏爱杂粮成分的添加，<strong>90后</strong>更喜欢药膳成分，而<strong>95后</strong>中西营养两手抓</li>
+              <li>女性消费者在某些细分品类中占据主导地位，例如黄精咖啡在女性群体中渗透率超58%</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- 地域分布 -->
+        <div class="fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">地域分布特征</h3>
+          
+          <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+            <canvas id="regionChart" height="250"></canvas>
+          </div>
+          
+          <p class="text-gray-700 leading-relaxed">
+            一线城市市场规模占比达到42%，二线城市紧随其后，占比为35%。华东地区和华南地区构成了中药成分类咖啡的核心市场，分别占比33.9%和24.8%。
+          </p>
+          <p class="mt-2 text-gray-700 leading-relaxed">
+            值得注意的是，二三线城市增速显著达到27.6%，预示着下沉市场的潜力释放。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 产品分析 -->
+  <section id="products" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex items-center mb-8">
+          <div class="w-12 h-1 bg-primary mr-4"></div>
+          <h2 class="text-2xl md:text-3xl font-bold">细分口味与产品分析</h2>
+        </div>
+        
+        <!-- 主要中药成分搭配 -->
+        <div class="mb-16 fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">主要中药成分与咖啡的搭配组合</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden card-hover">
+              <div class="h-32 bg-primary/10 flex items-center justify-center">
+                <i class="fa fa-leaf text-5xl text-primary"></i>
+              </div>
+              <div class="p-4">
+                <h4 class="font-bold text-lg mb-2">参类系列</h4>
+                <p class="text-sm text-gray-600">包括人参、红参、西洋参、党参等，具有补气提神、增强免疫力的功效</p>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden card-hover">
+              <div class="h-32 bg-primary/10 flex items-center justify-center">
+                <i class="fa fa-pagelines text-5xl text-primary"></i>
+              </div>
+              <div class="p-4">
+                <h4 class="font-bold text-lg mb-2">枸杞系列</h4>
+                <p class="text-sm text-gray-600">选用枸杞原浆萃取精华，与深烘咖啡融合，保留提神效果与养生属性</p>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden card-hover">
+              <div class="h-32 bg-primary/10 flex items-center justify-center">
+                <i class="fa fa-star-o text-5xl text-primary"></i>
+              </div>
+              <div class="p-4">
+                <h4 class="font-bold text-lg mb-2">灵芝系列</h4>
+                <p class="text-sm text-gray-600">采用浓缩鲜萃灵芝技术，含灵芝多糖，可调节肠道菌群，提神更持久</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden card-hover">
+              <div class="h-28 bg-primary/10 flex items-center justify-center">
+                <i class="fa fa-heart-o text-4xl text-primary"></i>
+              </div>
+              <div class="p-4">
+                <h4 class="font-bold text-base mb-2">黄精系列</h4>
+                <p class="text-sm text-gray-600">被《本草纲目》称为"仙人余粮"，经九蒸九晒工艺提取，复购率高达42%</p>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden card-hover">
+              <div class="h-28 bg-primary/10 flex items-center justify-center">
+                <i class="fa fa-apple text-4xl text-primary"></i>
+              </div>
+              <div class="p-4">
+                <h4 class="font-bold text-base mb-2">其他系列</h4>
+                <p class="text-sm text-gray-600">包括罗汉果、益母草、石斛等多种中药成分与咖啡的创新组合</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 市场表现与偏好 -->
+        <div class="mb-16 fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">市场表现与消费者偏好</h3>
+          
+          <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+            <h4 class="font-bold mb-4">各细分口味销售占比</h4>
+            <canvas id="tasteShareChart" height="250"></canvas>
+          </div>
+          
+          <div class="bg-light p-5 rounded-lg shadow-sm border border-secondary/20">
+            <h4 class="font-bold mb-3">不同年龄段的成分偏好</h4>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="bg-primary/20 p-2 rounded-full mr-3 mt-1">
+                  <i class="fa fa-user text-primary"></i>
+                </div>
+                <div>
+                  <h5 class="font-semibold">70后</h5>
+                  <p class="text-sm text-gray-600">更偏爱杂粮成分的添加，如薏米、红豆等</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-primary/20 p-2 rounded-full mr-3 mt-1">
+                  <i class="fa fa-user-o text-primary"></i>
+                </div>
+                <div>
+                  <h5 class="font-semibold">90后</h5>
+                  <p class="text-sm text-gray-600">更喜欢药膳成分，如人参、黄芪、枸杞等</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-primary/20 p-2 rounded-full mr-3 mt-1">
+                  <i class="fa fa-user-plus text-primary"></i>
+                </div>
+                <div>
+                  <h5 class="font-semibold">95后</h5>
+                  <p class="text-sm text-gray-600">中西营养两手抓，既喜欢传统中药成分，也接受西方营养补充剂</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 价格定位 -->
+        <div class="fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">功效定位与价格定位分析</h3>
+          
+          <div class="overflow-x-auto mb-6">
+            <table class="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+              <thead class="bg-primary/10">
+                <tr>
+                  <th class="py-3 px-4 text-left">功效类型</th>
+                  <th class="py-3 px-4 text-left">代表产品</th>
+                  <th class="py-3 px-4 text-left">价格区间</th>
+                  <th class="py-3 px-4 text-left">价格特征</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr>
+                  <td class="py-3 px-4">基础养生型</td>
+                  <td class="py-3 px-4">枸杞咖啡、罗汉果咖啡</td>
+                  <td class="py-3 px-4">15-25元</td>
+                  <td class="py-3 px-4">大众化定价，性价比高</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4">功能强化型</td>
+                  <td class="py-3 px-4">人参咖啡、灵芝咖啡</td>
+                  <td class="py-3 px-4">25-40元</td>
+                  <td class="py-3 px-4">功效溢价明显</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4">高端定制型</td>
+                  <td class="py-3 px-4">黄精咖啡、石斛咖啡</td>
+                  <td class="py-3 px-4">40元以上</td>
+                  <td class="py-3 px-4">原料稀缺，定位高端</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <p class="text-gray-700 leading-relaxed">
+            值得注意的是，某些产品通过文化赋能实现了超高溢价。例如，故宫文创联名款黄精咖啡溢价率达220%，客单价突破68元。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 品牌解析 -->
+  <section id="brands" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex items-center mb-8">
+          <div class="w-12 h-1 bg-primary mr-4"></div>
+          <h2 class="text-2xl md:text-3xl font-bold">代表产品和品牌</h2>
+        </div>
+        
+        <!-- 传统咖啡品牌 -->
+        <div class="mb-16 fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">传统咖啡品牌的中药成分产品线</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden card-hover">
+              <div class="h-40 bg-[#ff6700]/10 flex items-center justify-center">
+                <span class="text-3xl font-bold text-[#ff6700]">瑞幸咖啡</span>
+              </div>
+              <div class="p-5">
+                <h4 class="font-bold mb-2">红枣系列产品</h4>
+                <p class="text-gray-600 text-sm mb-3">
+                  包括蛇来运转红枣拿铁与蛇来运转轻轻红枣，使用红枣酱提供红枣风味并搭配牛乳。
+                </p>
+                <div class="text-xs text-gray-500">
+                  <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full">市场表现佳</span>
+                  <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full ml-2">创新融合</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden card-hover">
+              <div class="h-40 bg-[#5c3317]/10 flex items-center justify-center">
+                <span class="text-3xl font-bold text-[#5c3317]">库迪咖啡</span>
+              </div>
+              <div class="p-5">
+                <h4 class="font-bold mb-2">红枣与桃胶系列</h4>
+                <p class="text-gray-600 text-sm mb-3">
+                  推出桃胶酒酿米乳拿铁和桃胶生酪拿铁，以及红枣系列产品，融合传统中药成分。
+                </p>
+                <div class="text-xs text-gray-500">
+                  <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">中式创新</span>
+                  <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full ml-2">多元化</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 专门的中药咖啡品牌 -->
+        <div class="mb-16 fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">专门的中药咖啡品牌分析</h3>
+          
+          <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+            <div class="flex flex-col md:flex-row gap-6">
+              <div class="md:w-1/3">
+                <div class="h-40 bg-[#9e2a2b]/10 rounded-lg flex items-center justify-center mb-4">
+                  <span class="text-2xl font-bold text-[#9e2a2b]">同仁堂知嘛健康</span>
+                </div>
+              </div>
+              <div class="md:w-2/3">
+                <h4 class="font-bold mb-2">品牌亮点</h4>
+                <ul class="list-disc pl-5 space-y-1 text-gray-700 mb-3">
+                  <li>371年历史的中医药老字号跨界创新</li>
+                  <li>2019年推出，以"咖啡+养生"为切入点</li>
+                  <li>产品线包括枸杞拿铁、罗汉果美式、益母草玫瑰拿铁等</li>
+                  <li>2023年已在多个城市布局门店，计划快速扩张</li>
+                </ul>
+                <p class="text-sm text-gray-500">
+                  核心竞争力在于独特的草本配方体系，精选黄芪、当归、枸杞等中药材，通过炮制工艺保留药用价值的同时，与咖啡豆完美融合。
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-5 card-hover">
+              <h4 class="font-bold mb-3">三顿半</h4>
+              <p class="text-gray-600 text-sm mb-3">
+                精品速溶咖啡代表品牌，首创"超即溶冻干技术"，实现3秒速溶且保留90%咖啡油脂，在中药成分咖啡领域也有所布局。
+              </p>
+              <div class="text-xs text-gray-500">
+                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full">技术领先</span>
+                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full ml-2">Z世代青睐</span>
+              </div>
+            </div>
+            
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-5 card-hover">
+              <h4 class="font-bold mb-3">永璞</h4>
+              <p class="text-gray-600 text-sm mb-3">
+                研发"闪萃冷萃技术"，推出常温便携咖啡液，2024年天猫旗舰店复购率达42%。推出"龙井美式"等创新融合产品。
+              </p>
+              <div class="text-xs text-gray-500">
+                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full">跨界融合</span>
+                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full ml-2">复购率高</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 新兴创业品牌 -->
+        <div class="fade-in">
+          <h3 class="text-xl font-bold mb-4 text-primary">新兴创业品牌的崛起</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden card-hover">
+              <div class="p-4">
+                <h4 class="font-bold text-base mb-2">脑白金咖啡实验室</h4>
+                <p class="text-sm text-gray-600 mb-3">
+                  巨人集团旗下创新项目，融合人参、黄芪、益生菌等元素。
+                </p>
+                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">品牌背书</span>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden card-hover">
+              <div class="p-4">
+                <h4 class="font-bold text-base mb-2">FITO</h4>
+                <p class="text-sm text-gray-600 mb-3">
+                  功效型咖啡开创者，推出"燃咖啡"，成立一年登上抖音类目TOP2。
+                </p>
+                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">增长迅速</span>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden card-hover">
+              <div class="p-4">
+                <h4 class="font-bold text-base mb-2">枫蓝咖啡</h4>
+                <p class="text-sm text-gray-600 mb-3">
+                  专注养生咖啡细分市场，精准切入季节性养生痛点。
+                </p>
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">精准定位</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+          <div class="flex items-center mb-4 md:mb-0">
+            <i class="fa fa-coffee text-secondary text-3xl mr-3"></i>
+            <h2 class="text-xl font-bold">中药成分类咖啡市场研究报告</h2>
+          </div>
+          <div class="flex space-x-4">
+            <a href="#" class="text-white hover:text-secondary transition-colors">
+              <i class="fa fa-file-pdf-o text-xl"></i>
+            </a>
+            <a href="#" class="text-white hover:text-secondary transition-colors">
+              <i class="fa fa-share-alt text-xl"></i>
+            </a>
+            <a href="#" class="text-white hover:text-secondary transition-colors">
+              <i class="fa fa-download text-xl"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="border-t border-gray-700 pt-8">
+          <p class="text-center text-gray-400 text-sm">
+            © 2025 中药成分类咖啡市场研究报告 | 数据来源：《2025中国城市咖啡发展报告》、艾媒咨询等
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 返回顶部按钮 -->
+  <button id="back-to-top" class="fixed bottom-6 right-6 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300">
+    <i class="fa fa-arrow-up"></i>
+  </button>
+
+  <!-- JavaScript -->
+  <script>
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    const backToTop = document.getElementById('back-to-top');
+    
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 100) {
+        navbar.classList.add('nav-scrolled');
+        backToTop.classList.remove('opacity-0', 'invisible');
+        backToTop.classList.add('opacity-100', 'visible');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+        backToTop.classList.add('opacity-0', 'invisible');
+        backToTop.classList.remove('opacity-100', 'visible');
+      }
+      
+      // 滚动动画
+      const fadeElements = document.querySelectorAll('.fade-in');
+      fadeElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }
+      });
+    });
+    
+    // 移动端菜单切换
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    menuToggle.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+    });
+    
+    // 返回顶部功能
+    backToTop.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // 图表初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      // 中国咖啡市场规模图表
+      const coffeeMarketCtx = document.getElementById('coffeeMarketChart').getContext('2d');
+      new Chart(coffeeMarketCtx, {
+        type: 'line',
+        data: {
+          labels: ['2020', '2021', '2022', '2023', '2024', '2025(预计)'],
+          datasets: [{
+            label: '中国咖啡市场规模(亿元)',
+            data: [1364, 1787, 2247, 2654, 3133, 4000],
+            borderColor: '#8B5A2B',
+            backgroundColor: 'rgba(139, 90, 43, 0.1)',
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+      
+      // 增长率对比图表
+      const growthRateCtx = document.getElementById('growthRateChart').getContext('2d');
+      new Chart(growthRateCtx, {
+        type: 'bar',
+        data: {
+          labels: ['整体咖啡市场', '健康功能型咖啡', '药食同源功能咖啡'],
+          datasets: [{
+            label: '年增长率(%)',
+            data: [18.1, 28, 42],
+            backgroundColor: [
+              'rgba(178, 132, 101, 0.7)',
+              'rgba(139, 90, 43, 0.7)',
+              'rgba(205, 133, 63, 0.7)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: '增长率(%)'
+              }
+            }
+          }
+        }
+      });
+      
+      // 市场规模图表
+      const marketSizeCtx = document.getElementById('marketSizeChart').getContext('2d');
+      new Chart(marketSizeCtx, {
+        type: 'bar',
+        data: {
+          labels: ['2022', '2023', '2024', '2025(预计)'],
+          datasets: [
+            {
+              label: '人参咖啡(亿元)',
+              data: [9.6, 11.2, 15.0, 86],
+              backgroundColor: 'rgba(139, 90, 43, 0.7)',
+            },
+            {
+              label: '养生咖啡(亿元)',
+              data: [15, 23, 50, 800],
+              backgroundColor: 'rgba(205, 133, 63, 0.7)',
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+      
+      // 年龄分布图表
+      const ageCtx = document.getElementById('ageChart').getContext('2d');
+      new Chart(ageCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['25-35岁', '18-24岁', '36-45岁', '46岁以上'],
+          datasets: [{
+            data: [78, 12, 8, 2],
+            backgroundColor: [
+              'rgba(139, 90, 43, 0.8)',
+              'rgba(205, 133, 63, 0.8)',
+              'rgba(178, 132, 101, 0.8)',
+              'rgba(139, 69, 19, 0.8)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+            }
+          }
+        }
+      });
+      
+      // 职业分布图表
+      const occupationCtx = document.getElementById('occupationChart').getContext('2d');
+      new Chart(occupationCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['白领人士', '学生群体', '自由职业者', '其他'],
+          datasets: [{
+            data: [60, 25, 10, 5],
+            backgroundColor: [
+              'rgba(139, 90, 43, 0.8)',
+              'rgba(205, 133, 63, 0.8)',
+              'rgba(178, 132, 101, 0.8)',
+              'rgba(139, 69, 19, 0.8)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+            }
+          }
+        }
+      });
+      
+      // 地域分布图表
+      const regionCtx = document.getElementById('regionChart').getContext('2d');
+      new Chart(regionCtx, {
+        type: 'pie',
+        data: {
+          labels: ['华东地区', '华南地区', '华北地区', '西南地区', '西北地区'],
+          datasets: [{
+            data: [33.9, 24.8, 18.5, 12.3, 10.5],
+            backgroundColor: [
+              'rgba(139, 90, 43, 0.8)',
+              'rgba(205, 133, 63, 0.8)',
+              'rgba(178, 132, 101, 0.8)',
+              'rgba(139, 69, 19, 0.8)',
+              'rgba(160, 82, 45, 0.8)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+            }
+          }
+        }
+      });
+      
+      // 口味占比图表
+      const tasteShareCtx = document.getElementById('tasteShareChart').getContext('2d');
+      new Chart(tasteShareCtx, {
+        type: 'polarArea',
+        data: {
+          labels: ['参类系列', '枸杞系列', '黄精系列', '灵芝系列', '其他系列'],
+          datasets: [{
+            data: [40, 25, 15, 10, 10],
+            backgroundColor: [
+              'rgba(139, 90, 43, 0.7)',
+              'rgba(205, 133, 63, 0.7)',
+              'rgba(178, 132, 101, 0.7)',
+              'rgba(139, 69, 19, 0.7)',
+              'rgba(160, 82, 45, 0.7)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+            }
+          }
+        }
+      });
+    });
+    
+    // 初始化渐入动画
+    document.querySelectorAll('.fade-in').forEach(element => {
+      element.style.opacity = '0';
+      element.style.transform = 'translateY(20px)';
+      element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+    });
+    
+    // 触发一次滚动事件以初始化可见元素的动画
+    window.dispatchEvent(new Event('scroll'));
+  </script>
+</body>
+</html>

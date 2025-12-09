@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>辰时医疗 - 内容引流与转化合作方案</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        accent: '#60a5fa',
+                        neutral: '#f3f4f6',
+                        "neutral-dark": '#4b5563',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .step-number {
+                width: 2.5rem;
+                height: 2.5rem;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                margin-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+    <!-- 导航栏 -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fa fa-heartbeat text-2xl text-primary mr-2"></i>
+                        <span class="font-bold text-xl">辰时医疗</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex md:items-center md:space-x-4">
+                    <a href="#core" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-100">方案核心</a>
+                    <a href="#division" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-100">分工与准备</a>
+                    <a href="#process" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-100">执行流程</a>
+                    <a href="#business" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-100">商业模式</a>
+                    <a href="#roi" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-100">投入产出</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#core" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-100">方案核心</a>
+                <a href="#division" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-100">分工与准备</a>
+                <a href="#process" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-100">执行流程</a>
+                <a href="#business" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-100">商业模式</a>
+                <a href="#roi" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-100">投入产出</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <header class="bg-gradient-primary text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 text-shadow">辰时医疗合作方案</h1>
+                <p class="text-xl md:text-2xl opacity-90 mb-8">互联网精准获客与转化成交的高效协作模式</p>
+                <div class="inline-flex rounded-md shadow">
+                    <a href="#core" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary bg-white hover:bg-gray-50">
+                        了解方案细节
+                        <i class="fa fa-arrow-down ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- 方案核心 -->
+        <section id="core" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">方案核心</h2>
+                <div class="h-1 w-20 bg-primary mx-auto"></div>
+                <p class="mt-4 text-lg text-gray-600">明确服务方与辰时无创的角色定位与合作机制</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-full mb-6 mx-auto">
+                        <i class="fa fa-handshake-o text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-4">合作模式</h3>
+                    <p class="text-gray-600">服务方负责前端内容生产与精准引流；辰时无创负责后端企微1v1承接与转化成交。</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-full mb-6 mx-auto">
+                        <i class="fa fa-bullseye text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-4">交付标的</h3>
+                    <p class="text-gray-600">服务方交付的核心标的为<strong class="text-primary">有效加微客资</strong>，确保客资质量与精准度。</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-full mb-6 mx-auto">
+                        <i class="fa fa-rocket text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-4">转化抓手</h3>
+                    <p class="text-gray-600">辰时无创使用<strong class="text-primary">199元保险服务</strong>作为核心转化工具，降低用户决策门槛，实现互联网精准获客。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 双方分工与准备 -->
+        <section id="division" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">双方分工与准备</h2>
+                <div class="h-1 w-20 bg-primary mx-auto"></div>
+                <p class="mt-4 text-lg text-gray-600">清晰界定服务方与客户方的职责与准备工作</p>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 bg-white rounded-lg shadow">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="px-6 py-3 bg-primary/10 text-left text-xs font-medium text-primary uppercase tracking-wider">参与方</th>
+                            <th scope="col" class="px-6 py-3 bg-primary/10 text-left text-xs font-medium text-primary uppercase tracking-wider">核心职责</th>
+                            <th scope="col" class="px-6 py-3 bg-primary/10 text-left text-xs font-medium text-primary uppercase tracking-wider">准备事项</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap font-semibold text-primary">服务方</td>
+                            <td class="px-6 py-4 whitespace-nowrap font-semibold">内容 & 引流</td>
+                            <td class="px-6 py-4">
+                                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                                    <li><strong>团队配置：</strong>组建专享团队（医学总监、软件工程师、内容策略师、内容运营、前端客服等）</li>
+                                    <li><strong>账号搭建：</strong>负责小红书四大账号矩阵的搭建与运营</li>
+                                    <li><strong>内容生产：</strong>利用专有模型定制化生产合规的医疗科普与引流内容</li>
+                                    <li><strong>引流交付：</strong>负责内容投放与优化，管理小红书私信咨询，并将用户线索精准引导至企微账号</li>
+                                </ol>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap font-semibold text-primary">辰时无创</td>
+                            <td class="px-6 py-4 whitespace-nowrap font-semibold">承接 & 转化</td>
+                            <td class="px-6 py-4">
+                                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                                    <li><strong>团队配置：</strong>自行配备并管理3名企微转化顾问</li>
+                                    <li><strong>物料提供：</strong>提供199元保险服务详情、品牌VI、专家资料等</li>
+                                    <li><strong>合规审核：</strong>指定1名医疗合规官，对内容进行最终审核</li>
+                                    <li><strong>SOP建立：</strong>建立内部转化话术、预约登记、到店核销等全流程SOP</li>
+                                </ol>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 账号矩阵示意图 -->
+            <div class="mt-12 bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-6 text-center">小红书账号矩阵（4个核心账号）</h3>
+                <p class="text-center text-gray-600 mb-6">每个账号需准备：</p>
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
+                    <h4 class="font-semibold text-gray-900 mb-3">基础素材准备：</h4>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700 text-sm">
+                        <li>头像（企业logo或专业形象图）</li>
+                        <li>账号昵称（建议包含品牌名称+业务方向）</li>
+                        <li>账号简介（明确服务内容和价值主张）</li>
+                        <li>封面图设计规范（保持一致性）</li>
+                        <li>内容定位文档（明确各账号差异化定位）</li>
+                        <li>合规审核标准（医疗内容需特别注意）</li>
+                    </ul>
+                    
+                    <h4 class="font-semibold text-gray-900 mt-4 mb-3">企业账号注册所需资质：</h4>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700 text-sm">
+                        <li>企业营业执照彩色扫描件或清晰照片（确保信息完整）</li>
+                        <li>法定代表人身份证正反面照片</li>
+                        <li>小红书企业号认证申请函（需加盖公章）</li>
+                        <li>企业邮箱和联系电话</li>
+                        <li>若为个体工商户，还需经营者手持公函的照片</li>
+                        <li><strong class="text-primary">医疗行业特殊资质：</strong></li>
+                        <li class="ml-6">医疗器械经营许可证/生产许可证（彩色扫描件）</li>
+                        <li class="ml-6">医疗器械注册证（与经营产品一致）</li>
+                        <li class="ml-6">其他相关医疗资质证明（如医疗机构执业许可证等）</li>
+                        <li>认证过程中需进行人脸识别验证</li>
+                    </ul>
+                    
+                    <h4 class="font-semibold text-gray-900 mt-6 mb-3">专家号医生认证特殊要求：</h4>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700 text-sm">
+                        <li><strong class="text-primary">基础要求：</strong></li>
+                        <li class="ml-6">完成账号实名认证</li>
+                        <li class="ml-6">认证前28-30天内至少发布5篇与申请科室相关的医疗健康科普笔记</li>
+                        <li class="ml-6">填写专业的昵称、头像和简介</li>
+                        
+                        <li><strong class="text-primary">资质材料要求：</strong></li>
+                        <li class="ml-6">医生本人的身份证正、反面照片</li>
+                        <li class="ml-6">医生本人手持身份证照片（非镜像照片，需用后置镜头拍摄）</li>
+                        <li class="ml-6">医师执业证书</li>
+                        <li class="ml-6">医师资格证</li>
+                        <li class="ml-6">科室证明（如胸牌/工牌/官方文件等）</li>
+                        <li class="ml-6">职称证明（如在职证明/劳动合同/医院官网截图等）</li>
+                        <li class="ml-6">一个月内的国家卫生健康委员会信息查询截图</li>
+                        
+                        <li><strong class="text-primary">职称要求：</strong></li>
+                        <li class="ml-6">皮肤科、整形外科或男科：需为公立三级医院的主治医师或以上职称</li>
+                        <li class="ml-6">其他科室：公立三级医院医生可申请；公立非三级医院需为主治医师或以上职称</li>
+                    </ul>
+                    
+                    <p class="text-xs text-gray-500 mt-3">注：审核时间通常为1-3个工作日，建议提前准备并确保资料真实有效</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="border border-primary/20 rounded-lg p-4 text-center bg-primary/5 hover:bg-primary/10 transition-colors">
+                        <div class="text-primary text-3xl mb-2"><i class="fa fa-book"></i></div>
+                        <h4 class="font-semibold">科普号</h4>
+                        <p class="text-sm text-gray-600 mt-2">提供专业医疗科普内容，建立权威形象</p>
+                    </div>
+                    <div class="border border-primary/20 rounded-lg p-4 text-center bg-primary/5 hover:bg-primary/10 transition-colors">
+                        <div class="text-primary text-3xl mb-2"><i class="fa fa-users"></i></div>
+                        <h4 class="font-semibold">案例号</h4>
+                        <p class="text-sm text-gray-600 mt-2">分享真实康复案例，增强用户信任感</p>
+                    </div>
+                    <div class="border border-primary/20 rounded-lg p-4 text-center bg-primary/5 hover:bg-primary/10 transition-colors">
+                        <div class="text-primary text-3xl mb-2"><i class="fa fa-user-md"></i></div>
+                        <h4 class="font-semibold">专家号</h4>
+                        <p class="text-sm text-gray-600 mt-2">医生专业解答，提升专业认可度</p>
+                    </div>
+                    <div class="border border-primary/20 rounded-lg p-4 text-center bg-primary/5 hover:bg-primary/10 transition-colors">
+                        <div class="text-primary text-3xl mb-2"><i class="fa fa-calendar-check-o"></i></div>
+                        <h4 class="font-semibold">服务号</h4>
+                        <p class="text-sm text-gray-600 mt-2">提供服务信息，引导用户预约转化</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 完整执行流程 -->
+        <section id="process" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">完整执行流程</h2>
+                <div class="h-1 w-20 bg-primary mx-auto"></div>
+                <p class="mt-4 text-lg text-gray-600">从用户触达到最终转化的全流程路径</p>
+            </div>
+
+            <div class="relative">
+                <!-- 流程连接线 -->
+                <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-primary/20 z-0"></div>
+                
+                <!-- 流程步骤 -->
+                <div class="relative z-10">
+                    <!-- 步骤1 -->
+                    <div class="flex flex-col md:flex-row items-center mb-12">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
+                            <h3 class="text-xl font-semibold text-primary">触达 (服务方)</h3>
+                            <p class="mt-2 text-gray-700">用户在小红书被爆款笔记（如HIFU无创科普、康复案例）吸引。</p>
+                        </div>
+                        <div class="step-number bg-primary text-white">1</div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block">
+                            <div class="bg-white p-4 rounded-lg shadow border border-gray-100">
+                                <i class="fa fa-magic text-primary mr-2"></i>
+                                <span class="text-sm text-gray-600">内容生成，精准触达目标用户</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 步骤2 -->
+                    <div class="flex flex-col md:flex-row items-center mb-12">
+                        <div class="md:w-1/2 md:pr-12 hidden md:block">
+                            <div class="bg-white p-4 rounded-lg shadow border border-gray-100">
+                                <i class="fa fa-arrow-right text-primary mr-2"></i>
+                                <span class="text-sm text-gray-600">引导用户完成行动，添加企业微信</span>
+                            </div>
+                        </div>
+                        <div class="step-number bg-primary text-white">2</div>
+                        <div class="md:w-1/2 md:pl-12 md:text-left mb-6 md:mb-0">
+                            <h3 class="text-xl font-semibold text-primary">引导 (服务方)</h3>
+                            <p class="mt-2 text-gray-700">用户通过笔记引导，添加辰时无创指定的企业微信。</p>
+                        </div>
+                    </div>
+
+                    <!-- 步骤3 -->
+                    <div class="flex flex-col md:flex-row items-center mb-12">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
+                            <h3 class="text-xl font-semibold text-primary">交付 (服务方)</h3>
+                            <p class="mt-2 text-gray-700">完成"有效加微客资"的交付。</p>
+                        </div>
+                        <div class="step-number bg-primary text-white">3</div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block">
+                            <div class="bg-white p-4 rounded-lg shadow border border-gray-100">
+                                <i class="fa fa-filter text-primary mr-2"></i>
+                                <span class="text-sm text-gray-600">智能筛选与精准打标，确保客资质量</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 步骤4 -->
+                    <div class="flex flex-col md:flex-row items-center mb-12">
+                        <div class="md:w-1/2 md:pr-12 hidden md:block">
+                            <div class="bg-white p-4 rounded-lg shadow border border-gray-100">
+                                <i class="fa fa-headphones text-primary mr-2"></i>
+                                <span class="text-sm text-gray-600">专业团队1v1服务，解答用户疑问</span>
+                            </div>
+                        </div>
+                        <div class="step-number bg-primary text-white">4</div>
+                        <div class="md:w-1/2 md:pl-12 md:text-left mb-6 md:mb-0">
+                            <h3 class="text-xl font-semibold text-primary">承接 (辰时方)</h3>
+                            <p class="mt-2 text-gray-700">辰时方3名转化顾问立即1v1承接线索，进行专业解答。</p>
+                        </div>
+                    </div>
+
+                    <!-- 步骤5 -->
+                    <div class="flex flex-col md:flex-row items-center mb-12">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
+                            <h3 class="text-xl font-semibold text-primary">转化 (辰时方)</h3>
+                            <p class="mt-2 text-gray-700">辰时方顾问负责销售"199元保险服务"，并协助客户完成预约登记。</p>
+                        </div>
+                        <div class="step-number bg-primary text-white">5</div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block">
+                            <div class="bg-white p-4 rounded-lg shadow border border-gray-100">
+                                <i class="fa fa-shopping-cart text-primary mr-2"></i>
+                                <span class="text-sm text-gray-600">低门槛服务引导，提升转化意愿</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 步骤6 -->
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12 hidden md:block">
+                            <div class="bg-white p-4 rounded-lg shadow border border-gray-100">
+                                <i class="fa fa-star text-primary mr-2"></i>
+                                <span class="text-sm text-gray-600">优质服务体验，促进升单转化</span>
+                            </div>
+                        </div>
+                        <div class="step-number bg-primary text-white">6</div>
+                        <div class="md:w-1/2 md:pl-12 md:text-left">
+                            <h3 class="text-xl font-semibold text-primary">核销 (辰时方)</h3>
+                            <p class="mt-2 text-gray-700">辰时方负责到店接待、服务核销，并进行后续的诊疗（如15,000元）升单转化。199元销售收入100%归服务方所有。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 商业模式与收费 -->
+        <section id="business" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">商业模式与收费</h2>
+                <div class="h-1 w-20 bg-primary mx-auto"></div>
+                <p class="mt-4 text-lg text-gray-600">明确的收费结构与结算方式</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="border border-gray-200 rounded-lg p-6 hover:border-primary/30 transition-colors">
+                        <h3 class="text-xl font-semibold text-center mb-4">收费结构</h3>
+                        <div class="flex justify-center items-center h-40">
+                            <div class="text-center">
+                                <span class="text-3xl font-bold text-primary">月度基础服务费</span>
+                                <div class="my-2 flex justify-center items-center">
+                                    <i class="fa fa-plus text-gray-400 mx-4"></i>
+                                </div>
+                                <span class="text-3xl font-bold text-primary">客资费</span>
+                                <div class="my-2 flex justify-center items-center">
+                                    <i class="fa fa-plus text-gray-400 mx-4"></i>
+                                </div>
+                                <span class="text-3xl font-bold text-primary">199元销售收入</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="border border-gray-200 rounded-lg p-6 hover:border-primary/30 transition-colors">
+                            <h4 class="font-semibold text-lg mb-2">A. 技术服务费 (固定)</h4>
+                        <p class="text-3xl font-bold text-primary mb-2">¥ 20,000<span class="text-lg font-normal text-gray-500">/月</span></p>
+                        <p class="text-gray-600 text-sm italic">覆盖我方AI系统维护、合规算法更新及基础团队支持</p>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 hover:border-primary/30 transition-colors">
+                            <h4 class="font-semibold text-lg mb-2">B. 客资费</h4>
+                            <p class="text-3xl font-bold text-primary">¥ 23<span class="text-lg font-normal text-gray-500">/个有效加微客资</span></p>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-6 hover:border-primary/30 transition-colors">
+                            <h4 class="font-semibold text-lg mb-2">C. 销售收入</h4>
+                            <p class="text-3xl font-bold text-primary">¥ 199<span class="text-lg font-normal text-gray-500">/个 销售收入</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 bg-gray-50 rounded-lg">
+                    <h4 class="font-semibold text-lg mb-3">结算方式</h4>
+                    <p class="text-gray-700">月度结算。我方提供当月"有效加微客资"总数及"199元销售"明细。辰时方支付（技术服务费+客资费+销售收入）三项费用。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 投入产出与盈亏平衡测算 -->
+        <section id="roi" class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">投入产出与盈亏平衡测算</h2>
+                <div class="h-1 w-20 bg-primary mx-auto"></div>
+                <p class="mt-4 text-lg text-gray-600">基于月度运营的财务分析与盈利预测</p>
+            </div>
+
+            <!-- 漏斗图展示转化流程 -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-6 text-center">客户转化漏斗</h3>
+                <div class="flex flex-col items-center">
+                    <!-- 漏斗图模拟 -->
+                    <div class="w-full max-w-2xl">
+                        <div class="relative py-16">
+                            <!-- 漏斗层次 -->
+                            <div class="relative z-10 mx-auto" style="width: 80%;">
+                                <div class="bg-primary/20 border border-primary/30 rounded-lg p-4 text-center">
+                                    <div class="text-3xl font-bold text-primary">2,500</div>
+                                    <div class="text-gray-700">有效加微客资</div>
+                                </div>
+                            </div>
+                            <div class="relative z-10 mx-auto mt-2" style="width: 60%;">
+                                <div class="bg-secondary/20 border border-secondary/30 rounded-lg p-4 text-center">
+                                    <div class="text-3xl font-bold text-secondary">750</div>
+                                    <div class="text-gray-700">199元保险购买 (30%)</div>
+                                </div>
+                            </div>
+                            <div class="relative z-10 mx-auto mt-2" style="width: 40%;">
+                                <div class="bg-accent/20 border border-accent/30 rounded-lg p-4 text-center">
+                                    <div class="text-3xl font-bold text-accent">225</div>
+                                    <div class="text-gray-700">到店检查 (30%)</div>
+                                </div>
+                            </div>
+                            <div class="relative z-10 mx-auto mt-2" style="width: 20%;">
+                                <div class="bg-success/20 border border-success/30 rounded-lg p-4 text-center">
+                                    <div class="text-3xl font-bold text-success">90</div>
+                                    <div class="text-gray-700">最终成交 (40%)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 关键指标 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-4xl mt-8">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="text-sm text-gray-500 mb-1">客资费 (单价)</div>
+                            <div class="text-xl font-bold text-primary">¥23 / 有效加微客资</div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="text-sm text-gray-500 mb-1">销售收入 (单价)</div>
+                            <div class="text-xl font-bold text-primary">¥199 / 个</div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="text-sm text-gray-500 mb-1">技术服务费</div>
+                            <div class="text-xl font-bold text-primary">¥20,000 / 月</div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="text-sm text-gray-500 mb-1">平均成交客单价</div>
+                            <div class="text-xl font-bold text-primary">¥20,000 / 人</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 辰时方月度收入及成本 -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-6 text-center">辰时方月度收入与成本</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 收入部分 -->
+                    <div>
+                        <h4 class="font-semibold text-lg mb-4 text-success">月度收入</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700">诊疗服务收入 (90人 × ¥20,000)</span>
+                                    <span class="font-semibold">¥1,800,000</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-success h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-gray-200">
+                                <div class="flex justify-between text-lg font-bold">
+                                    <span>月度总收入</span>
+                                    <span class="text-success">¥1,800,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 成本部分 -->
+                    <div>
+                        <h4 class="font-semibold text-lg mb-4 text-warning">月度成本</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700">企微顾问成本</span>
+                                    <span class="font-semibold">¥28,350</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-warning h-2 rounded-full" style="width: 16%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700">技术服务费</span>
+                                    <span class="font-semibold">¥20,000</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-warning h-2 rounded-full" style="width: 11%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700">客资费 (2,500个 × ¥23)</span>
+                                    <span class="font-semibold">¥57,500</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-warning h-2 rounded-full" style="width: 32%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700">销售收入 (750个 × ¥199)</span>
+                                    <span class="font-semibold">¥149,250</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-warning h-2 rounded-full" style="width: 83%"></div>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-gray-200">
+                                <div class="flex justify-between text-lg font-bold">
+                                    <span>月度总成本</span>
+                                    <span class="text-warning">¥255,100</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 利润计算 -->
+                <div class="mt-8 p-6 bg-primary/5 rounded-lg">
+                    <div class="flex justify-between text-xl font-bold">
+                        <span>月度净利润</span>
+                        <span class="text-primary">¥1,544,900</span>
+                    </div>
+                    <div class="mt-2 flex justify-between text-lg">
+                        <span>投资回报率 (ROI)</span>
+                        <span class="text-primary">605.6%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 盈亏平衡分析 -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-semibold mb-6 text-center">盈亏平衡分析</h3>
+                
+                <div class="mb-8">
+                    <canvas id="breakevenChart" width="400" height="200"></canvas>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border border-success/30 bg-success/5 rounded-lg p-6 text-center">
+                        <h4 class="font-semibold text-success mb-3">月度盈亏平衡点 (成交人数)</h4>
+                        <div class="text-5xl font-bold text-success mb-2">3</div>
+                        <p class="text-gray-700">个成交客户</p>
+                    </div>
+                    <div class="border border-success/30 bg-success/5 rounded-lg p-6 text-center">
+                        <h4 class="font-semibold text-success mb-3">月度盈亏平衡点 (到店人数)</h4>
+                        <div class="text-5xl font-bold text-success mb-2">8</div>
+                        <p class="text-gray-700">个到店检查客户</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-6 bg-primary/5 rounded-lg border-l-4 border-primary">
+                    <h4 class="font-semibold text-primary mb-2">结论</h4>
+                    <p class="text-gray-700">根据最新测算，辰时方月度收入可达¥1,800,000，扣除各项成本后净利润为¥1,544,900，投资回报率达605.6%。即使考虑到市场波动，只要每月有3个成交客户，即可实现盈亏平衡。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-center py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="text-gray-400">2025 夸克科技 智能营销一体化解决方案商</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动端菜单
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+
+        // 盈亏平衡图表
+        window.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('breakevenChart').getContext('2d');
+            const breakevenChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['0', '5', '10', '15', '20', '25', '30'],
+                    datasets: [
+                        {
+                            label: '固定成本',
+                            data: [255100, 255100, 255100, 255100, 255100, 255100, 255100],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            borderWidth: 2,
+                            tension: 0,
+                            fill: false
+                        },
+                        {
+                            label: '累计收入',
+                            data: [0, 100000, 200000, 300000, 400000, 500000, 600000],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += '¥' + context.parsed.y.toLocaleString();
+                                    return label;
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    xMin: 3,
+                                xMax: 3,
+                                    borderColor: 'rgb(255, 99, 132)',
+                                    borderWidth: 2,
+                                    borderDash: [5, 5],
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '成交人数'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '金额 (元)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return '¥' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        // 滚动动画
+        window.addEventListener('scroll', function() {
+            const elements = document.querySelectorAll('.card-hover');
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (elementPosition < windowHeight - 100) {
+                    element.style.opacity = '1';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

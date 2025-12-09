@@ -1,0 +1,13 @@
+{
+  "name": "venezuela-cosmetic-trade",
+  "version": "1.0.0",
+  "description": "委内瑞拉化妆品贸易项目方案网站",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "netlify deploy --prod"
+  },
+  "keywords": ["venezuela", "cosmetics", "trade", "scaas"],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>赫联牛仔 - 新塘产业带升级标杆・国际趋势落地平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  
+  <!-- Tailwind 配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A', // 深蓝主色调
+            secondary: '#3B82F6', // 亮蓝辅助色
+            accent: '#F97316', // 橙色强调色
+            neutral: '#F3F4F6', // 浅灰背景
+            dark: '#1F2937', // 深色文本
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      .section-fade {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .section-fade.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-sans text-dark">
+  <!-- 导航栏 -->
+  <header class="sticky top-0 z-50 bg-white shadow-md transition-all duration-300" id="navbar">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+          <i class="fa fa-jeans text-primary text-3xl mr-3"></i>
+          <span class="text-xl font-bold text-primary">赫联牛仔</span>
+        </div>
+        
+        <!-- 桌面导航 -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#overview" class="text-gray-700 hover:text-primary transition-colors">品牌概览</a>
+          <a href="#customer" class="text-gray-700 hover:text-primary transition-colors">客群分析</a>
+          <a href="#content" class="text-gray-700 hover:text-primary transition-colors">内容策略</a>
+          <a href="#pinned" class="text-gray-700 hover:text-primary transition-colors">置顶笔记</a>
+          <a href="#interaction" class="text-gray-700 hover:text-primary transition-colors">互动引流</a>
+          <a href="#data" class="text-gray-700 hover:text-primary transition-colors">数据指标</a>
+        </nav>
+        
+        <!-- 移动端菜单按钮 -->
+        <button class="md:hidden text-gray-700 focus:outline-none" id="menuBtn">
+          <i class="fa fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div class="md:hidden hidden bg-white shadow-lg absolute w-full" id="mobileMenu">
+      <div class="container mx-auto px-4 py-3 space-y-3">
+        <a href="#overview" class="block text-gray-700 hover:text-primary transition-colors py-2">品牌概览</a>
+        <a href="#customer" class="block text-gray-700 hover:text-primary transition-colors py-2">客群分析</a>
+        <a href="#content" class="block text-gray-700 hover:text-primary transition-colors py-2">内容策略</a>
+        <a href="#pinned" class="block text-gray-700 hover:text-primary transition-colors py-2">置顶笔记</a>
+        <a href="#interaction" class="block text-gray-700 hover:text-primary transition-colors py-2">互动引流</a>
+        <a href="#data" class="block text-gray-700 hover:text-primary transition-colors py-2">数据指标</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 英雄区域 -->
+  <section class="bg-gradient-to-r from-primary to-secondary text-white py-16 md:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-shadow">
+          从WGSN趋势到新塘制造
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 opacity-90">
+          赫联让三类客群：档口老板少压货、线上卖家稳直播、品牌商出爆品
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <a href="#content" class="bg-white text-primary font-medium px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all">
+            查看内容策略
+          </a>
+          <a href="#interaction" class="bg-transparent border-2 border-white text-white font-medium px-6 py-3 rounded-lg hover:bg-white/10 transition-all">
+            了解互动引流
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 品牌概览 -->
+  <section id="overview" class="py-16 bg-white section-fade">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold mb-4">品牌概览</h2>
+        <p class="text-gray-600 max-w-3xl mx-auto">新塘产业带升级标杆・国际趋势落地平台 —— 创始人全球秀场采风 + 广州展厅可视化 + 全链品控的精品牛仔设计加工服务商</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-neutral p-6 rounded-lg card-hover">
+          <div class="text-primary text-4xl mb-4">
+            <i class="fa fa-trophy"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">趋势超前</h3>
+          <p class="text-gray-600">比产业带早30天锁定秀场元素，WGSN趋势实时落地，让您的产品走在市场前列</p>
+        </div>
+        
+        <div class="bg-neutral p-6 rounded-lg card-hover">
+          <div class="text-primary text-4xl mb-4">
+            <i class="fa fa-eye"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">品控可视</h3>
+          <p class="text-gray-600">展厅陈列自动化设备与检测数据，全链路品控体系，提供品质检测报告</p>
+        </div>
+        
+        <div class="bg-neutral p-6 rounded-lg card-hover">
+          <div class="text-primary text-4xl mb-4">
+            <i class="fa fa-sliders"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">适配性强</h3>
+          <p class="text-gray-600">分客群定制起订量与交付周期，100件起订，3天补货，满足不同客户需求</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 客群分析 -->
+  <section id="customer" class="py-16 bg-neutral section-fade">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold mb-4">精准客群深度剖析</h2>
+        <p class="text-gray-600 max-w-3xl mx-auto">针对三大核心客群的痛点，提供展厅+品控+国际灵感的差异化解决方案</p>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- 批发市场一档老板 -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-2xl font-semibold mb-4 text-primary">批发市场一档老板</h3>
+          <div class="mb-4">
+            <h4 class="font-medium text-lg mb-2">核心痛点：</h4>
+            <ul class="list-disc list-inside text-gray-600 space-y-1">
+              <li>档口租金高（十三行一档月租5万+）</li>
+              <li>库存积压风险大</li>
+              <li>爆款同质化严重，不敢试新</li>
+            </ul>
+          </div>
+          <div class="mb-4">
+            <h4 class="font-medium text-lg mb-2">价值契合点：</h4>
+            <ul class="list-disc list-inside text-gray-600 space-y-1">
+              <li>秀场灵感爆款→降低试错成本</li>
+              <li>展厅现货区→当天拿样，3天补货</li>
+              <li>留样品控→补货一致性保障</li>
+            </ul>
+          </div>
+          <div class="bg-primary/5 p-3 rounded">
+            <h4 class="font-medium mb-1">差异化优势：</h4>
+            <p class="text-gray-700 text-sm">普通工厂1000件起订，赫联100件起+展厅留样对比，且提供"爆款滞销换款"保障（限首单）</p>
+          </div>
+        </div>
+        
+        <!-- 中型线上零售商 -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-2xl font-semibold mb-4 text-primary">中型线上零售商</h3>
+          <div class="mb-4">
+            <h4 class="font-medium text-lg mb-2">核心痛点：</h4>
+            <ul class="list-disc list-inside text-gray-600 space-y-1">
+              <li>单场直播需5-8个新款，趋势响应慢</li>
+              <li>月销千件级，小批量品控不稳定</li>
+              <li>需品质证明增强直播信任</li>
+            </ul>
+          </div>
+          <div class="mb-4">
+            <h4 class="font-medium text-lg mb-2">价值契合点：</h4>
+            <ul class="list-disc list-inside text-gray-600 space-y-1">
+              <li>每月同步巴黎/米兰趋势款→展厅直播选品</li>
+              <li>50件起订全检→附品控报告直播展示</li>
+              <li>售后溯源→降低退货率</li>
+            </ul>
+          </div>
+          <div class="bg-primary/5 p-3 rounded">
+            <h4 class="font-medium mb-1">差异化优势：</h4>
+            <p class="text-gray-700 text-sm">代工工厂无趋势储备，赫联提前1个月锁定秀场元素，展厅备趋势样品，直播选品后7天交付</p>
+          </div>
+        </div>
+        
+        <!-- 多派系中小品牌商 -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-2xl font-semibold mb-4 text-primary">多派系中小品牌商</h3>
+          <div class="mb-4">
+            <h4 class="font-medium text-lg mb-2">核心痛点：</h4>
+            <ul class="list-disc list-inside text-gray-600 space-y-1">
+              <li>【杭派】需简约质感对标轻奢</li>
+              <li>【粤派】需快反适配直播</li>
+              <li>【闽派】需耐磨耐洗</li>
+              <li>均缺国际风格落地能力</li>
+            </ul>
+          </div>
+          <div class="mb-4">
+            <h4 class="font-medium text-lg mb-2">价值契合点：</h4>
+            <ul class="list-disc list-inside text-gray-600 space-y-1">
+              <li>分派系展厅展区→秀场元素本土化改造</li>
+              <li>工艺区展示自动化设备→风格落地保障</li>
+              <li>定制检测报告→品质背书</li>
+            </ul>
+          </div>
+          <div class="bg-primary/5 p-3 rounded">
+            <h4 class="font-medium mb-1">差异化优势：</h4>
+            <p class="text-gray-700 text-sm">新塘工厂仅做加工，赫联提供"趋势解读→设计转化→展厅验证→品控交付"全链，粤派可享15天快反周期</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 核心内容策略 -->
+  <section id="content" class="py-16 bg-white section-fade">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold mb-4">聚焦"趋势落地+展厅验证+品控保障"的内容策略</h2>
+        <p class="text-gray-600 max-w-3xl mx-auto">打造有深度、有价值的内容，建立品牌专业形象和客户信任</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- 趋势落地实验室 -->
+        <div class="rounded-lg overflow-hidden shadow-md card-hover">
+          <div class="h-48 bg-gray-200 overflow-hidden">
+            <img src="https://picsum.photos/seed/trendlab/600/400" alt="趋势落地实验室" class="w-full h-full object-cover">
+          </div>
+          <div class="p-6">
+            <span class="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium mb-3">核心栏目</span>
+            <h3 class="text-xl font-semibold mb-3">趋势落地实验室</h3>
+            <p class="text-gray-600 mb-4">每周1期，以"创始人+趋势研究员"双视角，拆解国际风格转化全流程，用展厅实物证明落地能力</p>
+            <div class="bg-accent/5 p-3 rounded mb-4">
+              <p class="text-sm font-medium text-accent">案例：《WGSN预测的"科技质感牛仔"，我们在广州展厅做出来了！》</p>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fa fa-calendar mr-1"></i>
+              <span>每周一 10:00</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 分客群展厅定制日 -->
+        <div class="rounded-lg overflow-hidden shadow-md card-hover">
+          <div class="h-48 bg-gray-200 overflow-hidden">
+            <img src="https://picsum.photos/seed/showroom/600/400" alt="分客群展厅定制日" class="w-full h-full object-cover">
+          </div>
+          <div class="p-6">
+            <span class="inline-block bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium mb-3">核心栏目</span>
+            <h3 class="text-xl font-semibold mb-3">分客群展厅定制日</h3>
+            <p class="text-gray-600 mb-4">每月2期，按客群属性设计展厅探访主题，突出与市场需求的匹配度</p>
+            <div class="bg-accent/5 p-3 rounded mb-4">
+              <p class="text-sm font-medium text-accent">案例：《十三行一档老板亲测：赫联展厅3个"低库存神器"》</p>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fa fa-calendar mr-1"></i>
+              <span>每周四 14:00</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 品控对标实录 -->
+        <div class="rounded-lg overflow-hidden shadow-md card-hover">
+          <div class="h-48 bg-gray-200 overflow-hidden">
+            <img src="https://picsum.photos/seed/qualitycontrol/600/400" alt="品控对标实录" class="w-full h-full object-cover">
+          </div>
+          <div class="p-6">
+            <span class="inline-block bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-medium mb-3">核心栏目</span>
+            <h3 class="text-xl font-semibold mb-3">品控对标实录</h3>
+            <p class="text-gray-600 mb-4">每2周1期，对比赫联与新塘普通工厂的品控差异，用数据建立信任</p>
+            <div class="bg-accent/5 p-3 rounded mb-4">
+              <p class="text-sm font-medium text-accent">案例：《闽派品牌必看：这条牛仔裤，耐磨度是新塘平均水平的2倍》</p>
+            </div>
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fa fa-calendar mr-1"></i>
+              <span>每月末 20:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 品控全流程解密 - 详细版 -->
+  <section class="py-16 bg-neutral section-fade">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto">
+        <h3 class="text-2xl font-semibold mb-6 text-center">品控全流程解密</h3>
+        
+        <div class="space-y-8">
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="flex items-start">
+              <div class="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-4 shrink-0">
+                1
+              </div>
+              <div>
+                <h4 class="text-xl font-medium mb-2">面料入场检测</h4>
+                <p class="text-gray-600">检测色牢度、克重等关键指标，面料克重≥320g，确保品质基础，避免线上零售商售后褪色纠纷</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="flex items-start">
+              <div class="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-4 shrink-0">
+                2
+              </div>
+              <div>
+                <h4 class="text-xl font-medium mb-2">裁剪抽检</h4>
+                <p class="text-gray-600">每批次面料裁剪前进行抽检，确保面料质量符合标准，裁剪精度控制在±0.5cm以内</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="flex items-start">
+              <div class="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-4 shrink-0">
+                3
+              </div>
+              <div>
+                <h4 class="text-xl font-medium mb-2">生产中检</h4>
+                <p class="text-gray-600">生产过程中安排3次检验，每10件查走线，确保小批量产品也保持大牌品质标准</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="flex items-start">
+              <div class="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-4 shrink-0">
+                4
+              </div>
+              <div>
+                <h4 class="text-xl font-medium mb-2">水洗后检</h4>
+                <p class="text-gray-600">牛仔产品水洗后进行全检，测试缩水率≤2%，确保符合国家标准，避免售后纠纷</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="flex items-start">
+              <div class="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-4 shrink-0">
+                5
+              </div>
+              <div>
+                <h4 class="text-xl font-medium mb-2">成品全检</h4>
+                <p class="text-gray-600">成品入库前进行100%全检，每件都有编号，售后可追溯，确保品质一致性，耐磨测试达2000次无起球</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 置顶笔记策划 -->
+  <section id="pinned" class="py-16 bg-white section-fade">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold mb-4">置顶笔记策划</h2>
+        <p class="text-gray-600 max-w-3xl mx-auto">强化市场缺口认知，吸引目标客户关注</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- 第一篇置顶 -->
+        <div class="bg-neutral rounded-lg overflow-hidden card-hover">
+          <div class="p-6">
+            <div class="flex items-center mb-4">
+              <span class="bg-accent text-white px-3 py-1 rounded-full text-sm font-medium">置顶笔记 1</span>
+              <span class="ml-auto bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">互动率 45%</span>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">新塘转型期，赫联帮你解决3大生死问题</h3>
+            <p class="text-gray-600 mb-4">新塘30%工厂因无设计倒闭，档口库存积压超百万，线上卖家直播翻车率60%—— 赫联用'趋势+展厅+品控'破局</p>
+            
+            <div class="space-y-3 mb-4">
+              <div class="bg-white p-3 rounded">
+                <h4 class="font-medium mb-1">分客群解决方案：</h4>
+                <ul class="list-disc list-inside text-gray-600 text-sm space-y-1">
+                  <li>【档口老板】：每月2个秀场爆款→展厅现货100件起拿→补货3天达</li>
+                  <li>【线上卖家】：WGSN趋势提前锁定→展厅直播选款→7天交付带品控报告</li>
+                  <li>【品牌商】：分派系趋势改造→展厅工艺验证→定制检测报告</li>
+                </ul>
+              </div>
+              
+              <div class="bg-white p-3 rounded">
+                <h4 class="font-medium mb-1">行动引导：</h4>
+                <p class="text-gray-600 text-sm">私信【救局】领《2025牛仔趋势落地手册》，档口老板额外享'滞销换款'保障，限前50名</p>
+              </div>
+            </div>
+            
+            <div class="bg-primary/5 p-4 rounded-lg">
+              <p class="text-sm text-gray-700">
+                <i class="fa fa-quote-left text-primary mr-2"></i>
+                我们不只是生产牛仔服装，更是在传递一种生活态度和时尚理念
+                <i class="fa fa-quote-right text-primary ml-2"></i>
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 第二篇置顶 -->
+        <div class="bg-neutral rounded-lg overflow-hidden card-hover">
+          <div class="p-6">
+            <div class="flex items-center mb-4">
+              <span class="bg-accent text-white px-3 py-1 rounded-full text-sm font-medium">置顶笔记 2</span>
+              <span class="ml-auto bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">互动率 52%</span>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">4步搞定"从灵感到成品"：赫联让你看得见、放心选</h3>
+            <p class="text-gray-600 mb-4">找工厂怕"看不见、不放心"？赫联用4步，让你从灵感选款到成品收货，全程透明</p>
+            
+            <div class="space-y-3 mb-4">
+              <div class="bg-white p-3 rounded">
+                <h4 class="font-medium mb-1">全链路流程：</h4>
+                <ul class="list-disc list-inside text-gray-600 text-sm space-y-1">
+                  <li>选灵感：从创始人"国际秀场/旅行灵感库"选元素</li>
+                  <li>看样品：线下到广州展厅看实物样品</li>
+                  <li>定品控：明确品控标准，签订品控协议</li>
+                  <li>收成品：可查品控记录，对比展厅留样</li>
+                </ul>
+              </div>
+              
+              <div class="bg-white p-3 rounded">
+                <h4 class="font-medium mb-1">差异化保障：</h4>
+                <p class="text-gray-600 text-sm">"外贸工厂跳过'看样+品控'，代工工厂没有'灵感+展厅'—— 赫联4步，帮你避开80%的工厂坑"</p>
+              </div>
+            </div>
+            
+            <div class="bg-primary/5 p-4 rounded-lg">
+              <p class="text-sm text-gray-700">
+                <i class="fa fa-quote-left text-primary mr-2"></i>
+                我们的目标是让定制变得简单，让每个品牌都能拥有属于自己的独特牛仔产品
+                <i class="fa fa-quote-right text-primary ml-2"></i>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 互动引流 -->
+  <section id="interaction" class="py-16 bg-neutral section-fade">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold mb-4">互动与精准引流</h2>
+        <p class="text-gray-600 max-w-3xl mx-auto">围绕"展厅+品控"深化信任，吸引目标客户，提升品牌影响力</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- 趋势款盲测会 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md card-hover">
+          <div class="relative h-48 bg-gray-200">
+            <img src="https://picsum.photos/seed/blindtest/600/400" alt="趋势款盲测会" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-primary/40 flex items-center justify-center">
+              <div class="bg-white text-primary rounded-full w-16 h-16 flex items-center justify-center">
+                <i class="fa fa-play text-2xl"></i>
+              </div>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-3">趋势款盲测会</h3>
+            <p class="text-gray-600 mb-4">每月1场展厅直播（周六15:00），展示3款未标价格的趋势样品，让客群猜价并投票</p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center">
+                <i class="fa fa-check-circle text-primary mr-2"></i>
+                <span class="text-sm text-gray-600">赫联款+新塘普通款+国际大牌同款对比</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fa fa-check-circle text-primary mr-2"></i>
+                <span class="text-sm text-gray-600">揭晓时讲解"赫联款与大牌同工艺，价格仅1/3"</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fa fa-check-circle text-primary mr-2"></i>
+                <span class="text-sm text-gray-600">投票者可享首单8折</span>
+              </div>
+            </div>
+            <button class="w-full bg-primary text-white font-medium py-2 rounded-lg hover:bg-primary/90 transition-colors text-sm">
+              预约直播提醒
+            </button>
+          </div>
+        </div>
+        
+        <!-- 品控挑战赛 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md card-hover">
+          <div class="h-48 bg-gray-200">
+            <img src="https://picsum.photos/seed/challenge/600/400" alt="品控挑战赛" class="w-full h-full object-cover">
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-3">品控挑战赛</h3>
+            <p class="text-gray-600 mb-4">发起#新塘牛仔品控大比拼#话题，邀请客群邮寄现有供应商样品，赫联在展厅直播对比检测</p>
+            <div class="bg-accent/10 p-3 rounded-lg mb-4">
+              <p class="text-sm text-gray-700">参与奖励：输家可获"赫联免费打样+品控报告"服务</p>
+            </div>
+            <button class="w-full bg-accent text-white font-medium py-2 rounded-lg hover:bg-accent/90 transition-colors text-sm">
+              立即参与
+            </button>
+          </div>
+        </div>
+        
+        <!-- 私域引流钩子 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md card-hover">
+          <div class="h-48 bg-gray-200">
+            <img src="https://picsum.photos/seed/guide/600/400" alt="牛仔趋势指南" class="w-full h-full object-cover">
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-3">私域引流钩子</h3>
+            <p class="text-gray-600 mb-4">提供行业专属内容，吸引目标客户加入私域，建立长期沟通关系</p>
+            
+            <div class="space-y-3 mb-4">
+              <div class="bg-neutral p-3 rounded">
+                <h4 class="font-medium mb-1">档口老板：</h4>
+                <p class="text-sm text-gray-600">回复【档口】领《爆款选品避坑指南》+ 展厅现货清单</p>
+              </div>
+              <div class="bg-neutral p-3 rounded">
+                <h4 class="font-medium mb-1">线上卖家：</h4>
+                <p class="text-sm text-gray-600">回复【直播】领《趋势款直播脚本》+ 展厅样品细节视频</p>
+              </div>
+              <div class="bg-neutral p-3 rounded">
+                <h4 class="font-medium mb-1">品牌商：</h4>
+                <p class="text-sm text-gray-600">回复【派系】领对应派系趋势解读+1v1工艺对接名额</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 数据指标 -->
+  <section id="data" class="py-16 bg-white section-fade">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold mb-4">数据优化指标</h2>
+        <p class="text-gray-600 max-w-3xl mx-auto">通过数据驱动，持续优化内容策略和运营效果</p>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <!-- 内容效果指标 -->
+        <div class="bg-neutral p-6 rounded-lg">
+          <h3 class="text-xl font-semibold mb-4">内容效果指标</h3>
+          <div class="h-64">
+            <canvas id="contentChart"></canvas>
+          </div>
+        </div>
+        
+        <!-- 转化指标 -->
+        <div class="bg-neutral p-6 rounded-lg">
+          <h3 class="text-xl font-semibold mb-4">转化指标</h3>
+          <div class="h-64">
+            <canvas id="conversionChart"></canvas>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 趋势落地效果 -->
+      <div class="bg-primary/5 p-6 rounded-lg mb-8">
+        <h3 class="text-xl font-semibold mb-6 text-center">趋势落地效果</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white p-4 rounded-lg text-center">
+            <div class="text-primary text-3xl font-bold mb-2">≥40%</div>
+            <p class="text-gray-600">趋势款样品申领率</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg text-center">
+            <div class="text-primary text-3xl font-bold mb-2">≥50%</div>
+            <p class="text-gray-600">展厅看样后下单率</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 客群适配度 -->
+      <div class="bg-secondary/5 p-6 rounded-lg mb-8">
+        <h3 class="text-xl font-semibold mb-6 text-center">客群适配度</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white p-4 rounded-lg text-center">
+            <div class="text-primary text-3xl font-bold mb-2">35%</div>
+            <p class="text-gray-600">档口老板咨询占比</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg text-center">
+            <div class="text-primary text-3xl font-bold mb-2">40%</div>
+            <p class="text-gray-600">线上卖家咨询占比</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg text-center">
+            <div class="text-primary text-3xl font-bold mb-2">25%</div>
+            <p class="text-gray-600">品牌商咨询占比</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 产业带差异化认知 -->
+      <div class="bg-accent/5 p-6 rounded-lg">
+        <h3 class="text-xl font-semibold mb-6 text-center">产业带差异化认知</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white p-4 rounded-lg text-center">
+            <div class="text-primary text-3xl font-bold mb-2">≥60%</div>
+            <p class="text-gray-600">"赫联 vs 新塘工厂"正向评论占比</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg text-center">
+            <div class="text-primary text-3xl font-bold mb-2">≥55%</div>
+            <p class="text-gray-600">因"有展厅/有品控"选择赫联的客户占比</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-primary text-white py-12">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center mb-4">
+            <i class="fa fa-jeans text-white text-3xl mr-3"></i>
+            <span class="text-xl font-bold">赫联牛仔</span>
+          </div>
+          <p class="text-white/80 mb-4">新塘产业带升级标杆・国际趋势落地平台 —— 创始人全球秀场采风 + 广州展厅可视化 + 全链品控的精品牛仔设计加工服务商</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-white/80 hover:text-white transition-colors">
+              <i class="fa fa-weixin text-xl"></i>
+            </a>
+            <a href="#" class="text-white/80 hover:text-white transition-colors">
+              <i class="fa fa-weibo text-xl"></i>
+            </a>
+            <a href="#" class="text-white/80 hover:text-white transition-colors">
+              <i class="fa fa-instagram text-xl"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-medium mb-4">快速链接</h4>
+          <ul class="space-y-2">
+            <li><a href="#overview" class="text-white/80 hover:text-white transition-colors">品牌概览</a></li>
+            <li><a href="#customer" class="text-white/80 hover:text-white transition-colors">客群分析</a></li>
+            <li><a href="#content" class="text-white/80 hover:text-white transition-colors">内容策略</a></li>
+            <li><a href="#pinned" class="text-white/80 hover:text-white transition-colors">置顶笔记</a></li>
+            <li><a href="#interaction" class="text-white/80 hover:text-white transition-colors">互动引流</a></li>
+            <li><a href="#data" class="text-white/80 hover:text-white transition-colors">数据指标</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-medium mb-4">联系我们</h4>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <i class="fa fa-map-marker mt-1 mr-3 text-white/80"></i>
+              <span class="text-white/80">广州市番禺区南村镇兴业大道东123号</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fa fa-phone mt-1 mr-3 text-white/80"></i>
+              <span class="text-white/80">400-XXX-XXXX</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fa fa-envelope mt-1 mr-3 text-white/80"></i>
+              <span class="text-white/80">contact@helian-jeans.com</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-medium mb-4">预约展厅</h4>
+          <p class="text-white/80 mb-4">
+            填写信息预约展厅参观，我们将尽快与您联系
+          </p>
+          <form class="space-y-3">
+            <input type="text" placeholder="您的姓名" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50">
+            <input type="tel" placeholder="联系电话" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50">
+            <input type="text" placeholder="客户类型" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50">
+            <button type="submit" class="w-full bg-white text-primary font-medium py-2 rounded-lg hover:bg-white/90 transition-colors">
+              提交预约
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('py-2', 'shadow-lg');
+        navbar.classList.remove('py-4', 'shadow-md');
+      } else {
+        navbar.classList.add('py-4', 'shadow-md');
+        navbar.classList.remove('py-2', 'shadow-lg');
+      }
+    });
+
+    // 移动端菜单
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // 移动端菜单点击后关闭
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // 滚动动画
+    const fadeElements = document.querySelectorAll('.section-fade');
+    
+    const fadeInObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          fadeInObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    fadeElements.forEach(element => {
+      fadeInObserver.observe(element);
+    });
+
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+  
+  <!-- 图表初始化 -->
+  <script>
+    // 确保Chart.js加载完成后再初始化图表
+    window.addEventListener('load', function() {
+      if (typeof Chart !== 'undefined') {
+        // 内容效果指标图表
+        const contentCtx = document.getElementById('contentChart').getContext('2d');
+        new Chart(contentCtx, {
+          type: 'bar',
+          data: {
+            labels: ['趋势落地实验室', '分客群展厅定制日', '品控对标实录', '创始人灵感溯源记', '客群痛点解决方案'],
+            datasets: [{
+              label: '平均互动率(%)',
+              data: [45, 48, 52, 38, 42],
+              backgroundColor: '#3B82F6',
+              borderRadius: 6
+            }, {
+              label: '平均转化率(%)',
+              data: [28, 32, 35, 22, 30],
+              backgroundColor: '#1E3A8A',
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: false
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 60
+              }
+            }
+          }
+        });
+
+        // 转化指标图表
+        const conversionCtx = document.getElementById('conversionChart').getContext('2d');
+        new Chart(conversionCtx, {
+          type: 'line',
+          data: {
+            labels: ['第1月', '第2月', '第3月', '第4月', '第5月', '第6月'],
+            datasets: [{
+              label: '趋势款样品申领数',
+              data: [25, 42, 58, 75, 88, 105],
+              borderColor: '#F97316',
+              backgroundColor: 'rgba(249, 115, 22, 0.1)',
+              tension: 0.3,
+              fill: true
+            }, {
+              label: '展厅看样后下单数',
+              data: [12, 20, 30, 40, 52, 65],
+              borderColor: '#1E3A8A',
+              backgroundColor: 'rgba(30, 58, 138, 0.1)',
+              tension: 0.3,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
