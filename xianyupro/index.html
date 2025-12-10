@@ -151,6 +151,66 @@
         .nav-links a:hover {
             color: var(--accent);
         }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1100;
+        }
+        
+        .mobile-menu-btn .bar {
+            height: 3px;
+            width: 100%;
+            background-color: var(--accent);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Mobile Menu Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                right: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: rgba(5, 5, 5, 0.95);
+                backdrop-filter: blur(10px);
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                padding: 40px 20px;
+                border-radius: 10px 0 0 10px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+                transition: right 0.3s ease-in-out;
+                z-index: 1050;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            /* Menu button animation */
+            .mobile-menu-btn.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .mobile-menu-btn.active .bar:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .mobile-menu-btn.active .bar:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+        }
 
         /* --- HERO SECTION --- */
         .hero {
@@ -446,6 +506,65 @@
         .trust-item h4 { color: var(--accent); margin-bottom: 5px; }
         .trust-item p { font-size: 14px; color: var(--text-muted); }
 
+        /* QR Code Modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-content img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .modal-content h3 {
+            color: #000;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .modal-content p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            cursor: pointer;
+        }
+        
+        .close:hover, .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .hero h1 { font-size: 40px; }
@@ -456,6 +575,10 @@
             .process-steps { gap: 10px; }
             .arrow-separator { display: none; }
             .footer-cta { padding: 40px 20px; }
+            .modal-content {
+                padding: 20px;
+                margin: 15% auto;
+            }
         }
     </style>
 </head>
@@ -469,7 +592,12 @@
                 <span style="color:#666">×</span>
                 <span>夸克智能</span>
             </div>
-            <div class="nav-links">
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <div class="nav-links" id="navLinks">
                 <a href="#market">市场机遇</a>
                 <a href="#platform">平台优势</a>
                 <a href="#case">成功案例</a>
@@ -552,18 +680,19 @@
                     <h3>什么是鱼小铺Pro？</h3>
                     <p class="text-muted">闲鱼官方推出的品牌存货流转解决方案。在不破坏正价体系的前提下，高效处理库存，同时获取新客。</p>
                     
+                    <h3>如何入驻</h3>
                     <div class="modes-grid">
                         <div class="mode-item">
-                            <h4 class="text-yellow">1. 推荐入驻</h4>
-                            <p style="font-size:13px; margin-top:5px; color:#aaa;">品牌自主经营，官方通道快速开通</p>
+                            <h4 class="text-yellow">推荐入驻</h4>
+                            <p style="font-size:13px; margin-top:5px; color:#aaa;">联系服务商，官方通道快速开通</p>
                         </div>
                         <div class="mode-item">
-                            <h4 class="text-yellow">2. 品牌授权</h4>
+                            <h4 class="text-yellow">品牌授权</h4>
                             <p style="font-size:13px; margin-top:5px; color:#aaa;">授权服务商分销，快速铺货</p>
                         </div>
                         <div class="mode-item" style="border-top-width: 4px;">
-                            <h4 class="text-yellow"><i class="fa-solid fa-truck"></i> 品牌自发货</h4>
-                            <p style="font-size:13px; margin-top:5px; color:#aaa;">订单直连WMS，把控物流品质（核心优势）</p>
+                            <h4 class="text-yellow">品牌自发货</h4>
+                            <p style="font-size:13px; margin-top:5px; color:#aaa;">订单直连ERP，把控物流品质</p>
                         </div>
                     </div>
                 </div>
@@ -721,14 +850,68 @@
                 </div>
 
                 <div style="margin-top: 50px;">
-                    <a href="#" class="btn btn-primary" style="padding: 15px 50px; font-size: 18px;">
+                    <a href="#" class="btn btn-primary" style="padding: 15px 50px; font-size: 18px;" id="contactBtn">
                         <i class="fa-solid fa-phone"></i> 联系商务对接
                     </a>
+                </div>
+                
+                <!-- QR Code Modal -->
+                <div id="wechatModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>GXF宫雪飞</h3>
+                        <p>山东 青岛</p>
+                        <img src="f3d785d9db96565527e7f70044b0e87d.jpg" alt="微信二维码">
+                        <p>扫一扫上面的二维码图案，加我为朋友。</p>
+                    </div>
                 </div>
             </div>
             <p class="text-center text-muted" style="margin-top: 40px; font-size: 12px;">© 2025 夸克智能 Quark Smart. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <script>
+        // QR Code Modal Script
+        var modal = document.getElementById("wechatModal");
+        var btn = document.getElementById("contactBtn");
+        var span = document.getElementsByClassName("close")[0];
+        
+        // When the user clicks the button, open the modal
+        btn.onclick = function(event) {
+            event.preventDefault();
+            modal.style.display = "block";
+        }
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        
+        // Mobile Menu Script
+        var mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        var navLinks = document.getElementById("navLinks");
+        
+        // Toggle mobile menu
+        mobileMenuBtn.onclick = function() {
+            navLinks.classList.toggle("active");
+            mobileMenuBtn.classList.toggle("active");
+        }
+        
+        // Close mobile menu when clicking on a nav link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+            });
+        });
+    </script>
 
 </body>
 </html>
