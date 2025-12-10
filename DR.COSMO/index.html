@@ -11,11 +11,11 @@
                 extend: {
                     colors: {
                         brand: {
-                            black: '#121212',
+                            black: '#363636',
                             gold: '#C5A028',
                             lightGold: '#F3E5AB',
                             gray: '#F5F5F7',
-                            darkGray: '#333333'
+                            darkGray: '#2C2C2C'
                         }
                     },
                     fontFamily: {
@@ -58,7 +58,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="bg-gray-100 text-gray-900 antialiased">
 
     <nav class="fixed top-0 w-full z-50 bg-brand-black text-white h-16 flex items-center justify-between px-6 shadow-lg">
         <div class="font-bold text-xl tracking-widest text-brand-gold">DR.COSMO <span class="text-xs text-gray-400 font-normal ml-2">抖音执行规划</span></div>
@@ -72,20 +72,21 @@
     </nav>
 
     <!-- Full Screen Hero Section -->
-    <section class="h-screen flex flex-col items-center justify-center bg-white relative overflow-hidden">
+    <section class="h-screen flex flex-col items-center justify-center bg-[url('https://cdn.imweb.me/thumbnail/20250923/50459f475b1e0.png')] bg-cover bg-center bg-no-repeat relative overflow-hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
         <div class="text-center z-10 max-w-3xl px-4">
             <!-- Logo -->
-            <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                <i class="fa-solid fa-chart-line text-2xl text-brand-gold"></i>
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 mx-auto">
+                <img src="https://cdn.imweb.me/thumbnail/20250114/56e7c17755ede.png" alt="DR.COSMO Logo" class="w-full h-full p-2">
             </div>
             <!-- Title -->
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-                <span class="text-brand-gold">DR.COSMO</span> <span class="text-gray-800">品牌抖音执行规划</span>
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-white whitespace-nowrap">
+                <span class="text-brand-gold">DR.COSMO</span> <span class="text-white">品牌抖音执行规划</span>
             </h1>
             <!-- Divider -->
             <div class="w-32 h-1 bg-brand-gold mx-auto mb-6"></div>
             <!-- Subtitle -->
-            <p class="text-lg md:text-xl text-gray-600 mb-10">
+            <p class="text-lg md:text-xl text-white bg-black bg-opacity-50 p-4 rounded-lg mb-10 max-w-2xl mx-auto">
                 全面剖析DR.COSMO品牌在抖音平台的市场机会、竞争策略与执行路径
             </p>
             <!-- CTA Button -->
@@ -96,7 +97,7 @@
         </div>
         <!-- Decorative Elements -->
         <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-            <i class="fa-solid fa-chevron-down text-gray-400 text-xl"></i>
+            <i class="fa-solid fa-chevron-down text-white text-xl"></i>
         </div>
     </section>
 
@@ -773,28 +774,19 @@
                                     <th class="p-2" colspan="2">抖音营销种草预算及占比</th>
                                     <th class="p-2">核心目的</th>
                                 </tr>
-                                <tr>
-                                    <th class="p-2"></th>
-                                    <th class="p-2"></th>
-                                    <th class="p-2"></th>
-                                    <th class="p-2">金额(万)</th>
-                                    <th class="p-2">占比</th>
-                                    <th class="p-2">金额(万)</th>
-                                    <th class="p-2">占比</th>
-                                    <th class="p-2"></th>
-                                </tr>
+
                             </thead>
                             <tbody class="divide-y">
                                 <tr><td>1-2月</td><td>认知种草期</td><td>100</td><td>80</td><td>80%</td><td>20</td><td>20%</td><td>建立产品认知，测试内容模型，累计初始用户</td></tr>
                                 <tr><td>3月</td><td>三八女神节+种草</td><td>100</td><td>40</td><td>40%</td><td>60</td><td>60%</td><td>达播启动，借助3.8节完成首波销售爆发</td></tr>
-                                <tr><td>4月</td><td>520</td><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td></td></tr>
-                                <tr><td>5月</td><td></td><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td>常销售稳定增长，520节点小爆发</td></tr>
+                                <tr><td rowspan="2">4-5月</td><td rowspan="2">520</td><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td rowspan="2">常销售稳定增长，520节点小爆发</td></tr>
+                                <tr><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td></td></tr>
                                 <tr><td>6月</td><td>618</td><td>110</td><td>40</td><td>36%</td><td>70</td><td>64%</td><td>年度首个大促爆发，冲击销量峰值</td></tr>
-                                <tr><td>7月</td><td>7夕</td><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td>日常销售优化，七夕节点营销</td></tr>
-                                <tr><td>8月</td><td></td><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td></td></tr>
-                                <tr><td>9月</td><td>D11</td><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td>年度最大爆发，完成全年目标</td></tr>
-                                <tr><td>10月</td><td></td><td>120</td><td>40</td><td>33%</td><td>80</td><td>67%</td><td></td></tr>
-                                <tr><td>11月</td><td></td><td>90</td><td>40</td><td>44%</td><td>50</td><td>56%</td><td></td></tr>
+                                <tr><td rowspan="2">7-8月</td><td rowspan="2">七夕</td><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td rowspan="2">日常销售优化，七夕节点营销</td></tr>
+                                <tr><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td></td></tr>
+                                <tr><td rowspan="3">9-11月</td><td rowspan="3">双11</td><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td rowspan="3">年度最大爆发，完成全年目标</td></tr>
+                                <tr><td>120</td><td>40</td><td>33%</td><td>80</td><td>67%</td><td></td></tr>
+                                <tr><td>90</td><td>40</td><td>44%</td><td>50</td><td>56%</td><td></td></tr>
                                 <tr><td>12月</td><td>D12&年终</td><td>80</td><td>40</td><td>50%</td><td>40</td><td>50%</td><td></td></tr>
                                 <tr class="bg-brand-gold text-white font-bold"><td>总计</td><td></td><td>1000</td><td>480</td><td>48%</td><td>520</td><td>52%</td><td></td></tr>
                             </tbody>
@@ -816,34 +808,22 @@
                                     <th class="p-2" colspan="2">达播目标</th>
                                     <th class="p-2">总费比</th>
                                     <th class="p-2">销售来源</th>
-                                    <th class="p-2">核心目的</th>
                                 </tr>
-                                <tr>
-                                    <th class="p-2"></th>
-                                    <th class="p-2"></th>
-                                    <th class="p-2"></th>
-                                    <th class="p-2">金额</th>
-                                    <th class="p-2">占比</th>
-                                    <th class="p-2">金额</th>
-                                    <th class="p-2">占比</th>
-                                    <th class="p-2"></th>
-                                    <th class="p-2"></th>
-                                    <th class="p-2"></th>
-                                </tr>
+
                             </thead>
                             <tbody class="divide-y">
-                                <tr><td>1-2月</td><td>认知种草期</td><td>0</td><td>#DIV/0!</td><td></td><td>#DIV/0!</td><td></td><td></td><td>KOC/KOL种草 + 商品卡</td><td>建立产品认知，测试内容模型，累计初始用户</td></tr>
-                                <tr><td>3月</td><td>三八女神节+种草</td><td>350</td><td>0</td><td>0%</td><td>350</td><td>100%</td><td>40%</td><td>达人爆发 + 承接</td><td>达播启动，借助3.8节完成首波销售爆发</td></tr>
-                                <tr><td>4月</td><td>520</td><td>200</td><td>0</td><td>0%</td><td>200</td><td>100%</td><td>40%</td><td>商品卡+ 达人节点</td><td></td></tr>
-                                <tr><td>5月</td><td></td><td>250</td><td>0</td><td>0%</td><td>250</td><td>100%</td><td>45%</td><td></td><td>常销售稳定增长，520节点小爆发</td></tr>
-                                <tr><td>6月</td><td>618</td><td>800</td><td>0</td><td>0%</td><td>800</td><td>100%</td><td>55%</td><td>达人爆发</td><td>年度首个大促爆发，冲击销量峰值</td></tr>
-                                <tr><td>7月</td><td>7夕</td><td>250</td><td>50</td><td>20%</td><td>200</td><td>80%</td><td>50%</td><td>自播日常 + 达人节点</td><td>日常销售优化，七夕节点营销</td></tr>
-                                <tr><td>8月</td><td></td><td>320</td><td>120</td><td>38%</td><td>200</td><td>63%</td><td>50%</td><td></td><td></td></tr>
-                                <tr><td>9月</td><td>D11</td><td>380</td><td>180</td><td>47%</td><td>200</td><td>53%</td><td>53%</td><td>全渠道集中爆发</td><td>年度最大爆发，完成全年目标</td></tr>
-                                <tr><td>10月</td><td></td><td>750</td><td>250</td><td>33%</td><td>500</td><td>67%</td><td>55%</td><td></td><td></td></tr>
-                                <tr><td>11月</td><td></td><td>1420</td><td>420</td><td>30%</td><td>1000</td><td>70%</td><td>57%</td><td></td><td></td></tr>
-                                <tr><td>12月</td><td>D12&年终</td><td>1100</td><td>300</td><td>27%</td><td>800</td><td>73%</td><td>51%</td><td>日常运营 + 老客复购</td><td></td></tr>
-                                <tr class="bg-brand-gold text-white font-bold"><td>总计</td><td></td><td>5820</td><td>1320</td><td>23%</td><td>4500</td><td>77%</td><td>50%</td><td></td><td>#DIV/0!</td></tr>
+                                <tr><td>1-2月</td><td>认知种草期</td><td>0</td><td>0</td><td></td><td>0</td><td></td><td></td><td>KOC/KOL种草 + 商品卡</td></tr>
+                                <tr><td>3月</td><td>三八女神节+种草</td><td>350</td><td>0</td><td>0%</td><td>350</td><td>100%</td><td>40%</td><td>达人爆发 + 承接</td></tr>
+                                <tr><td rowspan="2">4-5月</td><td rowspan="2">520</td><td>200</td><td>0</td><td>0%</td><td>200</td><td>100%</td><td>40%</td><td rowspan="2">商品卡+ 达人节点</td></tr>
+                                <tr><td>250</td><td>0</td><td>0%</td><td>250</td><td>100%</td><td>45%</td><td></td></tr>
+                                <tr><td>6月</td><td>618</td><td>800</td><td>0</td><td>0%</td><td>800</td><td>100%</td><td>55%</td><td>达人爆发</td></tr>
+                                <tr><td rowspan="2">7-8月</td><td rowspan="2">七夕</td><td>250</td><td>50</td><td>20%</td><td>200</td><td>80%</td><td>50%</td><td rowspan="2">自播日常 + 达人节点</td></tr>
+                                <tr><td>320</td><td>120</td><td>38%</td><td>200</td><td>63%</td><td>50%</td><td></td></tr>
+                                <tr><td rowspan="3">9-11月</td><td rowspan="3">双11</td><td>380</td><td>180</td><td>47%</td><td>200</td><td>53%</td><td>53%</td><td rowspan="3">全渠道集中爆发</td></tr>
+                                <tr><td>750</td><td>250</td><td>33%</td><td>500</td><td>67%</td><td>55%</td><td></td></tr>
+                                <tr><td>1420</td><td>420</td><td>30%</td><td>1000</td><td>70%</td><td>57%</td><td></td></tr>
+                                <tr><td>12月</td><td>D12&年终</td><td>1100</td><td>300</td><td>27%</td><td>800</td><td>73%</td><td>51%</td><td>日常运营 + 老客复购</td></tr>
+                                <tr class="bg-brand-gold text-white font-bold"><td>总计</td><td></td><td>5820</td><td>1320</td><td>23%</td><td>4500</td><td>77%</td><td>50%</td><td></td></tr>
                             </tbody>
                         </table>
                     </div>
