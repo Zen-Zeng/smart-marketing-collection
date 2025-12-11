@@ -401,7 +401,7 @@
 
                     <div class="bg-white/5 border border-white/10 rounded-lg p-4 cursor-pointer hover:bg-white/10 transition" onclick="toggleEpoch('c-content')">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-bold text-rose-100">C - Capital (资本杠杆)</h3>
+                            <h3 class="text-xl font-bold text-rose-100">C - Capital (资源杠杆)</h3>
                             <i class="fa-solid fa-chevron-down text-rose-300"></i>
                         </div>
                         <div id="c-content" class="hidden mt-3 text-rose-200 text-sm">
@@ -444,7 +444,7 @@
                     </div>
                     <div class="text-center border-l border-stone-200 pl-8 hidden md:block">
                         <div class="text-sm text-stone-500 uppercase tracking-wide">预估ROI</div>
-                        <div class="text-4xl font-bold text-stone-700 serif">1:4</div>
+                        <div class="text-4xl font-bold text-stone-700 serif">1:4<sup class="text-xs text-stone-500 ml-1">这部分ROI需要具体讨论细节</sup></div>
                     </div>
                 </div>
             </div>
@@ -591,28 +591,23 @@
                             <tr>
                                 <td class="px-6 py-4 font-medium text-stone-900">基础服务费</td>
                                 <td class="px-6 py-4 text-stone-600">固定费用 (按季预付)</td>
-                                <td class="px-6 py-4 text-stone-800 bg-stone-50/50">覆盖核心运营团队（项目经理/内容/直播）的基础人力成本</td>
+                                <td class="px-6 py-4 text-stone-800 bg-stone-50/50">分为两个阶段，非自播期15万每月，自播期20万每月</td>
                             </tr>
                             <tr>
                                 <td class="px-6 py-4 font-medium text-stone-900">销售佣金</td>
                                 <td class="px-6 py-4 text-stone-600">按月GMV阶梯结算</td>
                                 <td class="px-6 py-4 text-stone-800 bg-stone-50/50">
                                     设定8% - 15%的阶梯佣金：<br>
-                                    • < 100W: 8%<br>
-                                    • 100-300W: 10%<br>
-                                    • 300-800W: 12%<br>
-                                    • 800W+: 15%
+                                    • 起步阶梯 (GMV < 100W/月)：佣金 8%<br>
+                                    • 成长阶梯 (GMV 100W - 300W/月)：佣金 10%<br>
+                                    • 爆发阶梯 (GMV > 300W/月)：佣金 12%<br>
+                                    • 对赌激励：若季度GMV超额完成 120%，超出目标部分的佣金比例提升至 15%，作为团队年终奖金池
                                 </td>
                             </tr>
                             <tr>
-                                <td class="px-6 py-4 font-medium text-stone-900">投放资金</td>
-                                <td class="px-6 py-4 text-stone-600">品牌方独立承担</td>
-                                <td class="px-6 py-4 text-stone-800 bg-stone-50/50">双方共同设定ROI阈值（如1:2.5），数据透明，按实结算</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 font-medium text-stone-900">对赌机制</td>
-                                <td class="px-6 py-4 text-stone-600">超额完成奖励</td>
-                                <td class="px-6 py-4 text-stone-800 bg-stone-50/50">当GMV超过目标120%时，超出部分可额外获得5%的分成奖励</td>
+                                <td class="px-6 py-4 font-medium text-stone-900">财务透明</td>
+                                <td class="px-6 py-4 text-stone-600">第三方后台数据</td>
+                                <td class="px-6 py-4 text-stone-800 bg-stone-50/50">所有结算均提供第三方后台（抖音/小红书/天猫）真实数据报表，确保财务透明</td>
                             </tr>
                         </tbody>
                     </table>
@@ -681,7 +676,7 @@
                             </tr>
                             <tr>
                                 <td class="px-6 py-4 font-medium text-stone-900">内容生产</td>
-                                <td class="px-6 py-4 text-stone-600">脚本策划、剪辑制作、日更</td>
+                                <td class="px-6 py-4 text-stone-600">脚本策划、剪辑制作、更新</td>
                                 <td class="px-6 py-4 text-stone-800 bg-stone-50/50 font-medium">明星出镜拍摄、提供素材</td>
                             </tr>
                             <tr>
@@ -822,7 +817,7 @@
             new Chart(ctxBudget, {
                 type: 'doughnut',
                 data: {
-                    labels: ['营销推广 (流量/达人)', '产品成本 (备货/物流)', '团队与内容 (人力)'],
+                    labels: ['营销种草 (50%)', '产品推广 (30%)', '团队与内容 (20%)'],
                     datasets: [{
                         data: [50, 30, 20], // %
                         backgroundColor: ['#e11d48', '#fb7185', '#fda4af'], // Rose palette
@@ -840,7 +835,15 @@
                                 label: function(context) {
                                     const value = context.raw;
                                     const amount = (value / 100) * 500; // Calc based on 500W total
-                                    return ` ${value}%: ${amount}万`;
+                                    let description = '';
+                                    if (context.dataIndex === 0) {
+                                        description = ' —— 核心用于小红书和抖音的达人种草';
+                                    } else if (context.dataIndex === 1) {
+                                        description = ' —— 商品卡、千川投流';
+                                    } else if (context.dataIndex === 2) {
+                                        description = ' —— 人力、直播间搭建、素材制作';
+                                    }
+                                    return ` ${value}%: ${amount}万${description}`;
                                 }
                             }
                         }
@@ -853,7 +856,7 @@
             new Chart(ctxComm, {
                 type: 'bar',
                 data: {
-                    labels: ['起步 (<100W)', '成长 (100-300W)', '爆发 (300-800W)', '巅峰 (800W+)'],
+                    labels: ['起步阶梯 (GMV < 100W/月)', '成长阶梯 (GMV 100W - 300W/月)', '爆发阶梯 (GMV > 300W/月)', '对赌激励 (>120%目标)'],
                     datasets: [{
                         label: '分润比例 (Commission %)',
                         data: [8, 10, 12, 15],
@@ -881,7 +884,7 @@
                                 label: function(context) {
                                     let label = ` 佣金比例: ${context.raw}%`;
                                     if (context.dataIndex === 3) {
-                                        label += '\n 对赌激励: 额外5%分成';
+                                        label += '\n 对赌激励: 若季度GMV超额完成120%，超出目标部分的佣金比例提升至15%，作为团队年终奖金池';
                                     }
                                     return label;
                                 }
