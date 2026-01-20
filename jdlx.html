@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>灵稀 x 元易空间 - 数字化文化资产沉浸式生态方案</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s ease-in;
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .animate-bounce {
+            animation: bounce 1s infinite;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(-25%);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+            50% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // 自定义图标组件
+        const ArrowRight = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m9 18 6-6-6-6" />
+            </svg>
+        );
+
+        const ChevronDown = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m6 9 6 6 6-6" />
+            </svg>
+        );
+
+        const Shield = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+            </svg>
+        );
+
+        const Link = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+            </svg>
+        );
+
+        const ShoppingBag = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                <path d="M3 6h18" />
+                <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+        );
+
+        const CheckCircle = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+        );
+
+        const Box = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                <line x1="12" x2="12" y1="22.08" y2="12" />
+            </svg>
+        );
+
+        const Globe = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" x2="22" y1="12" y2="12" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            </svg>
+        );
+
+        const Zap = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+        );
+
+        const Award = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="8" r="7" />
+                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+            </svg>
+        );
+
+        const Cpu = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                <rect x="9" y="9" width="6" height="6" />
+                <line x1="9" x2="9.01" y1="1" y2="4" />
+                <line x1="15" x2="15.01" y1="1" y2="4" />
+                <line x1="9" x2="9.01" y1="20" y2="23" />
+                <line x1="15" x2="15.01" y1="20" y2="23" />
+                <line x1="20" x2="23" y1="9" y2="9.01" />
+                <line x1="20" x2="23" y1="14" y2="14.01" />
+                <line x1="1" x2="4" y1="9" y2="9.01" />
+                <line x1="1" x2="4" y1="14" y2="14.01" />
+            </svg>
+        );
+
+        const Gift = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="8" width="18" height="4" rx="1" />
+                <path d="M12 8v13" />
+                <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7" />
+                <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" />
+            </svg>
+        );
+
+        const Camera = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
+            </svg>
+        );
+
+        const TrendingUp = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                <polyline points="16 7 22 7 22 13" />
+            </svg>
+        );
+
+        const MapPin = ({ size = 24, color = 'currentColor' }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+            </svg>
+        );
+
+        const JD_RED = "#E1251B";
+
+        function ProposalPage() {
+            const [activeSection, setActiveSection] = useState('home');
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 50);
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const scrollTo = (id) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                    setActiveSection(id);
+                }
+            };
+
+            const SectionTitle = ({ children, subtitle }) => (
+                <div className="mb-12 text-center" data-aos="fade-up">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 relative inline-block">
+                        {children}
+                        <span className="absolute bottom-0 left-0 w-full h-1 bg-red-600 rounded-full transform scale-x-50 group-hover:scale-x-100 transition-transform"></span>
+                    </h2>
+                    {subtitle && <p className="text-gray-500 max-w-2xl mx-auto mt-4 text-lg">{subtitle}</p>}
+                </div>
+            );
+
+            return (
+                <div className="min-h-screen bg-white font-sans text-gray-800 selection:bg-red-100 selection:text-red-700">
+      
+      {/* Navigation */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg py-3' : 'bg-transparent py-6'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white ${scrolled ? 'bg-red-600' : 'bg-white text-red-600'}`}>
+              JD
+            </div>
+            <span className={`text-xl font-bold tracking-tight ${scrolled ? 'text-gray-900' : 'text-white'}`}>
+              灵稀 <span className="opacity-60">x</span> 元易空间
+            </span>
+          </div>
+          <div className="hidden md:flex gap-8">
+            {['核心优势', '生态架构', '合作规划', '预期价值'].map((item, idx) => {
+               const ids = ['advantage', 'ecosystem', 'roadmap', 'value'];
+               return (
+                <button 
+                  key={item}
+                  onClick={() => scrollTo(ids[idx])}
+                  className={`text-sm font-medium hover:text-red-500 transition-colors ${scrolled ? 'text-gray-600' : 'text-gray-200'}`}
+                >
+                  {item}
+                </button>
+               )
+            })}
+          </div>
+          <button className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${scrolled ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-white text-red-600 hover:bg-gray-100'}`}>
+            联系我们
+          </button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <header id="home" className="relative h-screen flex items-center justify-center overflow-hidden bg-slate-900 text-white">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-red-900/30 z-0"></div>
+        {/* Abstract Grid Background */}
+        <div className="absolute inset-0 opacity-10" 
+             style={{backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px'}}>
+        </div>
+        
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center space-y-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm text-sm text-red-200 mb-4 animate-fade-in-up">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            2026 年度战略汇报
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight">
+            数字化文化资产 <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-300">
+              沉浸式生态方案
+            </span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto font-light">
+            助力京东灵稀构建 <span className="font-semibold text-white">“数实融合 + 空间互联”</span> 新范式
+          </p>
+
+          <div className="flex flex-col md:flex-row justify-center gap-4 mt-8">
+            <button onClick={() => scrollTo('roadmap')} className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-lg transition-transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg shadow-red-900/50">
+              查看三步走战略 <ArrowRight size={20} />
+            </button>
+            <button onClick={() => scrollTo('advantage')} className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white rounded-lg font-bold text-lg transition-all">
+              了解核心优势
+            </button>
+          </div>
+        </div>
+
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/50">
+          <ChevronDown size={32} />
+        </div>
+      </header>
+
+      {/* Why Us Section */}
+      <section id="advantage" className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <SectionTitle subtitle="为什么我们是京东灵稀的“天然盟友”？">核心匹配度分析</SectionTitle>
+          
+          <div className="grid md:grid-cols-3 gap-8 mt-12">
+            {/* Card 1 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border-t-4 border-red-600 group">
+              <div className="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-600 transition-colors">
+                <Shield className="w-8 h-8 text-red-600 group-hover:text-white transition-colors" />
+              </div>
+              <h3 className="text-xl font-bold mb-4">价值观对齐：合规与正统</h3>
+              <ul className="space-y-3 text-gray-600">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                  <span><strong>官方背书：</strong> 背靠浙江文艺音像出版社（省属国企）。</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                  <span><strong>零风险运营：</strong> 清晰的版权链路，天然契合“去金融化”与正统文化标准。</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border-t-4 border-blue-600 group">
+              <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
+                <Link className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" />
+              </div>
+              <h3 className="text-xl font-bold mb-4">技术路线契合：拥抱智臻链</h3>
+              <ul className="space-y-3 text-gray-600">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                  <span><strong>技术一致性：</strong> 承诺核心IP资产在京东<strong>智臻链</strong>上铸造发行。</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                  <span><strong>成熟对接：</strong> 元音盒已具备成熟的技术适配能力，保障资产安全。</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border-t-4 border-purple-600 group">
+              <div className="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-600 transition-colors">
+                <ShoppingBag className="w-8 h-8 text-purple-600 group-hover:text-white transition-colors" />
+              </div>
+              <h3 className="text-xl font-bold mb-4">运营模式互补：极致虚实结合</h3>
+              <ul className="space-y-3 text-gray-600">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                  <span><strong>带动实物销售：</strong> 藏品直接绑定京东图书、文创或3C产品。</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                  <span><strong>线下核销：</strong> 景区门票/XR体验券与京东订单打通O2O闭环。</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Ecosystem Section */}
+      <section id="ecosystem" className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            <div className="lg:w-1/2">
+              <div className="inline-block px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-semibold mb-6">
+                我们的资源全景
+              </div>
+              <h2 className="text-4xl font-bold mb-6 text-gray-900">
+                “一体三翼” 生态架构
+              </h2>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                我们不仅仅是内容发行方，更是一个集资产管理、场景构建与商业变现于一体的综合生态体。
+              </p>
+              
+              <div className="space-y-6">
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center shrink-0">
+                    <Box className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-gray-900">元·音盒 (资产端)</h4>
+                    <p className="text-gray-500">负责IP确权与合规化，直接对接京东智臻链发行。</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                    <Globe className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-gray-900">元·空间 (场景端)</h4>
+                    <p className="text-gray-500">提供XR/VR技术，将平面藏品升级为3D展厅，<span className="text-blue-600 font-semibold">（差异化核心）</span>。</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center shrink-0">
+                    <Zap className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-gray-900">元·创汇 (权益端)</h4>
+                    <p className="text-gray-500">负责IP二创与实物生产，无缝对接京东商城供应链。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Visual Representation */}
+            <div className="lg:w-1/2 relative">
+               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-red-100 to-blue-100 rounded-full opacity-50 blur-3xl"></div>
+               <div className="relative bg-white border border-gray-100 shadow-2xl rounded-2xl p-8 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                  <div className="flex items-center justify-between mb-6 border-b border-gray-100 pb-4">
+                    <span className="font-bold text-gray-400">SUCCESS CASES</span>
+                    <div className="flex gap-1">
+                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="bg-slate-50 p-4 rounded-xl border-l-4 border-red-500">
+                      <h5 className="font-bold text-gray-800">2025 杭州马拉松</h5>
+                      <p className="text-sm text-gray-600 mt-1">联合吉利汽车发行“元音跑迹”。新华社、人民网报道，浏览量破百万。证明了操盘<strong>国家级赛事</strong>的能力。</p>
+                      <div className="mt-2 flex gap-2">
+                        <span className="text-xs bg-white border px-2 py-1 rounded">体育IP</span>
+                        <span className="text-xs bg-white border px-2 py-1 rounded">浏览量100W+</span>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-slate-50 p-4 rounded-xl border-l-4 border-blue-500">
+                      <h5 className="font-bold text-gray-800">文博数字化</h5>
+                      <p className="text-sm text-gray-600 mt-1">《清明上河图密码》、三星堆文物复刻。证明了<strong>高精度3D资产制作</strong>的行业领先地位。</p>
+                      <div className="mt-2 flex gap-2">
+                        <span className="text-xs bg-white border px-2 py-1 rounded">Web3D</span>
+                        <span className="text-xs bg-white border px-2 py-1 rounded">高精度复刻</span>
+                      </div>
+                    </div>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Roadmap Section */}
+      <section id="roadmap" className="py-24 bg-slate-900 text-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <SectionTitle subtitle="不局限于单次发行，而是分阶段推进生态共建">合作提案：三步走战略</SectionTitle>
+
+          <div className="mt-16 relative">
+            {/* Connecting Line - Optimized to go through centers */}
+            <div className="hidden lg:block absolute top-1/2 left-0 w-full h-1 bg-slate-700 transform -translate-y-1/2 z-0"></div>
+
+            <div className="grid lg:grid-cols-3 gap-8 relative z-10">
+              
+              {/* Step 1: 夯实内容 */}
+              <div className="bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-red-500 transition-colors group relative flex flex-col h-full">
+                <div className="absolute -top-4 left-6 bg-red-600 text-white text-sm font-bold py-1 px-4 rounded-full shadow-lg z-20">
+                  第一阶段
+                </div>
+                <div className="mt-6 mb-4">
+                   <div className="text-red-400 font-bold tracking-wider text-sm mb-1 uppercase">夯实内容</div>
+                   <h3 className="text-2xl font-bold text-white mb-2">S级国潮IP联合发行</h3>
+                </div>
+                <ul className="space-y-4 text-gray-300 flex-grow">
+                  <li className="flex gap-3 items-start">
+                    <Award className="w-5 h-5 text-red-500 shrink-0 mt-1" />
+                    <span className="text-sm">筛选浙江省馆藏级文物或非遗大师作品，在灵稀<strong>独家首发</strong>。</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <Cpu className="w-5 h-5 text-red-500 shrink-0 mt-1" />
+                    <span className="text-sm">基于<strong>京东智臻链</strong>确权，保障合规。</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <Gift className="w-5 h-5 text-red-500 shrink-0 mt-1" />
+                    <span className="text-sm"><strong>权益赋能：</strong>“藏品+N”，赠送京东自营《宋画全集》或线下特展门票。</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Step 2: 技术赋能 - Highlighted */}
+              <div className="bg-slate-800 p-8 rounded-2xl border-2 border-blue-500/50 hover:border-blue-500 transition-colors group relative flex flex-col h-full shadow-xl shadow-blue-900/20 lg:-mt-6 lg:mb-6">
+                 <div className="absolute -top-4 left-6 bg-blue-600 text-white text-sm font-bold py-1 px-4 rounded-full shadow-lg z-20">
+                  第二阶段
+                </div>
+                <div className="mt-6 mb-4">
+                  <div className="text-blue-400 font-bold tracking-wider text-sm mb-1 uppercase">技术赋能</div>
+                  <h3 className="text-2xl font-bold text-white mb-2">“灵稀·元空间”体验升级</h3>
+                </div>
+                <ul className="space-y-4 text-gray-300 flex-grow">
+                  <li className="flex gap-3 items-start">
+                    <Globe className="w-5 h-5 text-blue-500 shrink-0 mt-1" />
+                    <span className="text-sm">开发<strong>Web3D/VR专属展厅</strong>，解决“只能看不能玩”痛点。</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <Camera className="w-5 h-5 text-blue-500 shrink-0 mt-1" />
+                    <span className="text-sm">支持360°沉浸式把玩文物细节，以及<strong>AR投射合影</strong>功能。</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <TrendingUp className="w-5 h-5 text-blue-500 shrink-0 mt-1" />
+                    <span className="text-sm">极大地提升用户停留时长和社交分享率。</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Step 3: 生态闭环 */}
+              <div className="bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-purple-500 transition-colors group relative flex flex-col h-full">
+                 <div className="absolute -top-4 left-6 bg-purple-600 text-white text-sm font-bold py-1 px-4 rounded-full shadow-lg z-20">
+                  第三阶段
+                </div>
+                <div className="mt-6 mb-4">
+                  <div className="text-purple-400 font-bold tracking-wider text-sm mb-1 uppercase">生态闭环</div>
+                  <h3 className="text-2xl font-bold text-white mb-2">全域营销与大空间落地</h3>
+                </div>
+                <ul className="space-y-4 text-gray-300 flex-grow">
+                  <li className="flex gap-3 items-start">
+                    <MapPin className="w-5 h-5 text-purple-500 shrink-0 mt-1" />
+                    <span className="text-sm">打造<strong>“京东灵稀 x 元易空间”</strong>线下XR体验站（LBE）。</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <ShoppingBag className="w-5 h-5 text-purple-500 shrink-0 mt-1" />
+                    <span className="text-sm">结合<strong>双11/618</strong>或文旅节点，在京东MALL或景区落地。</span>
+                  </li>
+                  <li className="flex gap-3 items-start">
+                    <Gift className="w-5 h-5 text-purple-500 shrink-0 mt-1" />
+                    <span className="text-sm"><strong>O2O闭环：</strong>线上购票，线下体验，结束后领取京东实物大礼包。</span>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Value & ROI Section */}
+      <section id="value" className="py-24 bg-red-50">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <SectionTitle>预期收益 (ROI)</SectionTitle>
+          <div className="grid md:grid-cols-3 gap-8 mt-12">
+            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="text-4xl font-extrabold text-red-600 mb-2">1</div>
+              <h4 className="text-lg font-bold mb-2">丰富内容生态</h4>
+              <p className="text-gray-600 text-sm">引入高质量XR 3D内容，让灵稀在技术体验上领先竞品。</p>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="text-4xl font-extrabold text-red-600 mb-2">2</div>
+              <h4 className="text-lg font-bold mb-2">拉动实体 GMV</h4>
+              <p className="text-gray-600 text-sm">通过“虚实权益绑定”，直接促进京东图书、文创品类的销售。</p>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="text-4xl font-extrabold text-red-600 mb-2">3</div>
+              <h4 className="text-lg font-bold mb-2">品牌声量共振</h4>
+              <p className="text-gray-600 text-sm">借助国企背景与主流媒体资源，树立“文化数字化标杆”形象。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Footer */}
+      <footer className="bg-slate-900 text-white py-16">
+        <div className="max-w-4xl mx-auto text-center px-6">
+          <h2 className="text-3xl font-bold mb-6">共建可触碰、可体验的数字文化新世界</h2>
+          <p className="text-gray-400 mb-8 text-lg">
+            元易空间（元音盒）—— 您最懂技术的文化合伙人
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <button className="px-8 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition-colors shadow-lg shadow-red-900/40">
+              立即开启合作对接
+            </button>
+            <button className="px-8 py-3 bg-transparent border border-gray-600 hover:border-white rounded-lg font-medium transition-colors">
+              下载完整版 PDF
+            </button>
+          </div>
+          <p className="mt-12 text-gray-600 text-sm">
+            © 2026 元易空间 | 适配京东灵稀平台技术规范
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+        // 渲染组件到DOM
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ProposalPage />);
+    </script>
+</body>
+</html>

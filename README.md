@@ -21,6 +21,7 @@
 ├── helian.html                 # 赫联牛仔方案
 ├── xianxiaozhu.html            # 仙小主方案
 ├── xianyupro.html              # 仙域普方案
+├── QuarkAI.html                # 夸克智能全域资产增值方案
 └── zhongyaokafei.html          # 中药咖啡方案
 ```
 
@@ -32,6 +33,7 @@
 
 | 方案名称 | 访问链接 |
 |---------|---------|
+| 夸克智能全域资产增值方案 | [QuarkAI.html](https://zen-zeng.github.io/smart-marketing-collection/QuarkAI.html) |
 | DR.COSMO品牌抖音执行规划 | [DR.COSMO.html](https://zen-zeng.github.io/smart-marketing-collection/DR.COSMO.html) |
 | 滨江上市公司方案 | [binjiang-listed-company.html](https://zen-zeng.github.io/smart-marketing-collection/binjiang-listed-company.html) |
 | 品牌数字化方案 | [branding-digital.html](https://zen-zeng.github.io/smart-marketing-collection/branding-digital.html) |
