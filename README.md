@@ -44,6 +44,8 @@
 | 仙域普方案 | [xianyupro.html](https://zen-zeng.github.io/smart-marketing-collection/xianyupro.html) |
 | 中药咖啡方案 | [zhongyaokafei.html](https://zen-zeng.github.io/smart-marketing-collection/zhongyaokafei.html) |
 | OPC小龙虾方案 | [ai_pingce.html](https://zen-zeng.github.io/smart-marketing-collection/ai_pingce.html) |
+| 跨境医美出海方案 | [kuajingyimei.html](https://zen-zeng.github.io/smart-marketing-collection/kuajingyimei.html) |
+| 顺鑫农业商业方案 | [shunxin_agriculture.html](https://zen-zeng.github.io/smart-marketing-collection/shunxin_agriculture.html) |
 
 ## 部署说明
 
