@@ -43,6 +43,7 @@
 | 仙小主方案 | [xianxiaozhu.html](https://zen-zeng.github.io/smart-marketing-collection/xianxiaozhu.html) |
 | 仙域普方案 | [xianyupro.html](https://zen-zeng.github.io/smart-marketing-collection/xianyupro.html) |
 | 中药咖啡方案 | [zhongyaokafei.html](https://zen-zeng.github.io/smart-marketing-collection/zhongyaokafei.html) |
+| OPC小龙虾方案 | [ai_pingce.html](https://zen-zeng.github.io/smart-marketing-collection/ai_pingce.html) |
 
 ## 部署说明
 

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能评测 - OpenClaw 智能商业操作系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .agent-btn.active {
+            background-color: #0f766e;
+            color: white;
+            border-color: #0f766e;
+        }
+        .tab-btn.active {
+            border-bottom: 2px solid #0f766e;
+            color: #0f766e;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-teal-200 selection:text-teal-900">
+
+<!-- Chosen Palette: Slate Backgrounds (f8fafc), Slate Text (1e293b, 475569), Teal Accents (0f766e, 14b8a6) -->
+<!-- Application Structure Plan: The SPA uses a dashboard structure to present the OpenClaw execution plan. It prioritizes user understanding by breaking down the complex document into modular, interactive sections: 1. Executive Overview (Goals & Data), 2. Digital Workforce (Interactive Agent Profiles), 3. Automated SOPs (Tabbed Timelines for Core Processes), 4. Knowledge Base & Roadmap. This non-linear, exploratory structure allows users to grasp the high-level strategy before drilling down into specific operational tactics. -->
+<!-- Visualization & Content Choices: 
+  1. Overview -> Goal: Contextualize -> Method: Text & Doughnut Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: Quickly shows the balance of system operations. No SVG used.
+  2. Agent Matrix -> Goal: Organize/Inform -> Method: Interactive Grid & Detail Panel (HTML/JS) -> Interaction: Click to select agent and reveal specific tools/actions -> Justification: Makes dense role descriptions digestible. No SVG used.
+  3. SOPs -> Goal: Process Flow -> Method: Tabbed Vertical Timeline (HTML/Tailwind) -> Interaction: Click tabs to switch workflows -> Justification: Cleans up complex step-by-step logic into an easy-to-follow visual path. Unicode arrows used instead of SVGs.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🦞</span>
+                <span class="font-bold text-xl tracking-tight text-slate-800">AI智能评测 <span class="text-teal-600 font-normal">| OpenClaw OS</span></span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#overview" class="text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">全局目标</a>
+                <a href="#agents" class="text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">数字矩阵</a>
+                <a href="#sops" class="text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">核心工作流</a>
+                <a href="#roadmap" class="text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">演进路线</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+    <section id="overview" class="scroll-mt-20">
+        <div class="mb-6">
+            <h2 class="text-3xl font-bold text-slate-800">战略总览与资源调配</h2>
+            <p class="mt-2 text-slate-600 max-w-3xl leading-relaxed">本部分展示了 OPC 小龙虾项目的核心战略方向。通过引入 OpenClaw 智能体集群，系统旨在重构传统的“化妆品/食品测评”业务流。从短期的 B 端专业内容引流，到长期的 C 端 IP 变现，了解整体算力如何分布以支撑这些战略目标。</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="glass-card p-6 lg:col-span-2 flex flex-col justify-center">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-5 rounded-lg border border-slate-100">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xl">🎯</span>
+                            <h3 class="font-bold text-lg text-slate-800">短期目标 (TO B)</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-3">打造行业前沿信息、法规案例、配方拆解的专业人设。</p>
+                        <ul class="text-sm text-slate-700 space-y-2">
+                            <li class="flex items-start gap-2"><span>✦</span> 精准引流 B 端客户资源</li>
+                            <li class="flex items-start gap-2"><span>✦</span> 提升检测与科研服务成交率</li>
+                            <li class="flex items-start gap-2"><span>✦</span> 激活沉睡客户盘</li>
+                        </ul>
+                    </div>
+                    <div class="bg-teal-50 p-5 rounded-lg border border-teal-100">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xl">🚀</span>
+                            <h3 class="font-bold text-lg text-teal-900">长期目标 (TO C ➡ TO B)</h3>
+                        </div>
+                        <p class="text-sm text-teal-800 mb-3">依托 OPC 模式，实现数字资产与品牌资产的双重跨越。</p>
+                        <ul class="text-sm text-teal-900 space-y-2">
+                            <li class="flex items-start gap-2"><span>✦</span> 运营 IP 积累流量池</li>
+                            <li class="flex items-start gap-2"><span>✦</span> 探索带货等多元化变现模式</li>
+                            <li class="flex items-start gap-2"><span>✦</span> 形成行业头部声量壁垒</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card p-6 flex flex-col items-center">
+                <h3 class="font-bold text-slate-800 mb-4 text-center">系统算力分配预估</h3>
+                <div class="chart-container w-full flex-grow">
+                    <canvas id="workloadChart"></canvas>
+                </div>
+                <p class="text-xs text-slate-500 mt-4 text-center">基于各部门 SOP 频次与数据处理量测算</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="agents" class="scroll-mt-20">
+        <div class="mb-6">
+            <h2 class="text-3xl font-bold text-slate-800">组织架构重构：数字员工矩阵</h2>
+            <p class="mt-2 text-slate-600 max-w-3xl leading-relaxed">探索支撑整个商业操作系统的核心单元。四个基于 OpenClaw 的 Agent 分别接管内容创作、视频分发、私域营销与项目管理。点击下方各个数字员工卡片，深入了解它们的具体职责、核心能力及执行动作。</p>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <button onclick="selectAgent('c')" id="btn-agent-c" class="agent-btn active glass-card p-4 text-center transition-colors border-2 border-transparent">
+                <div class="text-3xl mb-2">📝</div>
+                <div class="font-bold text-slate-800 text-sm md:text-base">Agent-C</div>
+                <div class="text-xs text-slate-500 mt-1">内容创作与图文引擎</div>
+            </button>
+            <button onclick="selectAgent('v')" id="btn-agent-v" class="agent-btn glass-card p-4 text-center transition-colors border-2 border-transparent">
+                <div class="text-3xl mb-2">🎬</div>
+                <div class="font-bold text-slate-800 text-sm md:text-base">Agent-V</div>
+                <div class="text-xs text-slate-500 mt-1">视频流与数字人中控</div>
+            </button>
+            <button onclick="selectAgent('m')" id="btn-agent-m" class="agent-btn glass-card p-4 text-center transition-colors border-2 border-transparent">
+                <div class="text-3xl mb-2">💬</div>
+                <div class="font-bold text-slate-800 text-sm md:text-base">Agent-M</div>
+                <div class="text-xs text-slate-500 mt-1">全域私域营销管家</div>
+            </button>
+            <button onclick="selectAgent('p')" id="btn-agent-p" class="agent-btn glass-card p-4 text-center transition-colors border-2 border-transparent">
+                <div class="text-3xl mb-2">⚙️</div>
+                <div class="font-bold text-slate-800 text-sm md:text-base">Agent-P</div>
+                <div class="text-xs text-slate-500 mt-1">测评业务项目经理</div>
+            </button>
+        </div>
+
+        <div id="agent-detail-panel" class="glass-card p-6 border-l-4 border-teal-600">
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/3">
+                    <h3 id="detail-name" class="text-2xl font-bold text-slate-800 mb-2">Agent-C: 内容创作与图文引擎</h3>
+                    <div class="inline-block px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium mb-4" id="detail-dept">所属：内容创作部门</div>
+                    
+                    <div class="mb-4">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">阵地</div>
+                        <div id="detail-platform" class="text-sm font-medium text-slate-700">公众号、小红书</div>
+                    </div>
+                    
+                    <div>
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">核心能力</div>
+                        <div id="detail-skills" class="text-sm text-slate-700 leading-relaxed">浏览器自动化 (Browser Use)、长文本处理、API 绘图调用。</div>
+                    </div>
+                </div>
+                <div class="md:w-2/3">
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">核心执行动作</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="detail-actions">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sops" class="scroll-mt-20">
+        <div class="mb-6">
+            <h2 class="text-3xl font-bold text-slate-800">核心业务 SOP 自动化映射</h2>
+            <p class="mt-2 text-slate-600 max-w-3xl leading-relaxed">系统的核心在于将复杂流程转化为自动化脚本。本区域展示了业务中最重要的两个工作流：前端的获客引流与后端的测试履约。切换标签页以查看 OpenClaw 如何在各个节点介入并驱动业务运转。</p>
+        </div>
+
+        <div class="glass-card overflow-hidden">
+            <div class="flex border-b border-slate-200">
+                <button onclick="switchTab('traffic')" id="tab-traffic" class="tab-btn active flex-1 py-4 text-center text-sm font-medium hover:bg-slate-50 transition-colors">
+                    场景一：TO B 获客与内容引流 (每日触发)
+                </button>
+                <button onclick="switchTab('fulfillment')" id="tab-fulfillment" class="tab-btn flex-1 py-4 text-center text-sm font-medium text-slate-500 hover:bg-slate-50 transition-colors">
+                    场景二：综合测评业务履约 (事件触发)
+                </button>
+            </div>
+
+            <div class="p-6 bg-slate-50">
+                <div id="content-traffic" class="space-y-4">
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4 items-start md:items-center">
+                        <div class="bg-slate-100 text-slate-500 font-mono text-xs px-2 py-1 rounded">08:00 AM</div>
+                        <div class="flex-1">
+                            <span class="font-bold text-slate-800">触发器 (Trigger)</span>
+                            <p class="text-sm text-slate-600 mt-1">系统定时器准时启动引流工作流。</p>
+                        </div>
+                    </div>
+                    <div class="text-center text-slate-400">⬇</div>
+                    <div class="bg-white p-4 rounded-lg border border-teal-200 shadow-sm flex flex-col md:flex-row gap-4 items-start md:items-center border-l-4 border-l-teal-500">
+                        <div class="bg-teal-50 text-teal-700 font-bold text-xs px-2 py-1 rounded">Agent-C</div>
+                        <div class="flex-1">
+                            <span class="font-bold text-slate-800">全网热点捕获</span>
+                            <p class="text-sm text-slate-600 mt-1">访问药监局官网、行业媒体，提取“功效宣称备案”、“新原料动态”等关键词资讯。</p>
+                        </div>
+                    </div>
+                    <div class="text-center text-slate-400">⬇</div>
+                    <div class="bg-white p-4 rounded-lg border border-teal-200 shadow-sm flex flex-col md:flex-row gap-4 items-start md:items-center border-l-4 border-l-teal-500">
+                        <div class="bg-teal-50 text-teal-700 font-bold text-xs px-2 py-1 rounded">Agent-C</div>
+                        <div class="flex-1">
+                            <span class="font-bold text-slate-800">图文内容生成</span>
+                            <p class="text-sm text-slate-600 mt-1">自动生成 1 篇深度公众号文章草稿；生成 3 篇小红书笔记草稿，并调用接口合成配套首图与配图。</p>
+                        </div>
+                    </div>
+                    <div class="text-center text-slate-400">⬇</div>
+                    <div class="bg-white p-4 rounded-lg border border-indigo-200 shadow-sm flex flex-col md:flex-row gap-4 items-start md:items-center border-l-4 border-l-indigo-500">
+                        <div class="bg-indigo-50 text-indigo-700 font-bold text-xs px-2 py-1 rounded">Agent-V</div>
+                        <div class="flex-1">
+                            <span class="font-bold text-slate-800">视频流转换</span>
+                            <p class="text-sm text-slate-600 mt-1">将上述专业资讯提炼为 3 分钟口播脚本，发送至数字人平台 API 生成批量口播视频。</p>
+                        </div>
+                    </div>
+                    <div class="text-center text-slate-400">⬇</div>
+                    <div class="bg-white p-4 rounded-lg border border-amber-200 shadow-sm flex flex-col md:flex-row gap-4 items-start md:items-center border-l-4 border-l-amber-500">
+                        <div class="bg-amber-50 text-amber-700 font-bold text-xs px-2 py-1 rounded">人类校验</div>
+                        <div class="flex-1">
+                            <span class="font-bold text-slate-800">审核与分发</span>
+                            <p class="text-sm text-slate-600 mt-1">通过企微/钉钉向主管发送一键审批链接。点击“通过”后，系统自动推送到对应社媒账号矩阵。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-fulfillment" class="hidden relative">
+                    <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-slate-200 transform md:-translate-x-1/2"></div>
+                    <div class="space-y-8 relative">
+                        <div class="flex flex-col md:flex-row items-center justify-between w-full">
+                            <div class="md:w-5/12 ml-10 md:ml-0 md:text-right md:pr-8 mb-4 md:mb-0">
+                                <h4 class="font-bold text-slate-800 text-lg">节点 1：客户需求与方案</h4>
+                                <p class="text-sm text-slate-600 mt-1">人工录入需求（如防晒 SPF 测试及斑马鱼毒性安全测试）。</p>
+                            </div>
+                            <div class="absolute left-0 md:left-1/2 w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-sm transform md:-translate-x-1/2 z-10 border-4 border-slate-50">1</div>
+                            <div class="md:w-5/12 ml-10 md:ml-0 md:pl-8">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 border-l-4 border-l-slate-800">
+                                    <div class="text-xs text-slate-500 mb-1 font-bold">Agent-P 介入</div>
+                                    <div class="text-sm text-slate-700">根据专属知识库，自动生成《定制化测试方案草案》及《报价单》，推送给商务确认。</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row items-center justify-between w-full">
+                            <div class="md:w-5/12 ml-10 md:ml-0 md:text-right md:pr-8 md:order-1 mb-4 md:mb-0">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 border-r-0 md:border-r-4 border-l-4 md:border-l-0 border-l-slate-800 md:border-r-slate-800">
+                                    <div class="text-xs text-slate-500 mb-1 font-bold">Agent-P 介入</div>
+                                    <div class="text-sm text-slate-700">自动发送《样品寄送指南及登记表》。物流接口识别签收后，系统状态流转至“样品已接收”。</div>
+                                </div>
+                            </div>
+                            <div class="absolute left-0 md:left-1/2 w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-sm transform md:-translate-x-1/2 z-10 border-4 border-slate-50 md:order-2">2</div>
+                            <div class="md:w-5/12 ml-10 md:ml-0 md:pl-8 md:order-3">
+                                <h4 class="font-bold text-slate-800 text-lg">节点 2：确定合作与样品</h4>
+                                <p class="text-sm text-slate-600 mt-1">人工确认合同签订流程完毕。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row items-center justify-between w-full">
+                            <div class="md:w-5/12 ml-10 md:ml-0 md:text-right md:pr-8 mb-4 md:mb-0">
+                                <h4 class="font-bold text-slate-800 text-lg">节点 3：安排测试与招募</h4>
+                                <p class="text-sm text-slate-600 mt-1">进入实验室排期阶段。</p>
+                            </div>
+                            <div class="absolute left-0 md:left-1/2 w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-sm transform md:-translate-x-1/2 z-10 border-4 border-slate-50">3</div>
+                            <div class="md:w-5/12 ml-10 md:ml-0 md:pl-8">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 border-l-4 border-l-slate-800">
+                                    <div class="text-xs text-slate-500 mb-1 font-bold">Agent-P 介入</div>
+                                    <div class="text-sm text-slate-700">接入实验室表格自动规划排期。涉及人体业务时，自动向私域池发送受试者招募问卷。</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row items-center justify-between w-full">
+                            <div class="md:w-5/12 ml-10 md:ml-0 md:text-right md:pr-8 md:order-1 mb-4 md:mb-0">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-200 border-r-0 md:border-r-4 border-l-4 md:border-l-0 border-l-slate-800 md:border-r-slate-800">
+                                    <div class="text-xs text-slate-500 mb-1 font-bold">Agent-P 介入</div>
+                                    <div class="text-sm text-slate-700">监测到原始数据出具后，生成《功效报告》初稿。交付后自动设置回访跟进日程。</div>
+                                </div>
+                            </div>
+                            <div class="absolute left-0 md:left-1/2 w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-sm transform md:-translate-x-1/2 z-10 border-4 border-slate-50 md:order-2">4</div>
+                            <div class="md:w-5/12 ml-10 md:ml-0 md:pl-8 md:order-3">
+                                <h4 class="font-bold text-slate-800 text-lg">节点 4：报告提交与运营</h4>
+                                <p class="text-sm text-slate-600 mt-1">交付报告及深度解读。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <section id="knowledge" class="scroll-mt-20">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">知识库与能力基座 (RAG)</h2>
+                <p class="mt-2 text-slate-600 text-sm leading-relaxed">Agent 的“智商”来源于其挂载的外部知识库。系统配置了三大核心数据库以确保输出内容的专业性与合规性。</p>
+            </div>
+            <div class="space-y-4">
+                <div class="glass-card p-5 border-l-4 border-rose-500">
+                    <h4 class="font-bold text-slate-800 flex items-center gap-2"><span>⚖️</span> 合规与法规库</h4>
+                    <p class="text-sm text-slate-600 mt-2">包含 NMPA 最新化妆品注册备案管理办法、功效宣称评价规范等。确保生成的文章和视频脚本绝对不触碰广告法红线。</p>
+                </div>
+                <div class="glass-card p-5 border-l-4 border-blue-500">
+                    <h4 class="font-bold text-slate-800 flex items-center gap-2"><span>🧪</span> 测试目录字典</h4>
+                    <p class="text-sm text-slate-600 mt-2">涵盖斑马鱼业务（起效浓度、安全添加量）及人体/体外业务（CMA/NMPA 认证的皮肤斑贴、保湿、抗皱等方法）。支撑 Agent-P 自动生成准确报价。</p>
+                </div>
+                <div class="glass-card p-5 border-l-4 border-amber-500">
+                    <h4 class="font-bold text-slate-800 flex items-center gap-2"><span>💎</span> 品牌资产库</h4>
+                    <p class="text-sm text-slate-600 mt-2">存储历史优秀的大单品传播文案、专家共创案例。让 Agent-C 能够模仿既有的人设口吻进行创作，保证 IP 调性一致。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="scroll-mt-20">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">项目演进路线图</h2>
+                <p class="mt-2 text-slate-600 text-sm leading-relaxed">商业操作系统的搭建并非一蹴而就。遵循循序渐进的原则，项目规划了三个阶段的演进路径，逐步实现业务流的全面接管。</p>
+            </div>
+            <div class="glass-card p-6">
+                <div class="relative pl-8 border-l-2 border-slate-200 space-y-8">
+                    <div class="relative">
+                        <div class="absolute -left-[41px] bg-teal-600 h-6 w-6 rounded-full border-4 border-white flex items-center justify-center"></div>
+                        <div class="text-xs font-bold text-teal-600 mb-1 tracking-wider uppercase">第 1 阶段 (第 1 个月)</div>
+                        <h4 class="text-lg font-bold text-slate-800">基建与流量启动</h4>
+                        <p class="text-sm text-slate-600 mt-1">重点部署 Agent-C 和 Agent-V。跑通从“寻找行业资讯”到“生成图文”和“数字人短视频”的自动化管线，验证引流模型。</p>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[41px] bg-slate-300 h-6 w-6 rounded-full border-4 border-white flex items-center justify-center"></div>
+                        <div class="text-xs font-bold text-slate-500 mb-1 tracking-wider uppercase">第 2 阶段 (第 2~3 个月)</div>
+                        <h4 class="text-lg font-bold text-slate-800">销售转化与履约接管</h4>
+                        <p class="text-sm text-slate-600 mt-1">上线 Agent-M 和 Agent-P。自动解答 B 端线索，将现有的测评表格接入系统，实现订单履约进度的自动跟进与预警。</p>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[41px] bg-slate-300 h-6 w-6 rounded-full border-4 border-white flex items-center justify-center"></div>
+                        <div class="text-xs font-bold text-slate-500 mb-1 tracking-wider uppercase">第 3 阶段 (第 4 个月+)</div>
+                        <h4 class="text-lg font-bold text-slate-800">数据复盘与全面接管</h4>
+                        <p class="text-sm text-slate-600 mt-1">完善运营复盘。系统月底自动汇总全网数据、排期饱和度，输出运营报告，为后续 TO C 带货及商业模式拓展提供数据支撑。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</main>
+
+<footer class="bg-slate-800 text-slate-400 py-8 text-center mt-12">
+    <div class="max-w-7xl mx-auto px-4 text-sm">
+        <p>OPC小龙虾 - 智能商业操作系统可视化终端</p>
+        <p class="mt-2 text-xs opacity-75">Data dynamically rendered based on Source Report constraints.</p>
+    </div>
+</footer>
+
+<script>
+    const agentData = {
+        'c': {
+            name: 'Agent-C: 内容创作与图文引擎',
+            dept: '内容创作部门',
+            platform: '公众号、小红书',
+            skills: '浏览器自动化 (Browser Use)、长文本处理、API 绘图调用。',
+            actions: [
+                { title: '每日巡检', desc: '检索国家药监局法规、热门成分、斑马鱼检测技术新突破。' },
+                { title: '文案生产', desc: '撰写深度长文(私域)和爆款笔记(公域获客)。' },
+                { title: '视觉配套', desc: '调用文生图 API 生成配套封面与内页图。' },
+                { title: '合规审核', desc: '提交至人工待办队列，确认后发布。' }
+            ]
+        },
+        'v': {
+            name: 'Agent-V: 视频流与数字人中控',
+            dept: '市场营销部门 / 内容创作部门',
+            platform: '视频号、抖音、小红书',
+            skills: '跨平台脚本调度、多模态视频平台接口对接。',
+            actions: [
+                { title: '脚本承接', desc: '接收热点文案，自动改写为口播短视频脚本。' },
+                { title: '批量生产', desc: '对接腾讯智影等平台，下发“数字人口播”任务。' },
+                { title: '多维演进', desc: '逐步介入文生视频、图生视频工作流。' }
+            ]
+        },
+        'm': {
+            name: 'Agent-M: 全域私域营销管家',
+            dept: '市场营销部门',
+            platform: '微信私域、各平台评论区/私信',
+            skills: '社交平台接口对接、意向识别、智能对话。',
+            actions: [
+                { title: '精准互动', desc: '监控发布的视频图文，AI 自动回复评论吸引粉丝。' },
+                { title: '线索清洗', desc: '在私信中解答检测项目提问，识别高意向 B 端客户。' },
+                { title: '客户打标', desc: '对高意向客户自动打标签并转移至销售通道。' }
+            ]
+        },
+        'p': {
+            name: 'Agent-P: 综合测评项目经理',
+            dept: '运营部门 & 综合测评业务流',
+            platform: '后台系统、微信、邮件',
+            skills: '电子表格操作、文档生成、日程与消息提醒。',
+            actions: [
+                { title: '工作流编排', desc: '负责其他 Agent 的月度目标拆解与进度追踪。' },
+                { title: '方案生成', desc: '根据客户需求自动生成定制化测试方案与报价单。' },
+                { title: '排期与招募', desc: '自动规划排期，向受试者私域池发送招募问卷。' },
+                { title: '报告交付', desc: '监测原始数据出具初稿，设置回访跟进提醒。' }
+            ]
+        }
+    };
+
+    function selectAgent(id) {
+        document.querySelectorAll('.agent-btn').forEach(btn => {
+            btn.classList.remove('active', 'border-teal-500', 'bg-teal-50');
+            btn.classList.add('border-transparent');
+            if(btn.id !== 'btn-agent-' + id) {
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+            }
+        });
+        
+        const activeBtn = document.getElementById('btn-agent-' + id);
+        activeBtn.classList.add('active');
+        activeBtn.classList.remove('border-transparent');
+        
+        const data = agentData[id];
+        document.getElementById('detail-name').innerText = data.name;
+        document.getElementById('detail-dept').innerText = '所属：' + data.dept;
+        document.getElementById('detail-platform').innerText = data.platform;
+        document.getElementById('detail-skills').innerText = data.skills;
+        
+        const actionsContainer = document.getElementById('detail-actions');
+        actionsContainer.innerHTML = '';
+        data.actions.forEach(action => {
+            actionsContainer.innerHTML += `
+                <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                    <div class="font-bold text-slate-800 text-sm mb-1">${action.title}</div>
+                    <div class="text-xs text-slate-600">${action.desc}</div>
+                </div>
+            `;
+        });
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active', 'text-slate-800', 'border-teal-600');
+            btn.classList.add('text-slate-500');
+        });
+        
+        const activeBtn = document.getElementById('tab-' + tabId);
+        activeBtn.classList.add('active');
+        activeBtn.classList.remove('text-slate-500');
+        activeBtn.style.color = '#0f766e';
+        
+        document.getElementById('content-traffic').classList.add('hidden');
+        document.getElementById('content-fulfillment').classList.add('hidden');
+        
+        document.getElementById('content-' + tabId).classList.remove('hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        selectAgent('c');
+
+        const ctx = document.getElementById('workloadChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Agent-C (内容创作)', 'Agent-V (视频生成)', 'Agent-P (履约统筹)', 'Agent-M (私域营销)'],
+                datasets: [{
+                    data: [35, 30, 20, 15],
+                    backgroundColor: [
+                        '#0f766e', 
+                        '#14b8a6', 
+                        '#64748b', 
+                        '#94a3b8'  
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { family: "'Noto Sans SC', sans-serif", size: 12 },
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ' ' + context.label + ': ' + context.parsed + '% 算力分配';
+                            }
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+    });
+</script>
+</body>
+</html>
