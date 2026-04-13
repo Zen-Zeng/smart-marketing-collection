@@ -1,0 +1,30 @@
+# EditorConfig — 统一所有编辑器/IDE 的代码风格
+# 参考: https://editorconfig.org
+
+root = true
+
+# ---- 全局默认 ----
+[*]
+charset                  = utf-8
+end_of_line              = lf
+indent_style             = space
+indent_size              = 4
+trim_trailing_whitespace = true
+insert_final_newline     = true
+
+# ---- HTML / CSS / JS ----
+[*.{html,css,js}]
+indent_size = 4
+
+# ---- Markdown（保留行尾两个空格表示换行）----
+[*.md]
+trim_trailing_whitespace = false
+indent_size              = 2
+
+# ---- YAML（GitHub Actions workflow）----
+[*.{yml,yaml}]
+indent_size = 2
+
+# ---- JSON ----
+[*.json]
+indent_size = 2
