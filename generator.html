@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI方案大师——输入客户需求，自动生成专业营销方案及可部署的HTML页面">
+    <title>AI方案大师 | 智能营销方案集合</title>
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { primary: '#6366f1', dark: '#4338ca', light: '#e0e7ff' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .form-input {
+            width: 100%; border: 1px solid #e2e8f0; border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem; font-size: 0.875rem; color: #1e293b;
+            background: #fff; transition: border-color 0.2s;
+        }
+        .form-input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+        .form-input.error { border-color: #ef4444; }
+        .form-label { display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.375rem; }
+        .form-label .required { color: #ef4444; margin-left: 2px; }
+        .checkbox-item { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+        .checkbox-item input[type=checkbox] { width: 1rem; height: 1rem; accent-color: #6366f1; cursor: pointer; }
+        .tab-btn { padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500; border-bottom: 2px solid transparent; color: #64748b; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .tab-btn.active { border-bottom-color: #6366f1; color: #6366f1; }
+        .tab-btn:hover:not(.active) { color: #334155; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        #proposal-text { white-space: pre-wrap; font-size: 0.875rem; line-height: 1.7; color: #334155; }
+        #proposal-html { white-space: pre; overflow-x: auto; font-size: 0.75rem; line-height: 1.6; font-family: 'Menlo', 'Monaco', monospace; color: #1e293b; }
+        .progress-bar { height: 3px; background: #e2e8f0; border-radius: 9999px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; border-radius: 9999px; background: linear-gradient(90deg, #6366f1, #8b5cf6); transition: width 0.3s; animation: indeterminate 1.5s ease-in-out infinite; }
+        @keyframes indeterminate { 0%{width:0%;margin-left:0} 50%{width:60%;margin-left:20%} 100%{width:0%;margin-left:100%} }
+        .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; padding: 0.75rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.12); transform: translateY(100px); opacity: 0; transition: all 0.3s; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .toast.error   { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        .toast.info    { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+        .phase-badge { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+        .phase-badge.running { background: #ede9fe; color: #5b21b6; }
+        .phase-badge.done    { background: #dcfce7; color: #15803d; }
+        .phase-badge.idle    { background: #f1f5f9; color: #64748b; }
+        #preview-frame { width: 100%; height: 560px; border: none; border-radius: 0.5rem; background: #fff; }
+        nav.scrolled { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+        .modal-overlay.hidden { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+<a href="#main" class="skip-link">跳转到主内容</a>
+
+<!-- ===== 导航栏 ===== -->
+<nav class="sticky top-0 z-50 bg-white border-b border-slate-200 transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
+                <i class="fa-solid fa-wand-magic-sparkles text-white text-sm"></i>
+            </div>
+            <span class="font-bold text-base text-slate-900">AI 方案大师</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="text-sm text-slate-500 hover:text-slate-800 transition-colors hidden sm:flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-left text-xs"></i>返回首页
+            </a>
+            <button id="btn-settings" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors" title="API 设置">
+                <i class="fa-solid fa-gear text-slate-600 text-sm"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== 设置模态框 ===== -->
+<div id="modal-settings" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="API 设置">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-lg font-bold text-slate-900">API 设置</h2>
+            <button id="btn-close-settings" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-slate-600"></i>
+            </button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="form-label" for="input-api-key">
+                    Anthropic API Key <span class="required">*</span>
+                </label>
+                <div class="relative">
+                    <input type="password" id="input-api-key" class="form-input pr-10" placeholder="sk-ant-api03-...">
+                    <button id="btn-toggle-key" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-eye text-sm"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-slate-400 mt-1.5">
+                    <i class="fa-solid fa-lock text-xs mr-1"></i>
+                    Key 仅存储在浏览器本地，直接发送给 Anthropic，不经过任何中间服务器
+                </p>
+            </div>
+            <div>
+                <label class="form-label" for="select-model">生成模型</label>
+                <select id="select-model" class="form-input">
+                    <option value="claude-sonnet-4-6">claude-sonnet-4-6（推荐，速度快）</option>
+                    <option value="claude-opus-4-7">claude-opus-4-7（最高质量，较慢）</option>
+                </select>
+            </div>
+        </div>
+        <div class="flex gap-3 mt-6">
+            <button id="btn-save-settings" class="flex-1 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-500 transition-colors">
+                保存
+            </button>
+            <button id="btn-cancel-settings" class="flex-1 py-2 bg-slate-100 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-200 transition-colors">
+                取消
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Hero ===== -->
+<section class="bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 text-white py-12 px-4">
+    <div class="max-w-7xl mx-auto text-center">
+        <h1 class="text-3xl md:text-4xl font-black mb-3">AI 方案大师</h1>
+        <p class="text-indigo-100 max-w-xl mx-auto mb-8 text-sm md:text-base">输入客户需求，AI 自动完成策略撰写与 HTML 生成，一键下载即可部署</p>
+        <div class="grid grid-cols-3 gap-4 max-w-lg mx-auto">
+            <div class="bg-white/10 rounded-xl p-3 text-center">
+                <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                    <i class="fa-solid fa-pen-to-square text-white text-sm"></i>
+                </div>
+                <p class="text-xs font-semibold text-white">① 填写需求</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-3 text-center">
+                <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                    <i class="fa-solid fa-robot text-white text-sm"></i>
+                </div>
+                <p class="text-xs font-semibold text-white">② AI 生成</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-3 text-center">
+                <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                    <i class="fa-solid fa-download text-white text-sm"></i>
+                </div>
+                <p class="text-xs font-semibold text-white">③ 下载部署</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 主内容区 ===== -->
+<main id="main" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+        <!-- ── 左侧：表单 ── -->
+        <aside class="lg:col-span-2">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sticky top-20">
+                <h2 class="text-base font-bold text-slate-900 mb-5 flex items-center gap-2">
+                    <span class="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-md flex items-center justify-center text-xs font-bold">1</span>
+                    填写项目需求
+                </h2>
+                <form id="proposal-form" class="space-y-4" novalidate>
+
+                    <!-- 品牌名称 -->
+                    <div>
+                        <label class="form-label" for="f-brand">品牌 / 客户名称<span class="required">*</span></label>
+                        <input type="text" id="f-brand" class="form-input" placeholder="例：夸克智能">
+                        <p class="error-msg text-xs text-red-500 mt-1 hidden">请填写品牌名称</p>
+                    </div>
+
+                    <!-- 行业 -->
+                    <div>
+                        <label class="form-label" for="f-industry">所属行业<span class="required">*</span></label>
+                        <select id="f-industry" class="form-input">
+                            <option value="">请选择</option>
+                            <option>美妆护肤</option>
+                            <option>医疗健康</option>
+                            <option>食品饮品</option>
+                            <option>服装配饰</option>
+                            <option>跨境电商</option>
+                            <option>科技产品</option>
+                            <option>农业食品</option>
+                            <option>文化娱乐</option>
+                            <option>其他</option>
+                        </select>
+                        <p class="error-msg text-xs text-red-500 mt-1 hidden">请选择行业</p>
+                    </div>
+
+                    <!-- 方案类型 -->
+                    <div>
+                        <label class="form-label" for="f-type">方案类型<span class="required">*</span></label>
+                        <select id="f-type" class="form-input">
+                            <option value="">请选择</option>
+                            <option>抖音营销方案</option>
+                            <option>小红书运营方案</option>
+                            <option>全域营销方案</option>
+                            <option>跨境出海方案</option>
+                            <option>品牌数字化方案</option>
+                            <option>新品上市方案</option>
+                            <option>竞品分析报告</option>
+                            <option>其他</option>
+                        </select>
+                        <p class="error-msg text-xs text-red-500 mt-1 hidden">请选择方案类型</p>
+                    </div>
+
+                    <!-- 目标平台 -->
+                    <div>
+                        <label class="form-label">目标平台</label>
+                        <div class="grid grid-cols-2 gap-2 mt-1">
+                            <label class="checkbox-item"><input type="checkbox" name="platform" value="抖音"><span class="text-sm">抖音</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="platform" value="小红书"><span class="text-sm">小红书</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="platform" value="微博"><span class="text-sm">微博</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="platform" value="微信"><span class="text-sm">微信</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="platform" value="天猫"><span class="text-sm">天猫</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="platform" value="京东"><span class="text-sm">京东</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="platform" value="跨境独立站"><span class="text-sm">跨境独立站</span></label>
+                        </div>
+                    </div>
+
+                    <!-- 核心目标 -->
+                    <div>
+                        <label class="form-label">核心目标</label>
+                        <div class="grid grid-cols-2 gap-2 mt-1">
+                            <label class="checkbox-item"><input type="checkbox" name="goal" value="提升品牌声量"><span class="text-sm">品牌声量</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="goal" value="带动销量增长"><span class="text-sm">销量增长</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="goal" value="粉丝增长"><span class="text-sm">粉丝增长</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="goal" value="新品推广"><span class="text-sm">新品推广</span></label>
+                            <label class="checkbox-item"><input type="checkbox" name="goal" value="市场拓展"><span class="text-sm">市场拓展</span></label>
+                        </div>
+                    </div>
+
+                    <!-- 品牌背景 -->
+                    <div>
+                        <label class="form-label" for="f-background">品牌背景与现状<span class="required">*</span></label>
+                        <textarea id="f-background" class="form-input" rows="3" placeholder="请描述品牌背景、产品特点、当前市场现状…"></textarea>
+                        <p class="error-msg text-xs text-red-500 mt-1 hidden">请填写品牌背景</p>
+                    </div>
+
+                    <!-- 核心挑战 -->
+                    <div>
+                        <label class="form-label" for="f-challenge">核心挑战</label>
+                        <textarea id="f-challenge" class="form-input" rows="2" placeholder="当前面临的主要挑战…"></textarea>
+                    </div>
+
+                    <!-- 目标受众 -->
+                    <div>
+                        <label class="form-label" for="f-audience">目标受众</label>
+                        <textarea id="f-audience" class="form-input" rows="2" placeholder="核心用户群体描述…"></textarea>
+                    </div>
+
+                    <!-- 预算 + 周期 -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="form-label" for="f-budget">预算范围</label>
+                            <select id="f-budget" class="form-input">
+                                <option value="">不限定</option>
+                                <option>10万以内</option>
+                                <option>10–50万</option>
+                                <option>50–100万</option>
+                                <option>100–500万</option>
+                                <option>500万以上</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label" for="f-period">执行周期</label>
+                            <select id="f-period" class="form-input">
+                                <option value="">不限定</option>
+                                <option>1个月</option>
+                                <option>3个月</option>
+                                <option>6个月</option>
+                                <option>12个月</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 视觉风格 -->
+                    <div>
+                        <label class="form-label" for="f-style">视觉风格</label>
+                        <select id="f-style" class="form-input">
+                            <option value="自动匹配行业">自动匹配行业</option>
+                            <option value="科技蓝商务">科技蓝商务</option>
+                            <option value="暗色高端">暗色高端</option>
+                            <option value="清新自然">清新自然</option>
+                            <option value="时尚粉">时尚粉</option>
+                            <option value="国潮红">国潮红</option>
+                        </select>
+                    </div>
+
+                    <!-- 附加说明 -->
+                    <div>
+                        <label class="form-label" for="f-extra">附加说明</label>
+                        <textarea id="f-extra" class="form-input" rows="2" placeholder="其他需要 AI 知晓的信息…"></textarea>
+                    </div>
+
+                    <!-- 生成按钮 -->
+                    <button type="button" id="btn-generate"
+                        class="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-500 active:bg-indigo-700 transition-colors flex items-center justify-center gap-2 mt-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        开始生成方案
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- ── 右侧：输出区 ── -->
+        <section class="lg:col-span-3 flex flex-col gap-4">
+
+            <!-- 进度状态 -->
+            <div id="status-bar" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 hidden">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <span id="phase-badge-1" class="phase-badge idle">
+                            <i class="fa-solid fa-circle-dot text-xs"></i> Phase 1 文字方案
+                        </span>
+                        <span id="phase-badge-2" class="phase-badge idle">
+                            <i class="fa-solid fa-circle-dot text-xs"></i> Phase 2 HTML生成
+                        </span>
+                    </div>
+                    <button id="btn-abort" class="text-xs text-red-400 hover:text-red-600 transition-colors hidden">
+                        <i class="fa-solid fa-stop mr-1"></i>中止
+                    </button>
+                </div>
+                <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+                <p id="status-text" class="text-xs text-slate-400 mt-2">准备中…</p>
+            </div>
+
+            <!-- 输出面板 -->
+            <div id="output-panel" class="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col" style="min-height:480px">
+                <!-- Tab 栏 -->
+                <div class="flex items-center border-b border-slate-100 px-4 pt-3 gap-1">
+                    <button class="tab-btn active" data-tab="text">
+                        <i class="fa-solid fa-file-lines mr-1 text-xs"></i>文字方案
+                    </button>
+                    <button class="tab-btn" data-tab="html">
+                        <i class="fa-brands fa-html5 mr-1 text-xs"></i>HTML代码
+                    </button>
+                    <button class="tab-btn" data-tab="preview">
+                        <i class="fa-solid fa-eye mr-1 text-xs"></i>预览
+                    </button>
+                    <!-- 操作按钮 -->
+                    <div class="ml-auto flex items-center gap-2 pb-1">
+                        <button id="btn-copy" class="text-xs px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors hidden" title="复制HTML代码">
+                            <i class="fa-regular fa-copy mr-1"></i>复制
+                        </button>
+                        <button id="btn-download" class="text-xs px-3 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition-colors hidden">
+                            <i class="fa-solid fa-download mr-1"></i>下载 HTML
+                        </button>
+                        <button id="btn-reset" class="text-xs px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors hidden">
+                            <i class="fa-solid fa-rotate-left mr-1"></i>新方案
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab 内容 -->
+                <div class="flex-1 overflow-auto p-4">
+                    <!-- 空状态 -->
+                    <div id="empty-state" class="h-full flex flex-col items-center justify-center text-center py-16">
+                        <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-wand-magic-sparkles text-indigo-300 text-2xl"></i>
+                        </div>
+                        <p class="text-slate-400 font-medium">填写左侧表单，点击"开始生成"</p>
+                        <p class="text-slate-300 text-sm mt-1">AI 将为你生成完整营销方案与可部署 HTML</p>
+                        <div id="no-key-tip" class="mt-4 px-4 py-2 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-700 hidden">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                            尚未设置 API Key，请先点击右上角 <i class="fa-solid fa-gear"></i> 完成配置
+                        </div>
+                    </div>
+
+                    <!-- 文字方案 Tab -->
+                    <div id="tab-text" class="tab-panel">
+                        <pre id="proposal-text"></pre>
+                    </div>
+
+                    <!-- HTML代码 Tab -->
+                    <div id="tab-html" class="tab-panel">
+                        <pre id="proposal-html"></pre>
+                    </div>
+
+                    <!-- 预览 Tab -->
+                    <div id="tab-preview" class="tab-panel">
+                        <iframe id="preview-frame" sandbox="allow-scripts allow-same-origin" title="方案预览"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- ===== Footer ===== -->
+<footer class="bg-slate-900 text-white py-8 px-4 mt-12">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>
+            <p class="font-bold">AI 方案大师</p>
+            <p class="text-slate-400 text-sm mt-0.5">智能营销方案集合 · 夸克智能出品</p>
+        </div>
+        <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
+            <i class="fa-solid fa-arrow-left text-xs"></i>返回方案列表
+        </a>
+    </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script src="assets/js/shared.js"></script>
+<script>
+(function () {
+    'use strict';
+
+    /* ── 常量 ── */
+    const API_URL = 'https://api.anthropic.com/v1/messages';
+    const LS_KEY  = 'smc_api_key';
+    const LS_MDL  = 'smc_model';
+
+    const STYLE_COLORS = {
+        '科技蓝商务': '主色调为科技蓝 #2563EB，配色清爽商务',
+        '暗色高端':   '深色背景 #0a0a0f，主色荧光蓝/紫，高端奢华感',
+        '清新自然':   '主色调为森林绿 #16a34a，背景白色，清新自然',
+        '时尚粉':     '主色调为玫瑰粉 #f43f5e，时尚女性化',
+        '国潮红':     '主色调为中国红 #dc2626，搭配金色点缀，国潮风',
+        '自动匹配行业':'根据行业自动选择最合适的色调'
+    };
+
+    const SYS_PROPOSAL = `你是一位资深的中国数字营销策略专家，擅长为品牌制定全链路营销方案。
+请根据用户提供的需求，生成一份结构完整、内容专业的中文营销方案文档。
+
+方案必须包含以下章节（用 ## 标题标注）：
+1. 执行摘要（3-5个核心策略要点）
+2. 市场背景分析（行业规模、机会与挑战）
+3. 竞品研究（主要竞品特点与差异化机会）
+4. 目标人群画像（年龄/兴趣/消费行为/平台偏好）
+5. 核心策略（差异化定位与核心打法）
+6. 平台执行规划（各平台内容策略与运营节奏）
+7. 达人/KOL矩阵策略（层级划分与合作方式）
+8. 分阶段执行时间线（含具体里程碑）
+9. 预算分配方案（各渠道占比，总额参考需求）
+10. KPI考核指标（核心数据指标与阶段目标）
+11. 风险控制（潜在风险与应对措施）
+
+要求：语言专业精炼，数据有据可查（可合理估算行业数据），内容针对客户行业定制化，全文使用中文。`;
+
+    function buildHtmlSystem(style) {
+        const colorHint = STYLE_COLORS[style] || STYLE_COLORS['自动匹配行业'];
+        return `你是一位专业前端开发工程师，专门为中国营销方案制作精美的HTML展示页面。
+请将营销方案文字版转换为一个完整可运行的HTML页面。
+
+【严格技术规范】
+- DOCTYPE: <!DOCTYPE html>，lang="zh-CN"
+- charset UTF-8，viewport meta，<meta name="description">
+- title格式: [品牌名称]营销方案 | 智能营销方案集合
+- 第一行CSS引用（必须）: <link rel="stylesheet" href="assets/css/shared.css">
+- Tailwind CDN: <script src="https://cdn.tailwindcss.com"><\/script>
+- Font Awesome: <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+- </body>前最后一行（必须）: <script src="assets/js/shared.js"><\/script>
+
+【页面结构规范】
+- 粘性顶部导航（各section锚点链接）
+- 全屏Hero（品牌名、核心主张、3个关键数字指标）
+- 各章节用 <section id="..."> 包裹，id用英文
+- 卡片式展示策略点（class="card-hover"）
+- 时间轴展示执行计划（CSS纯实现）
+- 预算用CSS渐变进度条可视化
+- 页脚含: <a href="index.html">返回首页</a>
+- 需要淡入的区块加 class="section-fade"
+
+【设计规范】
+- 色调指引：${colorHint}
+- 响应式设计（移动端优先，Tailwind断点）
+- 专业商务风格，适合客户演示
+
+【重要】只输出完整HTML代码，从<!DOCTYPE html>开始到</html>结束，不含任何解释文字。`;
+    }
+
+    /* ── DOM 引用 ── */
+    const $ = id => document.getElementById(id);
+    const elApiKey   = $('input-api-key');
+    const elModel    = $('select-model');
+    const elForm     = $('proposal-form');
+    const elStatus   = $('status-bar');
+    const elProgress = $('progress-fill');
+    const elStatTxt  = $('status-text');
+    const elEmpty    = $('empty-state');
+    const elNoKey    = $('no-key-tip');
+    const elTextPre  = $('proposal-text');
+    const elHtmlPre  = $('proposal-html');
+    const elPreview  = $('preview-frame');
+    const elBtnGen   = $('btn-generate');
+    const elBtnCopy  = $('btn-copy');
+    const elBtnDl    = $('btn-download');
+    const elBtnReset = $('btn-reset');
+    const elBtnAbort = $('btn-abort');
+    const badge1     = $('phase-badge-1');
+    const badge2     = $('phase-badge-2');
+
+    let abortCtrl = null;
+    let generatedHtml = '';
+
+    /* ── 工具函数 ── */
+    function showToast(msg, type = 'info', ms = 3000) {
+        const el = $('toast');
+        el.textContent = msg;
+        el.className = `toast ${type} show`;
+        setTimeout(() => { el.className = `toast ${type}`; }, ms);
+    }
+
+    function setBadge(el, state) {
+        el.className = `phase-badge ${state}`;
+        const icons = { idle: 'fa-circle-dot', running: 'fa-spinner fa-spin', done: 'fa-circle-check' };
+        const icon = el.querySelector('i');
+        icon.className = `fa-solid ${icons[state]} text-xs`;
+    }
+
+    /* ── 设置模态框 ── */
+    function openSettings() {
+        elApiKey.value = localStorage.getItem(LS_KEY) || '';
+        elModel.value  = localStorage.getItem(LS_MDL) || 'claude-sonnet-4-6';
+        $('modal-settings').classList.remove('hidden');
+    }
+    function closeSettings() { $('modal-settings').classList.add('hidden'); }
+
+    $('btn-settings').addEventListener('click', openSettings);
+    $('btn-close-settings').addEventListener('click', closeSettings);
+    $('btn-cancel-settings').addEventListener('click', closeSettings);
+    $('modal-settings').addEventListener('click', e => { if (e.target === $('modal-settings')) closeSettings(); });
+    $('btn-save-settings').addEventListener('click', () => {
+        const key = elApiKey.value.trim();
+        if (!key) { showToast('请输入 API Key', 'error'); return; }
+        localStorage.setItem(LS_KEY, key);
+        localStorage.setItem(LS_MDL, elModel.value);
+        closeSettings();
+        showToast('设置已保存', 'success');
+        elNoKey.classList.add('hidden');
+    });
+    $('btn-toggle-key').addEventListener('click', () => {
+        const isPass = elApiKey.type === 'password';
+        elApiKey.type = isPass ? 'text' : 'password';
+        $('btn-toggle-key').querySelector('i').className = `fa-solid ${isPass ? 'fa-eye-slash' : 'fa-eye'} text-sm`;
+    });
+
+    /* ── Tabs ── */
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            $(`tab-${btn.dataset.tab}`).classList.add('active');
+        });
+    });
+
+    /* ── 表单校验 ── */
+    function validate() {
+        let ok = true;
+        [['f-brand','请填写品牌名称'],['f-industry','请选择行业'],['f-type','请选择方案类型'],['f-background','请填写品牌背景']].forEach(([id, msg]) => {
+            const el = $(id);
+            const errEl = el.parentElement.querySelector('.error-msg');
+            if (!el.value.trim()) {
+                el.classList.add('error');
+                if (errEl) { errEl.textContent = msg; errEl.classList.remove('hidden'); }
+                ok = false;
+            } else {
+                el.classList.remove('error');
+                if (errEl) errEl.classList.add('hidden');
+            }
+        });
+        return ok;
+    }
+
+    /* ── SSE 流式调用 ── */
+    async function streamCall({ system, userMsg, maxTokens, onChunk }) {
+        const key   = localStorage.getItem(LS_KEY);
+        const model = localStorage.getItem(LS_MDL) || 'claude-sonnet-4-6';
+        abortCtrl   = new AbortController();
+
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            signal: abortCtrl.signal,
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': key,
+                'anthropic-version': '2023-06-01',
+                'anthropic-dangerous-direct-browser-access': 'true'
+            },
+            body: JSON.stringify({
+                model, max_tokens: maxTokens, stream: true,
+                system,
+                messages: [{ role: 'user', content: userMsg }]
+            })
+        });
+
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData?.error?.message || `HTTP ${res.status}`);
+        }
+
+        const reader  = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '', accumulated = '';
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+            for (const line of lines) {
+                if (!line.startsWith('data: ')) continue;
+                const raw = line.slice(6).trim();
+                if (!raw || raw === '[DONE]') continue;
+                try {
+                    const evt = JSON.parse(raw);
+                    if (evt.type === 'content_block_delta' && evt.delta?.type === 'text_delta') {
+                        accumulated += evt.delta.text;
+                        onChunk(accumulated);
+                    }
+                    if (evt.type === 'error') throw new Error(evt.error?.message || 'Stream error');
+                } catch (e) { if (e.message !== 'Stream error') continue; else throw e; }
+            }
+        }
+        return accumulated;
+    }
+
+    /* ── 构建用户提示词 ── */
+    function buildUserPrompt() {
+        const platforms = [...document.querySelectorAll('[name=platform]:checked')].map(c => c.value).join('、') || '未指定';
+        const goals     = [...document.querySelectorAll('[name=goal]:checked')].map(c => c.value).join('、') || '未指定';
+        return `品牌名称：${$('f-brand').value.trim()}
+所属行业：${$('f-industry').value}
+方案类型：${$('f-type').value}
+目标平台：${platforms}
+核心目标：${goals}
+品牌背景与现状：${$('f-background').value.trim()}
+核心挑战：${$('f-challenge').value.trim() || '未填写'}
+目标受众：${$('f-audience').value.trim() || '未填写'}
+预算范围：${$('f-budget').value || '不限定'}
+执行周期：${$('f-period').value || '不限定'}
+附加说明：${$('f-extra').value.trim() || '无'}`;
+    }
+
+    /* ── 预览渲染 ── */
+    async function renderPreview(html) {
+        try {
+            const [cssR, jsR] = await Promise.all([fetch('assets/css/shared.css'), fetch('assets/js/shared.js')]);
+            const [css, js]   = await Promise.all([cssR.text(), jsR.text()]);
+            const preview = html
+                .replace('<link rel="stylesheet" href="assets/css/shared.css">', `<style>${css}</style>`)
+                .replace('<script src="assets/js/shared.js"></script>', `<script>${js}<\/script>`);
+            elPreview.srcdoc = preview;
+        } catch { elPreview.srcdoc = html; }
+    }
+
+    /* ── 提取纯 HTML ── */
+    function extractHtml(raw) {
+        const m = raw.match(/```html\s*([\s\S]*?)\s*```/) || raw.match(/(<!DOCTYPE[\s\S]*<\/html>)/i);
+        return m ? m[1].trim() : raw.trim();
+    }
+
+    /* ── 下载 ── */
+    function downloadHtml() {
+        if (!generatedHtml) return;
+        const name = ($('f-brand').value.trim() || 'proposal').replace(/\s+/g, '-');
+        const blob = new Blob([generatedHtml], { type: 'text/html;charset=utf-8' });
+        const url  = URL.createObjectURL(blob);
+        const a    = Object.assign(document.createElement('a'), { href: url, download: `${name}-方案.html` });
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    /* ── 主生成流程 ── */
+    async function generate() {
+        const key = localStorage.getItem(LS_KEY);
+        if (!key) { openSettings(); showToast('请先配置 API Key', 'error'); return; }
+        if (!validate()) { showToast('请填写必填字段', 'error'); return; }
+
+        const userPrompt = buildUserPrompt();
+        const style      = $('f-style').value;
+
+        // UI 进入生成状态
+        elEmpty.classList.add('hidden');
+        elStatus.classList.remove('hidden');
+        elBtnGen.disabled = true;
+        elBtnGen.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>生成中…';
+        elBtnAbort.classList.remove('hidden');
+        elBtnCopy.classList.add('hidden');
+        elBtnDl.classList.add('hidden');
+        elBtnReset.classList.add('hidden');
+        generatedHtml = '';
+
+        // 激活文字方案 Tab
+        document.querySelector('[data-tab=text]').click();
+        elTextPre.textContent = '';
+        elHtmlPre.textContent = '';
+
+        /* Phase 1 */
+        setBadge(badge1, 'running');
+        elStatTxt.textContent = 'Phase 1 · 正在生成文字方案…';
+        elProgress.style.animation = 'indeterminate 1.5s ease-in-out infinite';
+        let textResult = '';
+        try {
+            textResult = await streamCall({
+                system: SYS_PROPOSAL,
+                userMsg: userPrompt,
+                maxTokens: 8192,
+                onChunk: t => { elTextPre.textContent = t; }
+            });
+        } catch (e) {
+            if (e.name === 'AbortError') { showToast('已中止生成', 'info'); }
+            else { showToast(`生成失败：${e.message}`, 'error'); }
+            resetGenerateBtn();
+            return;
+        }
+        setBadge(badge1, 'done');
+
+        /* Phase 2 */
+        setBadge(badge2, 'running');
+        elStatTxt.textContent = 'Phase 2 · 正在生成 HTML 代码…';
+        document.querySelector('[data-tab=html]').click();
+        let rawHtml = '';
+        try {
+            rawHtml = await streamCall({
+                system: buildHtmlSystem(style),
+                userMsg: `以下是营销方案文字版，请据此生成HTML页面：\n\n${textResult}`,
+                maxTokens: 16000,
+                onChunk: t => { elHtmlPre.textContent = t; }
+            });
+        } catch (e) {
+            if (e.name === 'AbortError') { showToast('已中止生成', 'info'); }
+            else { showToast(`HTML生成失败：${e.message}`, 'error'); }
+            resetGenerateBtn();
+            return;
+        }
+        setBadge(badge2, 'done');
+
+        /* 完成 */
+        generatedHtml = extractHtml(rawHtml);
+        elHtmlPre.textContent = generatedHtml;
+        elStatTxt.textContent = '✓ 生成完成！可预览或下载 HTML';
+        elProgress.style.animation = 'none';
+        elProgress.style.width = '100%';
+
+        await renderPreview(generatedHtml);
+
+        elBtnCopy.classList.remove('hidden');
+        elBtnDl.classList.remove('hidden');
+        elBtnReset.classList.remove('hidden');
+        elBtnAbort.classList.add('hidden');
+        showToast('方案生成完毕 🎉', 'success', 4000);
+        resetGenerateBtn();
+    }
+
+    function resetGenerateBtn() {
+        elBtnGen.disabled = false;
+        elBtnGen.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-2"></i>开始生成方案';
+        elBtnAbort.classList.add('hidden');
+        abortCtrl = null;
+    }
+
+    /* ── 事件绑定 ── */
+    elBtnGen.addEventListener('click', generate);
+
+    elBtnAbort.addEventListener('click', () => {
+        if (abortCtrl) { abortCtrl.abort(); }
+    });
+
+    elBtnCopy.addEventListener('click', async () => {
+        if (!generatedHtml) return;
+        await navigator.clipboard.writeText(generatedHtml);
+        showToast('HTML 代码已复制到剪贴板', 'success');
+    });
+
+    elBtnDl.addEventListener('click', downloadHtml);
+
+    elBtnReset.addEventListener('click', () => {
+        generatedHtml = '';
+        elTextPre.textContent = '';
+        elHtmlPre.textContent = '';
+        elPreview.srcdoc = '';
+        elStatus.classList.add('hidden');
+        elEmpty.classList.remove('hidden');
+        elBtnCopy.classList.add('hidden');
+        elBtnDl.classList.add('hidden');
+        elBtnReset.classList.add('hidden');
+        setBadge(badge1, 'idle');
+        setBadge(badge2, 'idle');
+        elProgress.style.width = '0%';
+        document.querySelector('[data-tab=text]').click();
+    });
+
+    /* ── 初始化：检查 API Key ── */
+    if (!localStorage.getItem(LS_KEY)) {
+        elNoKey.classList.remove('hidden');
+    }
+})();
+</script>
+</body>
+</html>
