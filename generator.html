@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="assets/css/shared.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -52,6 +54,12 @@
         .phase-badge.done    { background: #dcfce7; color: #15803d; }
         .phase-badge.idle    { background: #f1f5f9; color: #64748b; }
         #preview-frame { width: 100%; height: 560px; border: none; border-radius: 0.5rem; background: #fff; }
+        .upload-zone { border: 2px dashed #c7d2fe; border-radius: 0.75rem; padding: 1.25rem 1rem; text-align: center; cursor: pointer; transition: all 0.2s; background: #fafbff; }
+        .upload-zone:hover, .upload-zone.dragover { border-color: #6366f1; background: #eef2ff; }
+        .file-chip { display: inline-flex; align-items: center; gap: 0.5rem; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 0.3rem 0.625rem; font-size: 0.75rem; max-width: 100%; }
+        .file-chip .chip-name { color: #334155; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px; }
+        .file-chip.loading { opacity: 0.65; }
+        .file-chip .chip-remove:hover { color: #ef4444; }
         nav.scrolled { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1rem; }
         .modal-overlay.hidden { display: none; }
@@ -296,6 +304,23 @@
                         <textarea id="f-extra" class="form-input" rows="2" placeholder="其他需要 AI 知晓的信息…"></textarea>
                     </div>
 
+                    <!-- 背景资料上传 -->
+                    <div>
+                        <label class="form-label">
+                            背景资料上传
+                            <span class="text-slate-400 font-normal text-xs ml-1">PDF / Word / TXT，可多选</span>
+                        </label>
+                        <div id="upload-zone" class="upload-zone" role="button" tabindex="0" aria-label="上传背景资料文件">
+                            <input type="file" id="file-input" class="hidden" accept=".pdf,.docx,.txt,.md" multiple>
+                            <i class="fa-solid fa-cloud-arrow-up text-indigo-300 text-2xl mb-2 block pointer-events-none"></i>
+                            <p class="text-sm text-slate-500 font-medium pointer-events-none">
+                                拖放文件到此处，或<span class="text-indigo-600">点击上传</span>
+                            </p>
+                            <p class="text-xs text-slate-400 mt-1 pointer-events-none">支持 PDF · Word (.docx) · TXT · MD，单文件不超过 10MB</p>
+                        </div>
+                        <div id="file-list" class="flex flex-wrap gap-2 mt-2 hidden"></div>
+                    </div>
+
                     <!-- 生成按钮 -->
                     <button type="button" id="btn-generate"
                         class="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-500 active:bg-indigo-700 transition-colors flex items-center justify-center gap-2 mt-2">
@@ -496,6 +521,88 @@
 
     let abortCtrl = null;
     let generatedHtml = '';
+    const uploadedFiles = []; // { name, text, loading }
+
+    /* ── PDF.js worker ── */
+    if (window.pdfjsLib) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    /* ── 文件文字提取 ── */
+    async function extractFileText(file) {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (ext === 'pdf') {
+            if (!window.pdfjsLib) throw new Error('PDF.js 未加载');
+            const buf = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+            let text = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const content = await page.getTextContent();
+                text += content.items.map(s => s.str).join(' ') + '\n';
+            }
+            return text.trim();
+        }
+        if (ext === 'docx') {
+            if (!window.mammoth) throw new Error('mammoth.js 未加载');
+            const buf = await file.arrayBuffer();
+            const result = await mammoth.extractRawText({ arrayBuffer: buf });
+            return result.value.trim();
+        }
+        return await file.text();
+    }
+
+    /* ── 渲染文件列表 ── */
+    function renderFileList() {
+        const list = $('file-list');
+        if (uploadedFiles.length === 0) { list.classList.add('hidden'); return; }
+        list.classList.remove('hidden');
+        list.innerHTML = uploadedFiles.map((f, i) => `
+            <div class="file-chip ${f.loading ? 'loading' : ''}">
+                <i class="fa-solid ${f.loading ? 'fa-spinner fa-spin' : 'fa-file-lines'} text-indigo-500 text-xs flex-shrink-0"></i>
+                <span class="chip-name" title="${f.name}">${f.name}</span>
+                ${f.loading ? '<span class="text-xs text-slate-400">解析中…</span>' : `
+                <button class="chip-remove text-slate-400 transition-colors flex-shrink-0" onclick="window._removeFile(${i})" aria-label="移除 ${f.name}">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>`}
+            </div>
+        `).join('');
+    }
+
+    window._removeFile = function(idx) {
+        uploadedFiles.splice(idx, 1);
+        renderFileList();
+    };
+
+    async function handleFiles(files) {
+        for (const file of files) {
+            if (file.size > 10 * 1024 * 1024) {
+                showToast(`${file.name} 超过 10MB 限制`, 'error');
+                continue;
+            }
+            const entry = { name: file.name, text: '', loading: true };
+            uploadedFiles.push(entry);
+            renderFileList();
+            try {
+                entry.text = await extractFileText(file);
+            } catch (e) {
+                showToast(`${file.name} 解析失败：${e.message}`, 'error');
+            }
+            entry.loading = false;
+            renderFileList();
+        }
+    }
+
+    /* ── 上传区事件 ── */
+    const zone      = $('upload-zone');
+    const fileInput = $('file-input');
+    zone.addEventListener('click', () => fileInput.click());
+    zone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+    fileInput.addEventListener('change', () => { handleFiles(fileInput.files); fileInput.value = ''; });
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
 
     /* ── 工具函数 ── */
     function showToast(msg, type = 'info', ms = 3000) {
@@ -625,7 +732,7 @@
     function buildUserPrompt() {
         const platforms = [...document.querySelectorAll('[name=platform]:checked')].map(c => c.value).join('、') || '未指定';
         const goals     = [...document.querySelectorAll('[name=goal]:checked')].map(c => c.value).join('、') || '未指定';
-        return `品牌名称：${$('f-brand').value.trim()}
+        let prompt = `品牌名称：${$('f-brand').value.trim()}
 所属行业：${$('f-industry').value}
 方案类型：${$('f-type').value}
 目标平台：${platforms}
@@ -636,6 +743,15 @@
 预算范围：${$('f-budget').value || '不限定'}
 执行周期：${$('f-period').value || '不限定'}
 附加说明：${$('f-extra').value.trim() || '无'}`;
+
+        const docs = uploadedFiles.filter(f => f.text && !f.loading);
+        if (docs.length > 0) {
+            prompt += '\n\n---\n【客户提供的背景参考资料】\n以下内容为客户上传的原始文件，请在生成方案时充分参考：\n';
+            docs.forEach(f => {
+                prompt += `\n### 文件：${f.name}\n${f.text.slice(0, 8000)}\n`;
+            });
+        }
+        return prompt;
     }
 
     /* ── 预览渲染 ── */
@@ -784,6 +900,8 @@
         setBadge(badge1, 'idle');
         setBadge(badge2, 'idle');
         elProgress.style.width = '0%';
+        uploadedFiles.length = 0;
+        renderFileList();
         document.querySelector('[data-tab=text]').click();
     });
 
