@@ -634,7 +634,9 @@
     $('btn-save-settings').addEventListener('click', () => {
         const key = elApiKey.value.trim();
         if (!key) { showToast('请输入 API Key', 'error'); return; }
-        localStorage.setItem(LS_KEY, key);
+        const sanitized = key.replace(/[^\x20-\x7E]/g, '');
+        if (sanitized !== key) showToast('API Key 包含非法字符，已自动清理', 'info');
+        localStorage.setItem(LS_KEY, sanitized);
         localStorage.setItem(LS_MDL, elModel.value);
         closeSettings();
         showToast('设置已保存', 'success');
@@ -676,7 +678,7 @@
 
     /* ── SSE 流式调用 ── */
     async function streamCall({ system, userMsg, maxTokens, onChunk }) {
-        const key   = localStorage.getItem(LS_KEY);
+        const key   = (localStorage.getItem(LS_KEY) || '').replace(/[^\x20-\x7E]/g, '');
         const model = localStorage.getItem(LS_MDL) || 'deepseek-chat';
         abortCtrl   = new AbortController();
 
@@ -785,7 +787,7 @@
 
     /* ── 主生成流程 ── */
     async function generate() {
-        const key = localStorage.getItem(LS_KEY);
+        const key = (localStorage.getItem(LS_KEY) || '').replace(/[^ -~]/g, '');
         if (!key) { openSettings(); showToast('请先配置 API Key', 'error'); return; }
         if (!validate()) { showToast('请填写必填字段', 'error'); return; }
 
