@@ -761,7 +761,7 @@
             const [css, js]   = await Promise.all([cssR.text(), jsR.text()]);
             const preview = html
                 .replace('<link rel="stylesheet" href="assets/css/shared.css">', `<style>${css}</style>`)
-                .replace('<script src="assets/js/shared.js"></script>', `<script>${js}<\/script>`);
+                .replace('<script src="assets/js/shared.js"></scr' + 'ipt>', `<script>${js}<\/script>`);
             elPreview.srcdoc = preview;
         } catch { elPreview.srcdoc = html; }
     }
