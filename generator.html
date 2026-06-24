@@ -116,8 +116,8 @@
             <div>
                 <label class="form-label" for="select-model">生成模型</label>
                 <select id="select-model" class="form-input">
-                    <option value="claude-sonnet-4-6">claude-sonnet-4-6（推荐，速度快）</option>
-                    <option value="claude-opus-4-7">claude-opus-4-7（最高质量，较慢）</option>
+<                    <option value="deepseek-chat">deepseek-chat（推荐，速度快）</option>
+<                    <option value="deepseek-reasoner">deepseek-reasoner（最高质量，较慢）</option>
                 </select>
             </div>
         </div>
@@ -435,7 +435,7 @@
     'use strict';
 
     /* ── 常量 ── */
-    const API_URL = 'https://api.anthropic.com/v1/messages';
+    const API_URL = 'https://api.deepseek.com/v1/chat/completions';
     const LS_KEY  = 'smc_api_key';
     const LS_MDL  = 'smc_model';
 
@@ -622,7 +622,7 @@
     /* ── 设置模态框 ── */
     function openSettings() {
         elApiKey.value = localStorage.getItem(LS_KEY) || '';
-        elModel.value  = localStorage.getItem(LS_MDL) || 'claude-sonnet-4-6';
+        elModel.value  = localStorage.getItem(LS_MDL) || 'deepseek-chat';
         $('modal-settings').classList.remove('hidden');
     }
     function closeSettings() { $('modal-settings').classList.add('hidden'); }
@@ -677,7 +677,7 @@
     /* ── SSE 流式调用 ── */
     async function streamCall({ system, userMsg, maxTokens, onChunk }) {
         const key   = localStorage.getItem(LS_KEY);
-        const model = localStorage.getItem(LS_MDL) || 'claude-sonnet-4-6';
+        const model = localStorage.getItem(LS_MDL) || 'deepseek-chat';
         abortCtrl   = new AbortController();
 
         const res = await fetch(API_URL, {
@@ -685,14 +685,14 @@
             signal: abortCtrl.signal,
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': key,
-                'anthropic-version': '2023-06-01',
-                'anthropic-dangerous-direct-browser-access': 'true'
+                'Authorization': 'Bearer ' + key
             },
             body: JSON.stringify({
                 model, max_tokens: maxTokens, stream: true,
-                system,
-                messages: [{ role: 'user', content: userMsg }]
+                messages: [
+                    { role: 'system', content: system },
+                    { role: 'user', content: userMsg }
+                ]
             })
         });
 
@@ -717,12 +717,12 @@
                 if (!raw || raw === '[DONE]') continue;
                 try {
                     const evt = JSON.parse(raw);
-                    if (evt.type === 'content_block_delta' && evt.delta?.type === 'text_delta') {
-                        accumulated += evt.delta.text;
+                    const content = evt.choices?.[0]?.delta?.content || '';
+                    if (content) {
+                        accumulated += content;
                         onChunk(accumulated);
                     }
-                    if (evt.type === 'error') throw new Error(evt.error?.message || 'Stream error');
-                } catch (e) { if (e.message !== 'Stream error') continue; else throw e; }
+                } catch (e) { continue; }
             }
         }
         return accumulated;
