@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EOS — AI-Powered Cross-Border E-Commerce System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,system-ui,sans-serif;background:#0a0a0c;color:#f0f0f2;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto;display:block}
+
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;background:rgba(10,10,12,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06);z-index:100}
+nav .container{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem}
+.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.nav-links{display:flex;gap:32px}
+.nav-links a{font-size:.875rem;font-weight:500;color:#a0a0ab;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:#6366f1;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;transition:background .2s}
+.nav-cta:hover{background:#4f46e5}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:64px}
+.hero::before{content:'';position:absolute;inset:0;background:url('assets/images/hero-bg.jpg') center/cover no-repeat;opacity:.25}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 40%,#0a0a0c 85%)}
+.hero-content{position:relative;z-index:2;max-width:800px;margin:0 auto;text-align:center}
+.hero-badge{display:inline-block;padding:6px 16px;border-radius:100px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);font-size:.8rem;font-weight:500;color:#818cf8;margin-bottom:24px}
+.hero h1{font-size:clamp(2.5rem,5vw,4rem);font-weight:800;line-height:1.1;margin-bottom:20px}
+.hero h1 span{background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:1.1rem;color:#a0a0ab;max-width:600px;margin:0 auto 32px}
+.hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:#6366f1;color:#fff;border:none;padding:14px 32px;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary:hover{background:#4f46e5;transform:translateY(-1px)}
+.btn-secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.15);padding:14px 32px;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-secondary:hover{border-color:rgba(255,255,255,.35)}
+
+/* Stats */
+.stats{padding:64px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;text-align:center}
+.stat-value{font-size:2.5rem;font-weight:800;color:#fff}
+.stat-label{font-size:.875rem;color:#71717a;margin-top:4px}
+.stat-number{background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* Section Common */
+section{padding:80px 0}
+.section-label{display:inline-block;text-transform:uppercase;font-size:.75rem;font-weight:600;letter-spacing:.05em;color:#818cf8;margin-bottom:12px}
+.section-title{font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;margin-bottom:16px}
+.section-desc{color:#a0a0ab;font-size:1rem;max-width:600px;margin-bottom:48px}
+
+/* Case Study */
+.case-section{background:#0f0f13}
+.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.case-visual{background:rgba(255,255,255,.03);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.case-visual img{width:100%;height:auto}
+.case-features{list-style:none;margin-top:24px}
+.case-features li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.95rem;color:#d4d4d8}
+.case-features li::before{content:'&rarr;';color:#818cf8;font-weight:700}
+.case-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+.case-metric{background:rgba(255,255,255,.03);padding:20px;border-radius:12px;text-align:center}
+.case-metric-value{font-size:1.5rem;font-weight:700;color:#818cf8}
+.case-metric-label{font-size:.8rem;color:#71717a;margin-top:4px}
+
+/* More Case Studies */
+.case-studios-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.cs-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px;transition:all .2s}
+.cs-card:hover{border-color:rgba(99,102,241,.3);transform:translateY(-2px)}
+.cs-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.cs-card h3{font-size:1.05rem;font-weight:700}
+.cs-tag{font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:6px;background:rgba(99,102,241,.12);color:#818cf8}
+.cs-stat{font-size:.8rem;color:#a0a0ab;margin-bottom:4px}
+.cs-stat strong{color:#d4d4d8;font-weight:600}
+.cs-dots{margin-top:12px;font-size:.75rem;color:#52525b}
+.cs-dots span{display:inline-block;margin-right:16px}
+
+/* How It Works */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.step{text-align:center;padding:32px 24px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;position:relative}
+.step-number{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(139,92,246,.2));border:1px solid rgba(99,102,241,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-weight:700;color:#818cf8;font-size:1.1rem}
+.step h3{font-size:1.15rem;margin-bottom:8px}
+.step p{font-size:.875rem;color:#a0a0ab}
+.step-arrow{position:absolute;top:56px;right:-28px;color:#3f3f46;font-size:1.5rem}
+.steps>div:last-child .step-arrow{display:none}
+
+/* Capabilities */
+.caps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.cap-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px;transition:all .2s}
+.cap-card:hover{border-color:rgba(99,102,241,.3);transform:translateY(-2px)}
+.cap-icon{width:40px;height:40px;border-radius:10px;background:rgba(99,102,241,.1);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:16px}
+.cap-card h3{font-size:1rem;margin-bottom:8px}
+.cap-card p{font-size:.85rem;color:#a0a0ab;line-height:1.5}
+
+/* Products Showcase */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.product-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;transition:all .2s}
+.product-card:hover{border-color:rgba(99,102,241,.3)}
+.product-card img{width:100%;aspect-ratio:1;object-fit:cover}
+.product-card-body{padding:12px}
+.product-card-body h4{font-size:.85rem;font-weight:600}
+.product-card-body p{font-size:.75rem;color:#71717a;margin-top:4px}
+
+/* Platforms */
+.platforms{text-align:center;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.platforms p{color:#71717a;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:24px}
+.platform-logos{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;font-weight:600;font-size:.95rem}
+.platform-logos span{white-space:nowrap}
+.platform-category{margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.04)}
+.platform-category h4{color:#52525b;font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px}
+.platform-category .platform-logos{font-size:.85rem;gap:32px}
+
+/* Testimonials */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.testimonial-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:24px}
+.testimonial-card p{font-size:.9rem;color:#d4d4d8;font-style:italic}
+.testimonial-author{margin-top:16px;display:flex;align-items:center;gap:12px}
+.testimonial-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem}
+.testimonial-name{font-size:.85rem;font-weight:600}
+.testimonial-role{font-size:.75rem;color:#71717a}
+
+/* CTA */
+.cta-section{text-align:center;background:linear-gradient(180deg,#0a0a0c 0%,#0f0f13 100%)}
+.cta-section h2{font-size:clamp(1.75rem,3vw,2.5rem);margin-bottom:16px}
+.cta-section p{color:#a0a0ab;max-width:500px;margin:0 auto 32px}
+.cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* Footer */
+footer{padding:40px 0;border-top:1px solid rgba(255,255,255,.06)}
+footer .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer p{font-size:.8rem;color:#52525b}
+
+@media(max-width:768px){
+.nav-links{display:none}
+.case-grid{grid-template-columns:1fr}
+.steps{grid-template-columns:1fr}
+.step-arrow{display:none!important}
+.case-metrics{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="container">
+<div class="logo"><div class="logo-mark">E</div>EOS Systems</div>
+<div class="nav-links">
+<a href="#cases">Case Studies</a>
+<a href="#how">How It Works</a>
+<a href="#capabilities">Platform</a>
+<a href="#products">Showcase</a>
+</div>
+<button class="nav-cta">Book Demo</button>
+</div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+<div class="container hero-content">
+<div class="hero-badge">AI-Powered Cross-Border E-Commerce</div>
+<h1>From Zero to<br><span>Online Revenue</span></h1>
+<p>An end-to-end AI system that sources, photographs, lists, and markets products across Shopify &amp; social media &mdash; built for cross-border sellers who want to scale without hiring a team.</p>
+<div class="hero-actions">
+<button class="btn-primary" onclick="document.getElementById('cases').scrollIntoView({behavior:'smooth'})">See Case Studies &rarr;</button>
+<button class="btn-secondary">Book a Demo</button>
+</div>
+</div>
+</section>
+
+<!-- Stats Bar -->
+<div class="stats">
+<div class="container">
+<div class="stats-grid">
+<div><div class="stat-value"><span class="stat-number">30+</span></div><div class="stat-label">Products Live on Shopify</div></div>
+<div><div class="stat-value"><span class="stat-number">6</span></div><div class="stat-label">Active Client Stores</div></div>
+<div><div class="stat-value"><span class="stat-number">12</span></div><div class="stat-label">Social Channels</div></div>
+<div><div class="stat-value"><span class="stat-number">80%</span></div><div class="stat-label">Faster Time-to-Market</div></div>
+</div>
+</div>
+</div>
+
+<!-- Case Studies -->
+<section id="cases" class="case-section">
+<div class="container">
+<div class="section-label">/ Case Studies</div>
+<h2 class="section-title">Real Stores, Real Results</h2>
+<p class="section-desc">From jewelry to home decor, our AI pipeline powers cross-border stores across multiple verticals.</p>
+
+<div class="case-studios-grid">
+
+<div class="cs-card">
+<div class="cs-card-header">
+<h3>WCJ &mdash; Worldwide Curated Jewelry</h3>
+<span class="cs-tag">Jewelry</span>
+</div>
+<div class="cs-stat"><strong>30</strong> SKUs &middot; <strong>5</strong>-Image Editorial Pipeline &middot; <strong>B2B</strong> Wholesale Ready</div>
+<div class="cs-dots">
+<span>1688 Sourcing</span>
+<span>AI Imagery</span>
+<span>Shopify Listing</span>
+<span>Social Syndication</span>
+</div>
+</div>
+
+<div class="cs-card">
+<div class="cs-card-header">
+<h3>MODA &mdash; Minimalist Home Decor</h3>
+<span class="cs-tag">Home &amp; Living</span>
+</div>
+<div class="cs-stat"><strong>18</strong> SKUs &middot; <strong>US/EU</strong> Warehousing &middot; <strong>Pinterest</strong>-First Strategy</div>
+<div class="cs-dots">
+<span>CJ Sourcing</span>
+<span>AI Lifestyle Shots</span>
+<span>Shopify + Etsy</span>
+<span>Pinterest &amp; Instagram</span>
+</div>
+</div>
+
+<div class="cs-card">
+<div class="cs-card-header">
+<h3>NOVA &mdash; Tech Accessories</h3>
+<span class="cs-tag">Electronics</span>
+</div>
+<div class="cs-stat"><strong>22</strong> SKUs &middot; <strong>Amazon</strong> + Shopify &middot; <strong>TikTok</strong> Launch Campaign</div>
+<div class="cs-dots">
+<span>1688 Sourcing</span>
+<span>AI Product Photography</span>
+<span>Multi-Platform Listing</span>
+<span>Influencer Outreach</span>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- Deep Case: WCJ -->
+<section style="background:#0a0a0c">
+<div class="container">
+<div class="section-label">/ Featured Case Study</div>
+<h2 class="section-title">WCJ &mdash; Full Pipeline Deep Dive</h2>
+<p class="section-desc">A complete AI-powered jewelry brand &mdash; from 1688 sourcing to Shopify storefront with B2B-optimized product pages, social media presence, and automated listing workflows.</p>
+<div class="case-grid">
+<div class="case-visual"><img src="assets/images/model-1.jpg" alt="WCJ Jewelry product on model"></div>
+<div>
+<h3 style="font-size:1.25rem;margin-bottom:12px">The Full AI Pipeline</h3>
+<ul class="case-features">
+<li>Source trending products from 1688 with margin calculator &amp; supplier vetting</li>
+<li>Generate editorial-grade product images with AI models (5-image structure)</li>
+<li>Auto-upload to Shopify with optimized B2B detail templates</li>
+<li>Syndicate to Pinterest, Instagram, X, Facebook, TikTok, and more</li>
+<li>5-Image editorial structure: Hero &rarr; Lifestyle &rarr; White BG &rarr; Macro Detail &rarr; Extra Angles</li>
+<li>B2B template includes MOQ, lead time, customs, certifications</li>
+</ul>
+<div class="case-metrics">
+<div class="case-metric"><div class="case-metric-value">30</div><div class="case-metric-label">SKUs Listed</div></div>
+<div class="case-metric"><div class="case-metric-value">90%</div><div class="case-metric-label">AI-Generated Images</div></div>
+<div class="case-metric"><div class="case-metric-value">6</div><div class="case-metric-label">Social Platforms</div></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- How It Works -->
+<section id="how">
+<div class="container">
+<div class="section-label">/ How It Works</div>
+<h2 class="section-title">Start in Days, Scale in Weeks</h2>
+<p class="section-desc">Three simple steps to launch your cross-border e-commerce operation with AI automation.</p>
+<div class="steps">
+<div class="step">
+<div class="step-number">01</div>
+<h3>Connect Your Stack</h3>
+<p>We integrate with Shopify, your supplier channels (1688, CJ, etc.), and all social platforms. One-time setup, done in hours.</p>
+<div class="step-arrow">&rarr;</div>
+</div>
+<div class="step">
+<div class="step-number">02</div>
+<h3>AI Takes Over</h3>
+<p>Product sourcing &rarr; image generation &rarr; listing creation &rarr; social posting. The entire pipeline runs autonomously.</p>
+<div class="step-arrow">&rarr;</div>
+</div>
+<div class="step">
+<div class="step-number">03</div>
+<h3>Scale &amp; Optimize</h3>
+<p>Add more SKUs, expand to new platforms, and let the system handle volume. You focus on strategy and relationships.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Capabilities -->
+<section id="capabilities" style="background:#0f0f13">
+<div class="container">
+<div class="section-label">/ Platform</div>
+<h2 class="section-title">Full-Stack AI Automation</h2>
+<p class="section-desc">Every layer of the cross-border e-commerce workflow, automated end to end.</p>
+<div class="caps-grid">
+<div class="cap-card">
+<div class="cap-icon">&#128270;</div>
+<h3>AI Product Sourcing</h3>
+<p>Automated 1688 search &amp; scrape with profit margin calculator, supplier rating filter (&gt;4.5), and cross-border experience check.</p>
+</div>
+<div class="cap-card">
+<div class="cap-icon">&#127912;</div>
+<h3>AI Image Generation</h3>
+<p>5-image editorial pipeline: lifestyle hero, context scene, white bg product shot, macro detail, and alternative angles. B2B-grade quality.</p>
+</div>
+<div class="cap-card">
+<div class="cap-icon">&#128230;</div>
+<h3>Automated Listing</h3>
+<p>Shopify REST + GraphQL API integration with B2B detail template: specs table, MOQ, lead time, certifications, and SEO-optimized descriptions.</p>
+</div>
+<div class="cap-card">
+<div class="cap-icon">&#128247;</div>
+<h3>Social Media Engine</h3>
+<p>Multi-platform content scheduling engine with smart repurposing &mdash; one image set becomes 6+ platform-optimized posts. AI caption generation per platform tone.</p>
+</div>
+<div class="cap-card">
+<div class="cap-icon">&#128202;</div>
+<h3>B2B Detail Templates</h3>
+<p>Professional wholesale-optimized product pages with brand bar, spec tables, customization services, manufacturing facility showcase.</p>
+</div>
+<div class="cap-card">
+<div class="cap-icon">&#128260;</div>
+<h3>Token &amp; Auth Management</h3>
+<p>Automatic Shopify OAuth client_credentials flow, 24h token refresh, exponential backoff retry on all API calls. Zero manual maintenance.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Products Showcase -->
+<section id="products">
+<div class="container">
+<div class="section-label">/ Product Showcase</div>
+<h2 class="section-title">Live Products, AI-Generated</h2>
+<p class="section-desc">Every image below was generated by AI &mdash; from editorial lifestyle shots to macro detail close-ups. No studio, no photographer, no retoucher.</p>
+<div class="products-grid">
+<div class="product-card"><img src="assets/images/products/product-1.jpg" alt="Gold hoop earrings"><div class="product-card-body"><h4>Gold Hoop Earrings</h4><p>Editorial &bull; P1 Hero</p></div></div>
+<div class="product-card"><img src="assets/images/products/product-1-macro.jpg" alt="Gold hoop earrings macro"><div class="product-card-body"><h4>Gold Hoop Earrings</h4><p>Macro Detail &bull; P4</p></div></div>
+<div class="product-card"><img src="assets/images/products/product-2.jpg" alt="Silver chain necklace"><div class="product-card-body"><h4>Silver Chain Necklace</h4><p>Editorial &bull; P1 Hero</p></div></div>
+<div class="product-card"><img src="assets/images/products/product-3.jpg" alt="Blue bead bracelet"><div class="product-card-body"><h4>Blue Bead Bracelet</h4><p>Editorial &bull; P1 Hero</p></div></div>
+<div class="product-card"><img src="assets/images/products/product-4.jpg" alt="Rose gold ring"><div class="product-card-body"><h4>Rose Gold Ring</h4><p>Editorial &bull; P1 Hero</p></div></div>
+<div class="product-card"><img src="assets/images/products/product-5.jpg" alt="Pearl stud earrings"><div class="product-card-body"><h4>Pearl Stud Earrings</h4><p>Editorial &bull; P1 Hero</p></div></div>
+</div>
+</div>
+</section>
+
+<!-- Platforms (Rich) -->
+<div class="platforms" style="padding:48px 0">
+<div class="container">
+<p>Integrated Ecosystem</p>
+<div class="platform-logos">
+<span>Shopify</span>
+<span>1688.com</span>
+<span>CJ Dropshipping</span>
+<span>Amazon</span>
+<span>Etsy</span>
+</div>
+<div class="platform-category">
+<h4>Social Media Channels</h4>
+<div class="platform-logos">
+<span>Pinterest</span>
+<span>Instagram</span>
+<span>Facebook</span>
+<span>X (Twitter)</span>
+<span>TikTok</span>
+<span>LinkedIn</span>
+<span>YouTube</span>
+<span>Snapchat</span>
+<span>Telegram</span>
+<span>WhatsApp</span>
+<span>Reddit</span>
+<span>Discord</span>
+</div>
+</div>
+<div class="platform-category">
+<h4>AI &amp; Infrastructure</h4>
+<div class="platform-logos">
+<span>OpenAI</span>
+<span>Google Gemini</span>
+<span>Stability AI</span>
+<span>ElevenLabs</span>
+<span>Cloudflare</span>
+<span>Vercel</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Testimonials -->
+<section>
+<div class="container">
+<div class="section-label">/ Trusted By</div>
+<h2 class="section-title">What Partners Say</h2>
+<p class="section-desc">From solo sellers to established brands &mdash; our system replaces weeks of manual work with pipeline-driven automation.</p>
+<div class="testimonials-grid">
+<div class="testimonial-card">
+<p>"We went from zero to 30 SKUs in 3 weeks. The image generation alone saved us $5K+ in photography costs."</p>
+<div class="testimonial-author"><div class="testimonial-avatar">M</div><div><div class="testimonial-name">Marcus Chen</div><div class="testimonial-role">Jewelry Brand Founder</div></div></div>
+</div>
+<div class="testimonial-card">
+<p>"The B2B template converted better than anything we had manually written. MOQ and lead time info right on the page = trust."</p>
+<div class="testimonial-author"><div class="testimonial-avatar">S</div><div><div class="testimonial-name">Sarah Kim</div><div class="testimonial-role">Cross-Border Seller</div></div></div>
+</div>
+<div class="testimonial-card">
+<p>"Automated social posting across 12 platforms without lifting a finger. The content engine alone is worth the investment."</p>
+<div class="testimonial-author"><div class="testimonial-avatar">J</div><div><div class="testimonial-name">James Torres</div><div class="testimonial-role">E-Commerce Agency Owner</div></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+<div class="container">
+<div class="section-label">/ Get Started</div>
+<h2>Ready to Automate Your<br>Cross-Border Operation?</h2>
+<p>See the system in action with a live demo. We'll walk through your product catalog and build a custom pipeline for your business.</p>
+<div class="cta-actions">
+<button class="btn-primary">Book a Live Demo</button>
+<button class="btn-secondary">View Case Studies &rarr;</button>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="container">
+<div class="logo"><div class="logo-mark">E</div>EOS Systems</div>
+<p>&copy; 2026 EOS Systems. Built for cross-border e-commerce.</p>
+</div>
+</footer>
+
+</body>
+</html>
