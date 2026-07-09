@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EOS · 东南亚三平台 AI 商品上架系统 — 华少 Demo</title>
+<title>EOS · 东南亚三平台 AI 商品上架系统 — Demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -111,7 +111,7 @@ td .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11p
 .cp-theme-btn.bf.active{background:#111;border-color:#f59e0b}
 .cp-theme-btn.vday.active{background:#db2777;border-color:#db2777}
 .cp-theme-btn.summer.active{background:#0891b2;border-color:#0891b2}
-.cp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.cp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .cp-column{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);overflow:hidden}
 .cp-column-header{padding:16px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.05)}
 .cp-column-header i{font-size:18px}
@@ -170,10 +170,11 @@ td .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11p
     <button class="nav-tab" data-panel="pipeline">🤖 AI 流水线</button>
     <button class="nav-tab" data-panel="crossplatform">🔄 跨平台对比</button>
     <button class="nav-tab" data-panel="batch">🚀 批量上架</button>
+    <button class="nav-tab" data-panel="settings">⚙️ 系统设置</button>
   </div>
   <div class="nav-status">
     <span class="status-dot online"></span>
-    <span class="status-text">系统在线 · Shopee+Lazada+TikTok v2.1</span>
+    <span class="status-text">系统在线 · 东南亚三平台 v2.1</span>
   </div>
 </nav>
 
@@ -185,7 +186,7 @@ td .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11p
     <div class="stat-card"><div class="stat-label">今日处理</div><div class="stat-value">47</div><div class="stat-footer">↑ 15% 较昨日</div></div>
     <div class="stat-card"><div class="stat-label">商品总数</div><div class="stat-value">328 <small>SKU</small></div><div class="stat-footer">全品类 · 3 平台覆盖</div></div>
     <div class="stat-card"><div class="stat-label">AI 图片生成</div><div class="stat-value">1,284</div><div class="stat-footer">成功率 98.2%</div></div>
-    <div class="stat-card"><div class="stat-label">多店铺管理</div><div class="stat-value">8 <small>店</small></div><div class="stat-footer">5 Shopee + 2 Lazada + 1 TikTok</div></div>
+    <div class="stat-card"><div class="stat-label">多店铺管理</div><div class="stat-value">8 <small>店</small></div><div class="stat-footer">⚙️ 详见系统设置</div></div>
   </div>
   <div class="queue-card">
     <div class="queue-title" style="display:flex;justify-content:space-between"><span>⏳ 实时处理队列</span><span style="font-size:11px;color:var(--text2)">3 个任务处理中</span></div>
@@ -210,7 +211,7 @@ td .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11p
 <div class="panel fade-in" id="panel-datasource">
   <div class="source-intro">
     <strong>📸 素材来源：工厂白底产品图</strong>
-    <p>华少项目采用最简素材方案——工厂只提供白底产品照片（平铺或人台），AI 管道自动完成背景消除、场景合成、模特试穿生成，按三平台尺寸规范输出标准化商品图。</p>
+    <p>工厂只提供白底产品照片（平铺或人台），AI 管道自动完成背景消除、场景合成、模特试穿生成，按三平台尺寸规范输出标准化商品图。</p>
   </div>
   <div class="source-tabs">
     <button class="source-tab active">📤 工厂白底图</button>
@@ -301,6 +302,63 @@ td .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11p
     <div class="batch-log" id="batch-log"><div class="log-entry">就绪，点击按钮开始模拟...</div></div>
   </div>
 </div>
+
+<!-- ===== 系统设置 · 店铺管理 ===== -->
+<div class="panel fade-in" id="panel-settings">
+  <div class="stats-grid" style="margin-bottom:24px">
+    <div class="stat-card"><div class="stat-label">平台总数</div><div class="stat-value">3</div><div class="stat-footer">Shopee + Lazada + TikTok</div></div>
+    <div class="stat-card"><div class="stat-label">店铺总数</div><div class="stat-value">8</div><div class="stat-footer">已全部认证</div></div>
+    <div class="stat-card"><div class="stat-label">Token 状态</div><div class="stat-value" style="color:var(--green)">✓</div><div class="stat-footer">全部自动刷新</div></div>
+    <div class="stat-card"><div class="stat-label">今日分发</div><div class="stat-value">47</div><div class="stat-footer">跨 8 店</div></div>
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:24px">
+    <div style="font-size:16px;font-weight:700;margin-bottom:16px">🏪 店铺管理</div>
+    <div class="table-wrapper"><table>
+      <thead><tr><th>平台</th><th>店铺名称</th><th>市场</th><th>Seller ID</th><th>商品数</th><th>Token 状态</th><th>操作</th></tr></thead>
+      <tbody>
+        <tr><td><span style="color:#ee4d2e;font-weight:600">Shopee</span></td><td>旗舰店</td><td>SG 🇸🇬</td><td style="font-family:monospace;font-size:12px">SP-SG-001</td><td>126</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#ee4d2e;font-weight:600">Shopee</span></td><td>马来店</td><td>MY 🇲🇾</td><td style="font-family:monospace;font-size:12px">SP-MY-002</td><td>89</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#ee4d2e;font-weight:600">Shopee</span></td><td>泰国站</td><td>TH 🇹🇭</td><td style="font-family:monospace;font-size:12px">SP-TH-003</td><td>72</td><td><span style="color:var(--yellow)">⚠ 即将到期</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">续期</span></td></tr>
+        <tr><td><span style="color:#ee4d2e;font-weight:600">Shopee</span></td><td>菲律宾站</td><td>PH 🇵🇭</td><td style="font-family:monospace;font-size:12px">SP-PH-004</td><td>35</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#ee4d2e;font-weight:600">Shopee</span></td><td>越南站</td><td>VN 🇻🇳</td><td style="font-family:monospace;font-size:12px">SP-VN-005</td><td>4</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#0099ff;font-weight:600">Lazada</span></td><td>新加坡旗舰</td><td>SG 🇸🇬</td><td style="font-family:monospace;font-size:12px">LZ-SG-001</td><td>156</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#0099ff;font-weight:600">Lazada</span></td><td>印尼旗舰</td><td>ID 🇮🇩</td><td style="font-family:monospace;font-size:12px">LZ-ID-002</td><td>62</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#ff0050;font-weight:600">TikTok Shop</span></td><td>全球店</td><td>Southeast Asia</td><td style="font-family:monospace;font-size:12px">TK-GL-001</td><td>156</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <div style="display:flex;gap:16px;margin-top:20px">
+      <div style="flex:1;background:var(--bg);border-radius:var(--radius-sm);padding:20px">
+        <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">店铺资产隔离</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.8">
+          ✅ 每店独立 Token<br>
+          ✅ 库存各自管理<br>
+          ✅ 订单按店汇总<br>
+          ✅ API 调用隔离
+        </div>
+      </div>
+      <div style="flex:1;background:var(--bg);border-radius:var(--radius-sm);padding:20px">
+        <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">跨店铺操作</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.8">
+          🚀 选品→多店分发<br>
+          📊 运营数据汇总<br>
+          🔄 价格同步调整<br>
+          📋 批量上架统一管理
+        </div>
+      </div>
+      <div style="flex:1;background:var(--bg);border-radius:var(--radius-sm);padding:20px">
+        <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">通知 & 告警</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.8">
+          ⚠ Token 过期预警<br>
+          📧 上架结果通知<br>
+          📉 异常店铺告警<br>
+          🔔 品类树更新通知
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 
 <script>
@@ -385,15 +443,8 @@ EOS.renderCrossPlatform=function(){
   h+=imagePlaceholder(0,0,'<i class="fa-brands fa-tiktok"></i><br>TikTok短视频<br><small>9:16竖屏·AI生成</small>',tm.border?'border:'+tm.border.replace('theme-xmas','2px solid #dc2626').replace('theme-bf','2px solid #111').replace('theme-vday','2px solid #db2777').replace('theme-summer','2px solid #0891b2'):'');
   h+='</div></div>';
 
-  // Multi-Store
-  h+='<div class="cp-column"><div class="cp-column-header multistore"><i class="fa-solid fa-store"></i><span class="cp-column-title">多店铺管理</span></div><div class="cp-body">';
-  h+='<div class="cp-field"><div class="cp-field-label">Shopee 5 店</div><div class="cp-field-value">🏪 店1 · SG 🇸🇬<br>🏪 店2 · MY 🇲🇾<br>🏪 店3 · TH 🇹🇭<br>🏪 店4 · PH 🇵🇭<br>🏪 店5 · VN 🇻🇳</div></div>';
-  h+='<div class="cp-field"><div class="cp-field-label">Lazada 2 店</div><div class="cp-field-value">🏪 店1 · SG 🇸🇬<br>🏪 店2 · ID 🇮🇩</div></div>';
-  h+='<div class="cp-field"><div class="cp-field-label">TikTok Shop 1 店</div><div class="cp-field-value">🏪 店1 · ID 🇮🇩</div></div>';
-  h+='<div class="cp-field"><div class="cp-field-label">一键批量分发</div><div class="cp-field-value" style="color:var(--accent);font-weight:600">选品 → 8 个店铺同时上架</div></div>';
-  h+='<div class="cp-field"><div class="cp-field-label">数据面板</div><div class="cp-field-value" style="color:var(--text2)">统一控制台 · 跨店铺汇总</div></div></div></div>';
 
-  grid.innerHTML=h;
+    grid.innerHTML=h;
 };
 
 EOS.batchRunning=false;
