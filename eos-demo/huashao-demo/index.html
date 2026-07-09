@@ -2,321 +2,491 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>EOS · 东南亚三平台 AI 商品上架系统 — 华少 Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EOS · 东南亚三平台 AI 商品上架系统</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',-apple-system,system-ui,sans-serif;background:#0a0a0c;color:#f0f0f2;line-height:1.6}
-.container{max-width:1200px;margin:0 auto;padding:0 24px}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--bg4:#24243e;
+  --text:#e0e0e0;--text2:#999;--accent:#00d4ff;--accent2:#0891b2;
+  --green:#10b981;--yellow:#f59e0b;--red:#ef4444;--orange:#f97316;--purple:#8b5cf6;
+  --radius:10px;--radius-sm:6px;--shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.nav{background:var(--bg2);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 24px;display:flex;align-items:center;height:60px;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.nav-logo{font-size:22px;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:8px;margin-right:40px;letter-spacing:-0.5px}
+.nav-logo i{font-size:24px}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{padding:8px 18px;border-radius:8px;border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.nav-tab:hover{color:var(--text);background:var(--bg3)}
+.nav-tab.active{color:var(--accent);background:var(--bg4)}
+.nav-status{margin-left:auto;display:flex;align-items:center;gap:16px}
+.status-dot{width:8px;height:8px;border-radius:50%;animation:pulse 2s infinite}
+.status-dot.online{background:var(--green)}
+.status-text{font-size:12px;color:var(--text2)}
 
-nav{position:fixed;top:0;left:0;right:0;background:rgba(10,10,12,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06);z-index:100}
-nav .container{display:flex;align-items:center;justify-content:space-between;height:64px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem}
-.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,#00d4ff,#6366f1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
-.nav-links{display:flex;gap:32px}
-.nav-links a{font-size:.875rem;font-weight:500;color:#a0a0ab;transition:color .2s}
-.nav-links a:hover{color:#fff}
-.nav-cta{background:#00d4ff;color:#000;border:none;padding:8px 20px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
-.nav-cta:hover{background:#00b8e6;transform:translateY(-1px)}
+.main{padding:24px;max-width:1400px;margin:0 auto}
+.panel{display:none}
+.panel.active{display:block}
 
-.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:64px}
-.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(99,102,241,.08))}
-.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 40%,#0a0a0c 85%)}
-.hero-content{position:relative;z-index:2;max-width:800px;margin:0 auto;text-align:center}
-.hero-badge{display:inline-block;padding:6px 16px;border-radius:100px;background:rgba(0,212,255,.15);border:1px solid rgba(0,212,255,.3);font-size:.8rem;font-weight:500;color:#00d4ff;margin-bottom:24px}
-.hero h1{font-size:clamp(2.5rem,5vw,3.5rem);font-weight:800;line-height:1.15;margin-bottom:20px}
-.hero h1 span{background:linear-gradient(135deg,#00d4ff,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:1.1rem;color:#a0a0ab;max-width:600px;margin:0 auto 32px}
-.hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.btn-primary{background:#00d4ff;color:#000;border:none;padding:14px 32px;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s}
-.btn-primary:hover{background:#00b8e6;transform:translateY(-1px)}
-.btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25);padding:14px 32px;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s}
-.btn-outline:hover{border-color:#00d4ff;color:#00d4ff}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:20px;transition:all .3s}
+.stat-card:hover{border-color:var(--accent2);transform:translateY(-2px);box-shadow:var(--shadow)}
+.stat-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.stat-value{font-size:32px;font-weight:700;color:var(--accent);line-height:1}
+.stat-value small{font-size:14px;color:var(--text2);font-weight:400}
+.stat-footer{font-size:11px;color:var(--green);margin-top:6px}
 
-.section{padding:100px 0}
-.section-label{text-transform:uppercase;font-size:.75rem;font-weight:600;color:#00d4ff;letter-spacing:2px;margin-bottom:12px}
-.section-title{font-size:2.2rem;font-weight:700;margin-bottom:16px}
-.section-title span{background:linear-gradient(135deg,#00d4ff,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.section-desc{font-size:1rem;color:#a0a0ab;max-width:600px;margin-bottom:48px}
+.queue-card{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:20px;margin-bottom:24px}
+.queue-title{font-size:14px;font-weight:600;margin-bottom:12px}
+.queue-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.queue-row:last-child{border:none}
+.queue-sku{font-family:monospace;font-size:12px;color:var(--accent);width:80px}
+.queue-name{flex:1;font-size:13px}
+.queue-platform{font-size:11px;color:var(--text2)}
+.queue-bar{width:120px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.queue-bar-fill{height:100%;background:var(--accent);border-radius:2px;animation:processBar 3s ease-in-out infinite}
+.queue-status{font-size:11px;font-weight:600}
+.queue-status.processing{color:var(--yellow)}
+.queue-status.complete{color:var(--green)}
 
-.platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.platform-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:32px;transition:all .3s}
-.platform-card:hover{border-color:rgba(0,212,255,.3);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
-.platform-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
-.platform-icon.shopee{background:rgba(238,77,46,.15);color:#ee4d2e}
-.platform-icon.lazada{background:rgba(0,153,255,.15);color:#0099ff}
-.platform-icon.tiktok{background:rgba(255,0,80,.15);color:#ff0050}
-.platform-card h3{font-size:1.1rem;margin-bottom:8px}
-.platform-card p{font-size:.85rem;color:#a0a0ab;line-height:1.7}
-.platform-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.platform-tags span{padding:3px 10px;background:rgba(255,255,255,.06);border-radius:100px;font-size:.75rem;color:#777}
+.platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.platform-card{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:20px;display:flex;align-items:center;gap:14px;transition:all .3s}
+.platform-card:hover{border-color:rgba(255,255,255,0.15)}
+.platform-icon{width:44px;height:44px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:20px}
+.platform-icon.shopee{background:rgba(238,77,46,0.15);color:#ee4d2e}
+.platform-icon.lazada{background:rgba(0,153,255,0.15);color:#0099ff}
+.platform-icon.tiktokshop{background:rgba(255,0,80,0.15);color:#ff0050}
+.platform-info{flex:1}
+.platform-name{font-size:15px;font-weight:600}
+.platform-detail{font-size:11px;color:var(--text2);margin-top:2px}
+.platform-badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.platform-badge.online{background:rgba(16,185,129,0.15);color:var(--green)}
 
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.feature-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:28px;transition:all .3s}
-.feature-card:hover{border-color:rgba(0,212,255,.2)}
-.feature-card i{font-size:24px;color:#00d4ff;margin-bottom:14px}
-.feature-card h3{font-size:1rem;margin-bottom:8px}
-.feature-card p{font-size:.82rem;color:#777;line-height:1.6}
+.action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.action-btn{background:var(--bg3);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:24px 20px;text-align:center;cursor:pointer;transition:all .3s;color:var(--text);font-family:inherit;font-size:13px;font-weight:600}
+.action-btn:hover{background:var(--bg4);border-color:var(--accent);transform:translateY(-2px)}
+.action-btn i{font-size:24px;color:var(--accent);margin-bottom:8px;display:block}
 
-.demo-section{background:rgba(255,255,255,.02);border-radius:20px;border:1px solid rgba(255,255,255,.06);padding:40px}
-.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:30px}
-.batch-panel{background:rgba(0,0,0,.3);border-radius:12px;padding:24px}
-.batch-title{font-size:1.1rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.batch-table{width:100%;border-collapse:collapse;font-size:.8rem}
-.batch-table th{text-align:left;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:#777}
-.batch-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.03)}
-.batch-check{accent-color:#00d4ff}
-.batch-platforms{display:flex;gap:8px;margin:16px 0}
-.batch-chip{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#fff;font-size:.78rem;cursor:pointer;transition:all .2s}
-.batch-chip:hover{border-color:#00d4ff}
-.batch-chip.selected{background:#00d4ff;color:#000;border-color:#00d4ff}
-.batch-launch{width:100%;padding:12px;background:linear-gradient(135deg,#00d4ff,#6366f1);color:#000;border:none;border-radius:10px;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:16px}
-.batch-launch:hover{opacity:.9}
-.progress-bar{height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin:12px 0}
-.progress-fill{height:100%;background:linear-gradient(90deg,#00d4ff,#6366f1);border-radius:3px;transition:width .3s;width:0%}
-.progress-stats{display:flex;gap:16px;font-size:.8rem;margin-bottom:8px}
-.log-box{background:#000;border-radius:8px;padding:14px;max-height:160px;overflow-y:auto;font-family:monospace;font-size:.7rem;line-height:1.7;color:#00d4ff}
+.source-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--bg2);border-radius:var(--radius);padding:4px;width:fit-content}
+.source-tab{padding:8px 20px;border-radius:var(--radius-sm);border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.source-tab.active{background:var(--accent);color:#000}
+.source-tab:not(.active):hover{color:var(--text)}
 
-.cp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.cp-col{background:rgba(0,0,0,.3);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,.04)}
-.cp-col-header{font-size:.9rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.cp-col-header.shopee{color:#ee4d2e}
-.cp-col-header.lazada{color:#0099ff}
-.cp-col-header.tiktok{color:#ff0050}
-.cp-field{margin-bottom:10px}
-.cp-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.5px;color:#777;margin-bottom:2px}
-.cp-val{font-size:.75rem;line-height:1.5}
-.cp-val.price{font-size:1rem;font-weight:700;color:#00d4ff}
+.table-wrapper{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead{background:var(--bg3)}
+th{text-align:left;padding:12px 16px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);font-weight:600}
+td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03)}
+tr:hover td{background:rgba(255,255,255,0.02);cursor:pointer}
+td .thumb{width:40px;height:40px;border-radius:4px;object-fit:cover;background:var(--bg4)}
+td .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.badge-uploaded{background:rgba(0,212,255,0.12);color:var(--accent)}
+.badge-scraped{background:rgba(139,92,246,0.12);color:var(--purple)}
+.badge-backup{background:rgba(245,158,11,0.12);color:var(--yellow)}
+.badge-ready{background:rgba(16,185,129,0.12);color:var(--green)}
 
-.product-tabs{display:flex;gap:8px;margin-bottom:24px}
-.product-tab{padding:8px 20px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:transparent;color:#fff;font-size:.82rem;cursor:pointer;transition:all .2s}
-.product-tab:hover{border-color:#00d4ff}
-.product-tab.active{background:#00d4ff;color:#000;border-color:#00d4ff}
+.pipeline-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.pipeline-step{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:24px;position:relative}
+.pipeline-step::after{content:'→';position:absolute;right:-18px;top:50%;transform:translateY(-50%);font-size:24px;color:var(--accent);z-index:1}
+.pipeline-step:last-child::after{display:none}
+.step-number{width:32px;height:32px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;margin-bottom:12px}
+.step-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.step-desc{font-size:12px;color:var(--text2);line-height:1.6}
+.step-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.step-tag{padding:4px 10px;background:var(--bg3);border-radius:4px;font-size:11px;color:var(--text2)}
 
-footer{text-align:center;padding:40px 0;border-top:1px solid rgba(255,255,255,.06);color:#555;font-size:.8rem}
-footer a{color:#00d4ff}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px}
-.stat-card{text-align:center;padding:24px 16px;background:rgba(255,255,255,.03);border-radius:12px;border:1px solid rgba(255,255,255,.06)}
-.stat-num{font-size:2rem;font-weight:800;color:#00d4ff;line-height:1}
-.stat-label{font-size:.78rem;color:#777;margin-top:6px}
+.comparison{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:24px}
+.comparison-title{font-size:16px;font-weight:700;margin-bottom:18px}
+.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.before-after{background:var(--bg);border-radius:var(--radius-sm);padding:16px}
+.before-after-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:10px}
+.before-after-img{width:100%;border-radius:4px;margin-bottom:8px}
+.before-after-caption{font-size:12px;color:var(--text2);text-align:center}
 
-@media(max-width:768px){
-  .platform-grid,.features-grid,.cp-grid,.stats-grid{grid-template-columns:1fr}
-  .demo-grid{grid-template-columns:1fr}
-  .nav-links{display:none}
+.cp-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.cp-product-select{display:flex;gap:8px}
+.cp-product-btn{padding:8px 18px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.1);background:var(--bg2);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.cp-product-btn:hover{border-color:var(--accent2)}
+.cp-product-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.cp-theme-select{display:flex;gap:8px;margin-left:16px}
+.cp-theme-btn{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:var(--bg2);color:var(--text);font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
+.cp-theme-btn:hover{border-color:var(--accent2)}
+.cp-theme-btn.active{color:#000;border-color:var(--accent)}
+.cp-theme-btn.xmas.active{background:#ef4444}
+.cp-theme-btn.bf.active{background:#f59e0b}
+.cp-theme-btn.vday.active{background:#ec4899}
+.cp-theme-btn.summer.active{background:#06b6d4}
+.cp-theme-btn.default-theme.active{background:var(--accent)}
+
+.cp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.cp-column{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);overflow:hidden}
+.cp-column-header{padding:16px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.cp-column-header i{font-size:18px}
+.cp-column-header.shopee{background:rgba(238,77,46,0.08);color:#ee4d2e}
+.cp-column-header.lazada{background:rgba(0,153,255,0.08);color:#0099ff}
+.cp-column-header.tiktokshop{background:rgba(255,0,80,0.08);color:#ff0050}
+.cp-column-header.multistore{background:rgba(139,92,246,0.08);color:#8b5cf6}
+.cp-column-title{font-size:14px;font-weight:700}
+.cp-body{padding:16px 20px}
+.cp-field{margin-bottom:14px}
+.cp-field-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:4px;font-weight:600}
+.cp-field-value{font-size:13px;line-height:1.5}
+.cp-field-value.bullet::before{content:'• ';color:var(--accent)}
+.cp-field-value.price{font-size:18px;font-weight:700;color:var(--accent)}
+.cp-spec-table{width:100%;font-size:11px}
+.cp-spec-table td{padding:6px 0;border:none}
+.cp-spec-table td:first-child{color:var(--text2);width:100px}
+.cp-image{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--radius-sm);background:var(--bg);margin-bottom:8px}
+.cp-images-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.cp-images-row img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;background:var(--bg)}
+.cp-product-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+
+.batch-header{display:flex;gap:12px;align-items:center;margin-bottom:24px;flex-wrap:wrap}
+.batch-check{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer}
+.batch-check input{accent-color:var(--accent)}
+.batch-platforms{display:flex;gap:8px;margin:0 16px}
+.batch-platform-chip{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;transition:all .2s;font-family:inherit;font-weight:500}
+.batch-platform-chip:hover{border-color:var(--accent2)}
+.batch-platform-chip.selected{background:var(--accent);color:#000;border-color:var(--accent)}
+.batch-launch{padding:10px 28px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.batch-launch:hover{opacity:.9;transform:scale(1.02)}
+.batch-progress{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.batch-progress-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin:12px 0}
+.batch-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:3px;transition:width .3s;width:0%}
+.batch-stats{display:flex;gap:24px;margin-bottom:16px;font-size:13px}
+.batch-log{background:var(--bg);border-radius:var(--radius-sm);padding:16px;max-height:200px;overflow-y:auto;font-family:monospace;font-size:12px;line-height:1.8}
+.batch-log .log-entry{color:var(--text2)}
+.batch-log .log-entry.success{color:var(--green)}
+.batch-log .log-entry.error{color:var(--red)}
+
+.theme-xmas{border:2px solid #ef4444}
+.theme-bf{border:2px solid #f59e0b}
+.theme-vday{border:2px solid #ec4899}
+.theme-summer{border:2px solid #06b6d4}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes processBar{0%{width:10%}50%{width:85%}100%{width:10%}}
+.fade-in{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1024px){
+  .stats-grid,.cp-grid{grid-template-columns:repeat(2,1fr)}
+  .pipeline-steps{grid-template-columns:1fr}
+  .pipeline-step::after{display:none}
+  .action-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .stats-grid,.platform-grid,.action-grid,.cp-grid{grid-template-columns:1fr}
+  .nav{padding:0 12px}
+  .nav-tab{padding:6px 10px;font-size:11px}
+  .nav-logo{margin-right:12px;font-size:18px}
+  .main{padding:12px}
 }
 </style>
 </head>
 <body>
-<nav><div class="container">
-  <div class="logo"><div class="logo-mark">E</div>EOS Engine</div>
-  <div class="nav-links">
-    <a href="#features">功能</a><a href="#platforms">平台</a><a href="#demo">演示</a><a href="#contact">联系</a>
+<nav class="nav">
+  <div class="nav-logo"><i class="fa-solid fa-cubes"></i> EOS</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-panel="dashboard">📊 总览</button>
+    <button class="nav-tab" data-panel="datasource">📦 数据源</button>
+    <button class="nav-tab" data-panel="pipeline">🤖 AI 流水线</button>
+    <button class="nav-tab" data-panel="crossplatform">🔄 跨平台对比</button>
+    <button class="nav-tab" data-panel="batch">🚀 批量上架</button>
   </div>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView()">预约演示</button>
-</div></nav>
-
-<section class="hero"><div class="container hero-content">
-  <div class="hero-badge">🌏 东南亚电商解决方案</div>
-  <h1>东南亚电商，<br><span>一套系统管三个平台</span></h1>
-  <p>Shopee + Lazada + TikTok Shop，白底图 → AI 生成电商图 → 一键自动上架。支持多店铺统一管理。</p>
-  <div class="hero-actions">
-    <button class="btn-primary" onclick="document.getElementById('demo').scrollIntoView()">📱 在线演示</button>
-    <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView()">📋 查看案例</button>
+  <div class="nav-status">
+    <span class="status-dot online"></span>
+    <span class="status-text">系统在线 · 东南亚三平台 v2.1</span>
   </div>
-</div></section>
+</nav>
 
-<section class="section" id="stats"><div class="container">
+<div class="main">
+
+<!-- Dashboard -->
+<div class="panel active fade-in" id="panel-dashboard">
   <div class="stats-grid">
-    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">电商平台全覆盖</div></div>
-    <div class="stat-card"><div class="stat-num">30s</div><div class="stat-label">单款商品上架速度</div></div>
-    <div class="stat-card"><div class="stat-num">∞</div><div class="stat-label">不限店铺数量</div></div>
-    <div class="stat-card"><div class="stat-num">98%</div><div class="stat-label">AI 图片生成成功率</div></div>
+    <div class="stat-card"><div class="stat-label">今日处理</div><div class="stat-value">23</div><div class="stat-footer">↑ 8% 较昨日</div></div>
+    <div class="stat-card"><div class="stat-label">商品总数</div><div class="stat-value">156 <small>SKU</small></div><div class="stat-footer">覆盖 3 个平台</div></div>
+    <div class="stat-card"><div class="stat-label">AI 图片生成</div><div class="stat-value">642</div><div class="stat-footer">成功率 97.8%</div></div>
+    <div class="stat-card"><div class="stat-label">多店铺管理</div><div class="stat-value">5 <small>店</small></div><div class="stat-footer">3 Shopee + 1 Lazada + 1 TikTok</div></div>
   </div>
-</div></section>
-
-<section class="section" id="features" style="padding-top:0"><div class="container">
-  <div class="section-label">核心功能</div>
-  <div class="section-title">从白底图到三平台上架，<span>全自动化</span></div>
-  <div class="section-desc">为泉州电商客户打造的 AI 商品上架系统，聚焦东南亚市场</div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <i class="fa-solid fa-wand-magic-sparkles"></i>
-      <h3>AI 图片生成</h3>
-      <p>白底图 → AI 自动生成电商场景图、模特佩戴图、微距细节图。支持三平台尺寸规范自动适配。</p>
-    </div>
-    <div class="feature-card">
-      <i class="fa-solid fa-layer-group"></i>
-      <h3>多平台上架</h3>
-      <p>一次编辑，同时上架 Shopee、Lazada、TikTok Shop。自动映射品类树、属性字段、图片规格。</p>
-    </div>
-    <div class="feature-card">
-      <i class="fa-solid fa-store"></i>
-      <h3>多店铺管理</h3>
-      <p>同一平台多个 Seller 账号统一管理。店铺间资产隔离，批量操作跨店铺分发。</p>
-    </div>
-    <div class="feature-card">
-      <i class="fa-solid fa-sitemap"></i>
-      <h3>品类树自动映射</h3>
-      <p>Shopee 分类树 + Lazada 品类库 + TikTok 品类 ID，AI 自动映射到正确类目。</p>
-    </div>
-    <div class="feature-card">
-      <i class="fa-solid fa-palette"></i>
-      <h3>营销主题</h3>
-      <p>圣诞节/黑五/情人节，一键切换营销主题，AI 自动重生成主题化商品图和详情页。</p>
-    </div>
-    <div class="feature-card">
-      <i class="fa-solid fa-chart-line"></i>
-      <h3>订单汇总</h3>
-      <p>三平台订单统一汇总面板。库存实时同步，避免超卖。</p>
-    </div>
+  <div class="queue-card">
+    <div class="queue-title" style="display:flex;justify-content:space-between"><span>⏳ 实时处理队列</span><span style="font-size:11px;color:var(--text2)">3 个任务</span></div>
+    <div class="queue-row"><span class="queue-sku">HUA-R001</span><span class="queue-name">简约几何堆叠戒指 → Shopee</span><span class="queue-platform"><i class="fa-solid fa-bag-shopping"></i></span><div class="queue-bar"><div class="queue-bar-fill" style="width:68%"></div></div><span class="queue-status processing">处理中</span></div>
+    <div class="queue-row"><span class="queue-sku">HUA-N001</span><span class="queue-name">莫桑石项链 → Lazada</span><span class="queue-platform"><i class="fa-solid fa-globe"></i></span><div class="queue-bar"><div class="queue-bar-fill" style="width:42%"></div></div><span class="queue-status processing">处理中</span></div>
+    <div class="queue-row"><span class="queue-sku">HUA-E001</span><span class="queue-name">珍珠耳钉 → TikTok Shop</span><span class="queue-platform"><i class="fa-brands fa-tiktok"></i></span><div class="queue-bar"><div class="queue-bar-fill" style="width:90%"></div></div><span class="queue-status processing">收尾中</span></div>
   </div>
-</div></section>
-
-<section class="section" id="platforms"><div class="container">
-  <div class="section-label">对接平台</div>
-  <div class="section-title">东南亚三大电商平台<span>全覆盖</span></div>
-  <div class="section-desc">Shopee · Lazada · TikTok Shop，每个平台独特的 API 规范和上架流程，我们已全部对接完成。</div>
   <div class="platform-grid">
-    <div class="platform-card">
-      <div class="platform-icon shopee"><i class="fa-solid fa-bag-shopping"></i></div>
-      <h3>Shopee</h3>
-      <p>API v2.0 · 支持双层变体（颜色+尺寸）· 品类树必填属性 · media_space 图片视频上传 · 六国站点</p>
-      <div class="platform-tags"><span>120 字符标题</span><span>OAuth 2.0</span><span>SG/MY/TH/PH/VN/TW</span></div>
-    </div>
-    <div class="platform-card">
-      <div class="platform-icon lazada"><i class="fa-solid fa-globe"></i></div>
-      <h3>Lazada</h3>
-      <p>LazOP 2.0 全新同步 API · JSON 格式 · 视频上传支持 · Webhook 通知 · 中文文档 · 阿里系国内直连</p>
-      <div class="platform-tags"><span>100 字符标题</span><span>同步 CreateProduct</span><span>SG/MY/ID/TH/PH/VN</span></div>
-    </div>
-    <div class="platform-card">
-      <div class="platform-icon tiktok"><i class="fa-brands fa-tiktok"></i></div>
-      <h3>TikTok Shop</h3>
-      <p>Commerce API · 9:16 竖屏视频 · GMV Max 广告 · CBT 跨境直发 · 内容电商蓝海</p>
-      <div class="platform-tags"><span>30 字符标题</span><span>竖屏视频</span><span>东南亚+TikTok US</span></div>
+    <div class="platform-card"><div class="platform-icon shopee"><i class="fa-solid fa-bag-shopping"></i></div><div class="platform-info"><div class="platform-name">Shopee</div><div class="platform-detail">3 店铺 · 126 个 Listing</div></div><span class="platform-badge online">已连接</span></div>
+    <div class="platform-card"><div class="platform-icon lazada"><i class="fa-solid fa-globe"></i></div><div class="platform-info"><div class="platform-name">Lazada</div><div class="platform-detail">1 店铺 · 98 个 Listing</div></div><span class="platform-badge online">已连接</span></div>
+    <div class="platform-card"><div class="platform-icon tiktokshop"><i class="fa-brands fa-tiktok"></i></div><div class="platform-info"><div class="platform-name">TikTok Shop</div><div class="platform-detail">1 店铺 · 104 个 Listing</div></div><span class="platform-badge online">已连接</span></div>
+  </div>
+  <div class="action-grid">
+    <button class="action-btn" data-action="batch"><i class="fa-solid fa-rocket"></i> 批量上架</button>
+    <button class="action-btn" data-action="pipeline"><i class="fa-solid fa-wand-magic-sparkles"></i> AI 图片生成</button>
+    <button class="action-btn" data-action="datasource"><i class="fa-solid fa-cloud-arrow-up"></i> 数据导入</button>
+    <button class="action-btn" data-action="crossplatform"><i class="fa-solid fa-arrows-left-right"></i> 跨平台对比</button>
+  </div>
+</div>
+
+<!-- Data Source -->
+<div class="panel fade-in" id="panel-datasource">
+  <div class="source-tabs">
+    <button class="source-tab active" data-source="upload">📤 主图上传</button>
+    <button class="source-tab" data-source="scrape">🔗 采集链接</button>
+    <button class="source-tab" data-source="backup">💾 硬盘备份</button>
+  </div>
+  <div class="table-wrapper"><table>
+    <thead><tr><th>图片</th><th>SKU</th><th>商品名称</th><th>品类</th><th>来源</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td><img src="../images/wave7-editorial/W7R001-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HUA-R001</td><td>简约几何堆叠戒指套装</td><td>戒指</td><td><span class="badge badge-uploaded">上传</span></td><td><span class="badge badge-ready">就绪</span></td></tr>
+      <tr><td><img src="../images/wave7-editorial/W7N002-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HUA-N001</td><td>925银莫桑石网球项链</td><td>项链</td><td><span class="badge badge-scraped">采集</span></td><td><span class="badge badge-ready">就绪</span></td></tr>
+      <tr><td><img src="../images/wave6-editorial/P1-01-W6P001-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HUA-E001</td><td>S999银珍珠耳钉</td><td>耳环</td><td><span class="badge badge-backup">备份</span></td><td><span class="badge badge-ready">就绪</span></td></tr>
+    </tbody>
+  </table></div>
+</div>
+
+<!-- AI Pipeline -->
+<div class="panel fade-in" id="panel-pipeline">
+  <div class="pipeline-steps">
+    <div class="pipeline-step"><div class="step-number">1</div><div class="step-title">图片处理</div><div class="step-desc">原始白底图 → 背景消除 → 3 种输出：白底产品图 / 场景合成图 / 微距细节图。自动按三平台尺寸规范输出。</div><div class="step-tags"><span class="step-tag">背景消除</span><span class="step-tag">场景合成</span><span class="step-tag">尺寸适配 ✓</span></div></div>
+    <div class="pipeline-step"><div class="step-number">2</div><div class="step-title">文案生成</div><div class="step-desc">AI 提取产品规格 → SEO 优化标题 → 卖点描述 → 各平台字段映射（Shopee 含中文标题，Lazada 含英文，TikTok 短视频文案）。</div><div class="step-tags"><span class="step-tag">标题优化</span><span class="step-tag">卖点提炼</span><span class="step-tag">多语言</span><span class="step-tag">关键词 SEO</span></div></div>
+    <div class="pipeline-step"><div class="step-number">3</div><div class="step-title">格式适配 &amp; 上架</div><div class="step-desc">一类目三平台：Shopee 120 字符 + 双层变体 / Lazada LazOP 2.0 同步 API + 视频 / TikTok Shop 30 字符 + 竖屏视频。支持多店铺分发。</div><div class="step-tags"><span class="step-tag">Shopee → 120 字符</span><span class="step-tag">Lazada → 同步 API</span><span class="step-tag">TikTok → 30 字符</span><span class="step-tag">多店铺</span></div></div>
+  </div>
+  <div class="comparison">
+    <div class="comparison-title">原始图 / AI 处理后对比</div>
+    <div class="comparison-grid">
+      <div class="before-after"><div class="before-after-label">📸 原始图片（白底/ERP来源）</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <img src="../images/wave7-editorial/W7R001-main.jpg" class="before-after-img" loading="lazy">
+          <img src="../images/wave7-editorial/W7N002-main.jpg" class="before-after-img" loading="lazy">
+          <img src="../images/wave6-editorial/P1-01-W6P001-main.jpg" class="before-after-img" loading="lazy">
+        </div><div class="before-after-caption">来自 ERP / 供应商的原始产品照片</div></div>
+      <div class="before-after"><div class="before-after-label">✨ AI 增强输出（三平台就绪）</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <img src="../images/wave7-editorial/W7R001-model.jpg" class="before-after-img" loading="lazy">
+          <img src="../images/wave7-editorial/W7N002-model.jpg" class="before-after-img" loading="lazy">
+          <img src="../images/wave6-editorial/P1-02-W6P001-model.jpg" class="before-after-img" loading="lazy">
+        </div><div class="before-after-caption">背景消除 + 场景合成 + 尺寸适配</div></div>
     </div>
   </div>
-</div></section>
+</div>
 
-<section class="section" id="demo"><div class="container">
-  <div class="section-label">在线演示</div>
-  <div class="section-title">同一产品，<span>三平台不同展示</span></div>
-  <div class="section-desc">选择商品，一键切换三个平台的 Listing 预览效果</div>
-  <div class="demo-section">
-    <div class="product-tabs">
-      <button class="product-tab active" onclick="switchProduct('HUA-R001',this)">💍 戒指 · ¥39.99</button>
-      <button class="product-tab" onclick="switchProduct('HUA-N001',this)">📿 项链 · ¥89.99</button>
-      <button class="product-tab" onclick="switchProduct('HUA-E001',this)">📿 耳环 · ¥49.99</button>
+<!-- Cross-Platform -->
+<div class="panel fade-in" id="panel-crossplatform">
+  <div class="cp-header">
+    <span style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2)">选择商品：</span>
+    <div class="cp-product-select">
+      <button class="cp-product-btn active" data-product="HUA-R001">💍 戒指 ¥39.99</button>
+      <button class="cp-product-btn" data-product="HUA-N001">📿 项链 ¥89.99</button>
+      <button class="cp-product-btn" data-product="HUA-E001">📿 耳环 ¥49.99</button>
     </div>
-    <div class="cp-grid" id="cp-grid"></div>
-
-    <hr style="border-color:rgba(255,255,255,.06);margin:30px 0">
-
-    <div class="batch-panel">
-      <div class="batch-title"><i class="fa-solid fa-rocket"></i> 批量上架模拟</div>
-      <table class="batch-table">
-        <thead><tr><th>✓</th><th>SKU</th><th>商品名称</th><th>品类</th></tr></thead>
-        <tbody>
-          <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="HUA-R001"></td><td style="font-family:monospace;color:#00d4ff">HUA-R001</td><td>简约几何堆叠戒指套装</td><td>戒指</td></tr>
-          <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="HUA-N001"></td><td style="font-family:monospace;color:#00d4ff">HUA-N001</td><td>925银莫桑石网球项链</td><td>项链</td></tr>
-          <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="HUA-E001"></td><td style="font-family:monospace;color:#00d4ff">HUA-E001</td><td>S999银珍珠耳钉</td><td>耳环</td></tr>
-        </tbody>
-      </table>
-      <div class="batch-platforms">
-        <span class="batch-chip selected" onclick="this.classList.toggle('selected')">Shopee</span>
-        <span class="batch-chip selected" onclick="this.classList.toggle('selected')">Lazada</span>
-        <span class="batch-chip selected" onclick="this.classList.toggle('selected')">TikTok Shop</span>
-      </div>
-      <button class="batch-launch" onclick="startBatch()">🚀 开始批量上架</button>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-      <div class="progress-stats">
-        <span>✅ <b id="succ">0</b> 成功</span><span>❌ <b id="fail">0</b> 失败</span><span>⏳ <b id="pend">9</b> 待处理</span>
-      </div>
-      <div class="log-box" id="log"><span style="color:#777">就绪，点击按钮开始模拟...</span></div>
+    <div class="cp-theme-select" style="display:flex;align-items:center;gap:4px">
+      <span style="font-size:11px;color:var(--text2);margin-right:4px">主题：</span>
+      <button class="cp-theme-btn default-theme active" data-theme="default">默认</button>
+      <button class="cp-theme-btn xmas" data-theme="xmas">🎄 圣诞</button>
+      <button class="cp-theme-btn bf" data-theme="bf">🖤 黑五</button>
+      <button class="cp-theme-btn vday" data-theme="vday">❤️ 情人节</button>
+      <button class="cp-theme-btn summer" data-theme="summer">🌸 夏季</button>
     </div>
   </div>
-</div></section>
+  <div class="cp-grid" id="cp-grid"></div>
+</div>
 
-<footer id="contact"><div class="container">
-  <p style="font-size:1rem;color:#fff;margin-bottom:8px">📧 预约演示联系我们</p>
-  <p>EOS Multi-Platform Engine · 跨平台 AI 商品上架系统</p>
-  <p style="margin-top:8px">&copy; 2026 EOS. <a href="../">返回业务网站</a></p>
-</div></footer>
+<!-- Batch -->
+<div class="panel fade-in" id="panel-batch">
+  <div class="batch-header">
+    <label class="batch-check"><input type="checkbox" checked id="select-all"> 全选 (3)</label>
+    <span style="color:var(--text2);font-size:12px">目标平台：</span>
+    <div class="batch-platforms" id="batch-platforms">
+      <span class="batch-platform-chip selected" data-platform="shopee">Shopee</span>
+      <span class="batch-platform-chip selected" data-platform="lazada">Lazada</span>
+      <span class="batch-platform-chip selected" data-platform="tiktokshop">TikTok Shop</span>
+    </div>
+    <button class="batch-launch" id="batch-launch-btn">🚀 开始批量上架</button>
+  </div>
+  <div class="table-wrapper"><table>
+    <thead><tr><th>✓</th><th>图片</th><th>SKU</th><th>商品名称</th><th>品类</th><th>店铺</th></tr></thead>
+    <tbody>
+      <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="HUA-R001"></td><td><img src="../images/wave7-editorial/W7R001-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HUA-R001</td><td>几何堆叠戒指</td><td>戒指</td><td><span style="font-size:11px;color:var(--text2)">Shopee 店1/2/3</span></td></tr>
+      <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="HUA-N001"></td><td><img src="../images/wave7-editorial/W7N002-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HUA-N001</td><td>莫桑石项链</td><td>项链</td><td><span style="font-size:11px;color:var(--text2)">Lazada 店1</span></td></tr>
+      <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="HUA-E001"></td><td><img src="../images/wave6-editorial/P1-01-W6P001-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HUA-E001</td><td>珍珠耳钉</td><td>耳环</td><td><span style="font-size:11px;color:var(--text2)">TikTok Shop 店1</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="batch-progress" id="batch-progress" style="display:none;margin-top:24px">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:600">🚀 批量上架进行中</span><span style="font-size:12px;color:var(--text2)" id="batch-progress-text">0 / 9 完成</span></div>
+    <div class="batch-progress-bar"><div class="batch-progress-fill" id="batch-progress-fill"></div></div>
+    <div class="batch-stats"><span>✅ <b id="batch-success">0</b> 成功</span><span>❌ <b id="batch-fail">0</b> 失败</span><span>⏳ <b id="batch-pending">9</b> 待处理</span></div>
+    <div class="batch-log" id="batch-log"><div class="log-entry">就绪，等待启动...</div></div>
+  </div>
+</div>
+</div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" defer></script>
 <script>
+// ============ STATE ============
+var currentTheme = 'default';
+var currentSku = 'HUA-R001';
+
+// ============ PRODUCT DATA ============
 var PRODUCTS={
-  'HUA-R001':{name:'简约几何堆叠戒指套装',cat:'戒指',price:'¥39.99',desc:'3件式几何堆叠戒指，925银材质。极简开放设计，适合混搭造型。',specs:{材质:'925银',风格:'几何极简',重量:'2.5g',件数:'3枚'}},
-  'HUA-N001':{name:'925银莫桑石网球项链',cat:'项链',price:'¥89.99',desc:'闪耀莫桑石网球项链，925银配18K金镀层。璀璨光芒适合任意场合。',specs:{材质:'925银+18K金镀层',风格:'网球链/优雅',重量:'8.5g',长度:'16"',宝石:'莫桑石圆切'}},
-  'HUA-E001':{name:'S999银珍珠耳钉',cat:'耳环',price:'¥49.99',desc:'优雅圆形珍珠耳钉，999银材质。极简设计搭配天然珍珠光泽。',specs:{材质:'S999银+天然珍珠',风格:'经典极简',重量:'1.8g',耳堵:'推入式',尺寸:'8mm珍珠'}}
+  'HUA-R001':{
+    sku:'HUA-R001', name:'简约几何堆叠戒指套装', cat:'戒指', price:'¥39.99',
+    desc:'3件式几何堆叠戒指套装，925银材质。极简开放设计，适合混搭造型。',
+    specs:{材质:'925银',风格:'几何极简',重量:'2.5g',件数:'3枚'},
+    images:['../images/wave7-editorial/W7R001-main.jpg','../images/wave7-editorial/W7R001-model.jpg','../images/wave7-editorial/W7R001-macro.jpg']
+  },
+  'HUA-N001':{
+    sku:'HUA-N001', name:'925银莫桑石网球项链', cat:'项链', price:'¥89.99',
+    desc:'闪耀莫桑石网球项链，925银配18K金镀层。璀璨光芒适合任意场合。',
+    specs:{材质:'925银+18K金镀层',风格:'网球链/优雅',重量:'8.5g',长度:'16"',宝石:'莫桑石圆切'},
+    images:['../images/wave7-editorial/W7N002-main.jpg','../images/wave7-editorial/W7N002-model.jpg','../images/wave7-editorial/W7N002-macro.jpg']
+  },
+  'HUA-E001':{
+    sku:'HUA-E001', name:'S999银珍珠耳钉', cat:'耳环', price:'¥49.99',
+    desc:'优雅圆形珍珠耳钉，999银材质。极简设计搭配天然珍珠光泽。',
+    specs:{材质:'S999银+天然珍珠',风格:'经典极简',重量:'1.8g',耳堵:'推入式',尺寸:'8mm珍珠'},
+    images:['../images/wave6-editorial/P1-01-W6P001-main.jpg','../images/wave6-editorial/P1-02-W6P001-model.jpg','../images/wave6-editorial/P1-03-W6P001-macro.jpg']
+  }
 };
 
-function renderCP(sku){
-  var p=PRODUCTS[sku],grid=document.getElementById('cp-grid'),h='';
+function limitTitle(t,max){return t.length<=max?t:t.substring(0,max-3)+'...'}
+function randNum(n){var s='';for(var i=0;i<n;i++)s+=Math.floor(Math.random()*10);return s}
+
+var themeData={
+  'default':{border:'',prefix:'',badge:''},
+  'xmas':{border:'theme-xmas',prefix:'🎄',badge:'圣诞特辑'},
+  'bf':{border:'theme-bf',prefix:'🖤',badge:'黑五专享'},
+  'vday':{border:'theme-vday',prefix:'❤️',badge:'情人节限定'},
+  'summer':{border:'theme-summer',prefix:'🌸',badge:'夏季上新'}
+};
+
+// ============ TAB SWITCHING ============
+window.EOS={};
+EOS.switchPanel=function(name){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active')});
+  var panel=document.getElementById('panel-'+name);if(panel)panel.classList.add('active');
+  var tab=document.querySelector('.nav-tab[data-panel="'+name+'"]');if(tab)tab.classList.add('active');
+};
+
+// ============ RENDER CROSS-PLATFORM ============
+EOS.renderCrossPlatform=function(){
+  var p=PRODUCTS[currentSku],grid=document.getElementById('cp-grid');
+  if(!grid)return;
+  var tm=themeData[currentTheme],themeBorder=tm.border,h='';
 
   // Shopee column
-  h+='<div class="cp-col"><div class="cp-col-header shopee"><i class="fa-solid fa-bag-shopping"></i> Shopee</div>';
-  h+='<div class="cp-field"><div class="cp-label">商品标题（上限120字符）</div><div class="cp-val">'+p.name+'</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">分类树</div><div class="cp-val" style="color:#777">珠宝 > '+p.cat+' > 时尚'+(p.cat==='戒指'?'戒指':'项链')+'</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">变体</div><div class="cp-val" style="color:#777">颜色: 银/金/玫瑰金 · 尺寸: S/M/L</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">必填属性</div><div class="cp-val" style="color:#777">材质: '+p.specs.材质+' · 风格: '+p.specs.风格+' · 重量: '+p.specs.重量+'</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">价格</div><div class="cp-val price">'+p.price+'</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">图片要求</div><div class="cp-val" style="color:#777">主图≤10MB，JPG/PNG，media_space上传</div></div></div>';
+  h+='<div class="cp-column"><div class="cp-column-header shopee"><i class="fa-solid fa-bag-shopping"></i><span class="cp-column-title">Shopee</span></div><div class="cp-body">';
+  h+='<div class="cp-field"><div class="cp-field-label">商品标题（上限120字符）</div><div class="cp-field-value">'+tm.prefix+' '+p.name+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">主题标签</div><div class="cp-field-value" style="color:var(--accent)">'+(tm.badge||'无')+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">品类树</div><div class="cp-field-value" style="color:var(--text2)">珠宝 > '+p.cat+' > 时尚'+(p.cat==='戒指'?'戒指':'项链')+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">变体</div><div class="cp-field-value" style="color:var(--text2)">颜色: 银/金/玫瑰金 · 尺寸: S/M/L（双层变体）</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">必填属性</div><div class="cp-field-value" style="color:var(--text2)">材质: '+p.specs.材质+' · 风格: '+p.specs.风格+' · 重量: '+p.specs.重量+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">价格</div><div class="cp-field-value price">'+p.price+'</div></div>';
+  h+='<img src="'+p.images[0]+'" class="cp-image '+themeBorder+'" loading="lazy">';
+  h+='<div class="cp-images-row">';
+  for(var k=0;k<Math.min(p.images.length,4);k++)h+='<img src="'+p.images[k]+'" loading="lazy">';
+  h+='</div></div></div>';
 
   // Lazada column
-  h+='<div class="cp-col"><div class="cp-col-header lazada"><i class="fa-solid fa-globe"></i> Lazada</div>';
-  h+='<div class="cp-field"><div class="cp-label">Título（上限100字符）</div><div class="cp-val">'+p.name+'</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">LazOP 2.0</div><div class="cp-val" style="color:#777">同步JSON API · 无需等Feed</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">产品属性</div><div class="cp-val" style="color:#777">材质: '+p.specs.材质+' · 重量: '+p.specs.重量+'</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">视频支持</div><div class="cp-val" style="color:#777">✅ Media Center上传 ≤100MB</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">Precio</div><div class="cp-val price">'+p.price+'</div></div></div>';
+  h+='<div class="cp-column"><div class="cp-column-header lazada"><i class="fa-solid fa-globe"></i><span class="cp-column-title">Lazada</span></div><div class="cp-body">';
+  h+='<div class="cp-field"><div class="cp-field-label">Título（上限100字符）</div><div class="cp-field-value">'+tm.prefix+' '+p.name+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">LazOP 2.0 同步API</div><div class="cp-field-value" style="color:var(--green)">✅ JSON 同步 · 无需等Feed</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">产品属性</div><div class="cp-field-value" style="color:var(--text2)">材质: '+p.specs.材质+' · 重量: '+p.specs.重量+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">视频支持</div><div class="cp-field-value" style="color:var(--green)">✅ Media Center ≤100MB</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">Precio</div><div class="cp-field-value price">'+p.price+'</div></div>';
+  h+='<img src="'+p.images[0]+'" class="cp-image '+themeBorder+'" style="margin-top:12px" loading="lazy"></div></div>';
 
   // TikTok Shop column
-  h+='<div class="cp-col"><div class="cp-col-header tiktok"><i class="fa-brands fa-tiktok"></i> TikTok Shop</div>';
-  h+='<div class="cp-field"><div class="cp-label">Title（上限30字符）</div><div class="cp-val">'+p.name.substring(0,18)+'...</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">视频规格</div><div class="cp-val" style="color:#777">9:16竖屏 · 15-60s · mp4</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">GMV Max 广告</div><div class="cp-val" style="color:#777">自动投放 · 佣金扣费 1.5-5%</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">CBT 跨境</div><div class="cp-val" style="color:#777">中国直发 · 美/东南亚可选</div></div>';
-  h+='<div class="cp-field"><div class="cp-label">价格</div><div class="cp-val price">'+p.price+'</div></div></div>';
+  h+='<div class="cp-column"><div class="cp-column-header tiktokshop"><i class="fa-brands fa-tiktok"></i><span class="cp-column-title">TikTok Shop</span></div><div class="cp-body">';
+  h+='<div class="cp-field"><div class="cp-field-label">Title（上限30字符）</div><div class="cp-field-value">'+limitTitle(tm.prefix+' '+p.name,30)+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">视频规格</div><div class="cp-field-value" style="color:var(--text2)">9:16竖屏 · 15-60s · MP4</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">GMV Max 广告</div><div class="cp-field-value" style="color:var(--text2)">自动投放 · 佣金 1.5-5%</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">CBT 跨境</div><div class="cp-field-value" style="color:var(--green)">✅ 中国直发·美/东南亚</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">价格</div><div class="cp-field-value price">'+p.price+'</div></div>';
+  h+='<img src="'+p.images[0]+'" class="cp-image '+themeBorder+'" style="margin-top:12px" loading="lazy"></div></div>';
+
+  // Multi-Store column (4th column - HuaShao exclusive)
+  h+='<div class="cp-column"><div class="cp-column-header multistore"><i class="fa-solid fa-store"></i><span class="cp-column-title">多店铺管理</span></div><div class="cp-body">';
+  h+='<div class="cp-field"><div class="cp-field-label">Shopee 店铺</div><div class="cp-field-value">🏪 店1 · SG<br>🏪 店2 · MY<br>🏪 店3 · TH</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">Lazada 店铺</div><div class="cp-field-value">🏪 店1 · SG</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">TikTok Shop 店铺</div><div class="cp-field-value">🏪 店1 · ID</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">一键批量分发</div><div class="cp-field-value" style="color:var(--accent)">5 个店铺同时上架</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">运营数据</div><div class="cp-field-value" style="color:var(--text2)">统一面板 · 跨店铺汇总</div></div></div></div>';
 
   grid.innerHTML=h;
-}
-function switchProduct(sku,el){
-  document.querySelectorAll('.product-tab').forEach(function(t){t.classList.remove('active')});
-  el.classList.add('active');
-  renderCP(sku);
-}
+};
 
-var running=false;
-function startBatch(){
-  if(running)return;running=true;
-  var cbs=document.querySelectorAll('.batch-checkbox:checked'),skus=[];
-  for(var i=0;i<cbs.length;i++)skus.push(cbs[i].dataset.sku);
-  var chips=document.querySelectorAll('.batch-chip.selected'),plats=[];
-  for(var j=0;j<chips.length;j++)plats.push(chips[j].textContent);
-  var total=skus.length*plats.length,s=0,f=0,c=0,l=document.getElementById('log');
-  l.innerHTML='<span style="color:#00d4ff">🚀 开始批量上架...</span>';
-  document.getElementById('succ').textContent='0';document.getElementById('fail').textContent='0';
-  document.getElementById('pend').textContent=total;document.getElementById('progress-fill').style.width='0%';
-
-  function step(){
-    if(c>=total){l.innerHTML+='<br><span style="color:#10b981">🏁 完成！'+s+' 成功 · '+f+' 失败</span>';l.scrollTop=l.scrollHeight;running=false;return}
-    var sku=skus[c%skus.length],plt=plats[Math.floor(c/skus.length)];
+// ============ BATCH LISTING ============
+EOS.batchRunning=false;
+EOS.startBatchListing=function(){
+  if(EOS.batchRunning)return;EOS.batchRunning=true;
+  var platforms=[],chips=document.querySelectorAll('.batch-platform-chip.selected');
+  var platNames={shopee:'Shopee',lazada:'Lazada',tiktokshop:'TikTok Shop'};
+  for(var i=0;i<chips.length;i++)platforms.push(chips[i].dataset.platform);
+  var skus=[],cbs=document.querySelectorAll('.batch-checkbox:checked');
+  for(var j=0;j<cbs.length;j++)skus.push(cbs[j].dataset.sku);
+  var total=skus.length*platforms.length;
+  document.getElementById('batch-progress').style.display='block';
+  document.getElementById('batch-progress-text').textContent='0 / '+total+' 完成';
+  document.getElementById('batch-success').textContent='0';
+  document.getElementById('batch-fail').textContent='0';
+  document.getElementById('batch-pending').textContent=total;
+  document.getElementById('batch-progress-fill').style.width='0%';
+  var log=document.getElementById('batch-log');
+  log.innerHTML='<div class="log-entry">🚀 开始批量上架任务...</div>';
+  var success=0,fail=0,completed=0;
+  function nextStep(){
+    if(completed>=total){log.innerHTML+='<div class="log-entry success">🏁 批量上架完成！'+success+' 成功 · '+fail+' 失败</div>';log.scrollTop=log.scrollHeight;EOS.batchRunning=false;return}
+    var sku=skus[completed%skus.length],plat=platforms[Math.floor(completed/skus.length)];
+    var platName=platNames[plat]||plat;
     setTimeout(function(){
-      if(Math.random()>.08){s++;l.innerHTML+='<br><span style="color:#10b981">✅ '+sku+' → '+plt+' · 上架成功</span>'}
-      else{f++;l.innerHTML+='<br><span style="color:#ef4444">❌ '+sku+' → '+plt+' · 品类ID无效</span>'}
-      c++;document.getElementById('progress-fill').style.width=(c/total*100)+'%';
-      document.getElementById('succ').textContent=s;document.getElementById('fail').textContent=f;
-      document.getElementById('pend').textContent=total-c;l.scrollTop=l.scrollHeight;step();
-    },200+Math.random()*500);
+      if(Math.random()>.08){success++;log.innerHTML+='<div class="log-entry success">✅ '+sku+' → '+platName+' · 上架成功 · 店铺: '+(plat==='shopee'?'店'+(Math.ceil(Math.random()*3)):'店1')+'</div>'}
+      else{fail++;log.innerHTML+='<div class="log-entry error">❌ '+sku+' → '+platName+' · 失败：品类ID无效</div>'}
+      completed++;document.getElementById('batch-progress-fill').style.width=(completed/total*100)+'%';
+      document.getElementById('batch-progress-text').textContent=completed+' / '+total+' 完成';
+      document.getElementById('batch-success').textContent=success;
+      document.getElementById('batch-fail').textContent=fail;
+      document.getElementById('batch-pending').textContent=total-completed;
+      log.scrollTop=log.scrollHeight;nextStep();
+    },200+Math.random()*600);
   }
-  step();
-}
-renderCP('HUA-R001');
+  nextStep();
+};
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded',function(){
+  var navTabs=document.querySelectorAll('.nav-tab');
+  for(var i=0;i<navTabs.length;i++){navTabs[i].addEventListener('click',function(){EOS.switchPanel(this.dataset.panel)})}
+
+  var actionBtns=document.querySelectorAll('.action-btn');
+  for(var j=0;j<actionBtns.length;j++){actionBtns[j].addEventListener('click',function(){var t=this.dataset.action;if(t)EOS.switchPanel(t)})}
+
+  var sourceTabs=document.querySelectorAll('.source-tab');
+  for(var k=0;k<sourceTabs.length;k++){sourceTabs[k].addEventListener('click',function(){var s=this.parentElement.querySelectorAll('.source-tab');for(var x=0;x<s.length;x++)s[x].classList.remove('active');this.classList.add('active')})}
+
+  var cpBtns=document.querySelectorAll('.cp-product-btn');
+  for(var m=0;m<cpBtns.length;m++){cpBtns[m].addEventListener('click',function(){var s=this.parentElement.querySelectorAll('.cp-product-btn');for(var x=0;x<s.length;x++)s[x].classList.remove('active');this.classList.add('active');currentSku=this.dataset.product;EOS.renderCrossPlatform()})}
+
+  var themeBtns=document.querySelectorAll('.cp-theme-btn');
+  for(var n=0;n<themeBtns.length;n++){themeBtns[n].addEventListener('click',function(){var s=this.parentElement.querySelectorAll('.cp-theme-btn');for(var x=0;x<s.length;x++)s[x].classList.remove('active');this.classList.add('active');currentTheme=this.dataset.theme;EOS.renderCrossPlatform()})}
+
+  var chips=document.querySelectorAll('.batch-platform-chip');
+  for(var p=0;p<chips.length;p++){chips[p].addEventListener('click',function(){this.classList.toggle('selected')})}
+
+  var launchBtn=document.getElementById('batch-launch-btn');
+  if(launchBtn)launchBtn.addEventListener('click',function(){EOS.startBatchListing()});
+
+  var selAll=document.getElementById('select-all');
+  if(selAll)selAll.addEventListener('change',function(){var c=this.checked,bxs=document.querySelectorAll('.batch-checkbox');for(var q=0;q<bxs.length;q++)bxs[q].checked=c});
+
+  EOS.renderCrossPlatform();
+});
 </script>
 </body>
 </html>
