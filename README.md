@@ -45,7 +45,7 @@ smart-marketing-collection/
 | 方案名称 | 文件 | 行业 |
 |---------|------|------|
 | **AI 方案大师**（生成工具） | [generator.html](generator.html) | — |
-| 天问山黄精天猫运营方案 | [tianwenshan.html](tianwenshan.html) | 食品/滋补 |
+| 天问山黄精天猫运营方案 | [tianwenshan.html](projects/zhangyiding/tianwenshan.html) | 食品/滋补 |
 | 夸克智能全域资产增值方案 | [QuarkAI.html](QuarkAI.html) | 科技/营销 |
 | DR.COSMO 品牌抖音执行规划 | [DR.COSMO.html](DR.COSMO.html) | 美妆 |
 | 滨江上市公司发展报告 | [binjiang-listed-company.html](binjiang-listed-company.html) | 区域经济 |
@@ -59,7 +59,7 @@ smart-marketing-collection/
 | 灵稀×元易空间 数字化文化资产方案 | [jdlx.html](jdlx.html) | 文化/NFT |
 | OPC小龙虾·AI智能评测方案 | [ai_pingce.html](ai_pingce.html) | AI/测评 |
 | 跨境医美出海方案 | [kuajingyimei.html](kuajingyimei.html) | 医美 |
-| 顺鑫农业×程前IP 商业方案 | [shunxin_agriculture.html](shunxin_agriculture.html) | 农业/食品 |
+| 顺鑫农业×程前IP 商业方案 | [shunxin_agriculture.html](projects/zhangyiding/shunxin_agriculture.html) | 农业/食品 |
 
 ---
 

@@ -53,7 +53,33 @@
     };
 
     AccountLibrary.prototype.listProposals = async function () {
-        var path = encodeURIComponent(this.dirPath());
+        if (this.username === 'admin') {
+            return this._listAllAccounts();
+        }
+        return this._listDir(this.dirPath(), this.username);
+    };
+
+    AccountLibrary.prototype._listAllAccounts = async function () {
+        var self = this;
+        var root;
+        try {
+            root = await ghFetch(this.token, this.apiBase() + '/contents/projects?ref=' + this.branch);
+        } catch (e) {
+            if (String(e.message).indexOf('404') >= 0) return [];
+            throw e;
+        }
+        if (!Array.isArray(root)) return [];
+        var accounts = root.filter(function (item) { return item.type === 'dir'; });
+        var results = [];
+        for (var i = 0; i < accounts.length; i++) {
+            var dirItems = await self._listDir('projects/' + accounts[i].name, accounts[i].name);
+            results = results.concat(dirItems);
+        }
+        return results;
+    };
+
+    AccountLibrary.prototype._listDir = async function (dirPath, account) {
+        var path = encodeURIComponent(dirPath);
         var data;
         try {
             data = await ghFetch(this.token, this.apiBase() + '/contents/' + path + '?ref=' + this.branch);
@@ -62,8 +88,8 @@
             throw e;
         }
         if (!Array.isArray(data)) return [];
-        return data.filter(function (item) { return item.type === 'file' && /\\.(html|data\\.json)$/i.test(item.name); }).map(function (item) {
-            return { name: item.name, path: item.path, download_url: item.download_url, sha: item.sha };
+        return data.filter(function (item) { return item.type === 'file' && /[.]html$/i.test(item.name); }).map(function (item) {
+            return { name: item.name, path: item.path, download_url: item.download_url, sha: item.sha, account: account };
         });
     };
 

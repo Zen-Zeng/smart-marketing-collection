@@ -893,7 +893,8 @@
                 const slug = f.name.replace(/[.]html$/i, '');
                 const row = document.createElement('div');
                 row.className = 'flex items-center justify-between gap-2 p-2 border border-slate-200 rounded-lg bg-white';
-                row.innerHTML = '<span class="text-xs font-medium text-slate-700 truncate">' + slug + '</span>'
+                const label = f.account ? f.account + ' / ' + slug : slug;
+                row.innerHTML = '<span class="text-xs font-medium text-slate-700 truncate">' + label + '</span>'
                     + '<span class="flex items-center gap-1">'
                     + '<a class="text-indigo-600 hover:text-indigo-800 text-xs" target="_blank" rel="noopener noreferrer" href="' + f.download_url + '"><i class="fa-solid fa-eye"></i></a>'
                     + '<button class="text-emerald-600 hover:text-emerald-800 text-xs p-0.5" data-slug="' + slug + '" title="download"><i class="fa-solid fa-download"></i></button>'
