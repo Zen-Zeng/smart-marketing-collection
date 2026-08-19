@@ -45,6 +45,7 @@ smart-marketing-collection/
 | 方案名称 | 文件 | 行业 |
 |---------|------|------|
 | **AI 方案大师**（生成工具） | [generator.html](generator.html) | — |
+| 天问山黄精天猫运营方案 | [tianwenshan.html](tianwenshan.html) | 食品/滋补 |
 | 夸克智能全域资产增值方案 | [QuarkAI.html](QuarkAI.html) | 科技/营销 |
 | DR.COSMO 品牌抖音执行规划 | [DR.COSMO.html](DR.COSMO.html) | 美妆 |
 | 滨江上市公司发展报告 | [binjiang-listed-company.html](binjiang-listed-company.html) | 区域经济 |
