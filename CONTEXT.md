@@ -70,6 +70,10 @@ _Avoid_: Async build, deferred save
 The process of injecting verified facts and constraints from client-provided documents and live search results into agent context windows.
 _Avoid_: Prompt stuffing, context injection
 
+**Link Material**:
+A client-supplied online reference (URL) whose page body is fetched through the Jina Reader proxy and folded into the Grounding pipeline alongside uploaded local files.
+_Avoid_: Web clipping, URL bookmark, source link
+
 **Document Chunk Index**:
 The browser-resident extracted heading structure and TF-IDF scored text segments sourced from uploaded client background files (PDF/DOCX/MD).
 _Avoid_: Vector store, raw text dump

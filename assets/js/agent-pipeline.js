@@ -199,6 +199,13 @@
             callbacks = callbacks || {};
             const formValues = payload.formValues;
             const uploadedFiles = payload.uploadedFiles;
+            const linkMaterials = payload.linkMaterials || [];
+            const groundingFiles = (uploadedFiles || []).slice();
+            linkMaterials.forEach(function (m) {
+                if (m && m.status === 'ready' && m.text) {
+                    groundingFiles.push({ name: '[链接] ' + (m.title || m.url), text: m.text });
+                }
+            });
             const onStageChange = callbacks.onStageChange;
             const onProgress = callbacks.onProgress;
             const onChunk = callbacks.onChunk;
@@ -207,7 +214,7 @@
             onStageChange && onStageChange('research', 'running');
             onProgress && onProgress(0.1, 'Stage 1 Research & Grounding');
             const groundedFacts = this.schemaCore.buildGroundedContext(
-                uploadedFiles || [],
+                groundingFiles,
                 (formValues.brand || '') + ' ' + (formValues.industry || '') + ' ' + (formValues.campaignType || '') + ' ' + (formValues.challenge || '')
             );
             onStageChange && onStageChange('research', 'done');

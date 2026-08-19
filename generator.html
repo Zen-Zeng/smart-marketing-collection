@@ -238,6 +238,16 @@
                     <div id="file-list" class="flex flex-wrap gap-1.5 mt-2"></div>
                 </div>
 
+                <!-- 在线链接资料区 (Link Grounding) -->
+                <div>
+                    <label class="form-label">在线链接资料 (自动抓取网页正文)</label>
+                    <div id="link-rows" class="space-y-2"></div>
+                    <button id="btn-add-link" type="button" class="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                        <i class="fa-solid fa-plus"></i>添加链接
+                    </button>
+                    <div id="link-list" class="flex flex-wrap gap-1.5 mt-2"></div>
+                </div>
+
                 <button id="btn-generate" type="button" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>启动 AI Agent 流水线生成方案
                 </button>
@@ -371,6 +381,7 @@
     };
 
     const uploadedFiles = [];
+    const linkMaterials = [];
     let activeSchema = null;
     let activeHtml = '';
     let activeCriticReport = null;
@@ -497,6 +508,104 @@
         $('file-input').value = '';
     });
 
+
+    // ── 在线链接资料 (Link Grounding) ──
+    function normalizeUrl(raw) {
+        var url = (raw || '').trim();
+        if (!url) return '';
+        if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+        return url;
+    }
+
+    async function fetchLinkContent(url) {
+        var res = await fetch('https://r.jina.ai/' + url, { signal: AbortSignal.timeout(20000) });
+        if (!res.ok) throw new Error('抓取失败 (' + res.status + ')');
+        var body = await res.text();
+        if (!body || body.trim().length < 40) throw new Error('未抓取到有效正文');
+        return body;
+    }
+
+    function renderLinkRows() {
+        var el = $('link-rows');
+        el.innerHTML = '';
+        linkMaterials.forEach(function (item, idx) {
+            var row = document.createElement('div');
+            row.className = 'flex items-center gap-1.5';
+            var icon = item.status === 'loading'
+                ? '<i class="fa-solid fa-spinner fa-spin text-indigo-400 text-xs"></i>'
+                : item.status === 'ready'
+                    ? '<i class="fa-solid fa-circle-check text-emerald-500 text-xs"></i>'
+                    : '<i class="fa-solid fa-circle-exclamation text-rose-500 text-xs"></i>';
+            var input = document.createElement('input');
+            input.type = 'url';
+            input.className = 'form-input text-xs font-mono flex-1';
+            input.value = item.url || '';
+            input.placeholder = 'https://example.com/...';
+            input.disabled = item.status === 'loading';
+            input.addEventListener('change', function () {
+                item.url = normalizeUrl(input.value);
+                item.status = 'pending';
+                item.text = '';
+                item.error = '';
+                if (item.url) fetchLinkRow(item);
+                renderLinkRows();
+            });
+            var statusEl = document.createElement('span');
+            statusEl.className = 'w-4 flex items-center justify-center';
+            statusEl.innerHTML = icon;
+            var remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'text-slate-400 hover:text-rose-500 text-sm p-0.5';
+            remove.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            remove.addEventListener('click', function () {
+                linkMaterials.splice(idx, 1);
+                renderLinkRows();
+            });
+            row.appendChild(input);
+            row.appendChild(statusEl);
+            row.appendChild(remove);
+            el.appendChild(row);
+        });
+    }
+
+    function renderLinkList() {
+        var el = $('link-list');
+        el.innerHTML = '';
+        linkMaterials.filter(function (m) { return m.status === 'ready'; }).forEach(function (m) {
+            var chip = document.createElement('div');
+            chip.className = 'file-chip';
+            chip.innerHTML = '<i class="fa-solid fa-link text-indigo-500"></i><span class="chip-name">' + (m.title || m.url) + '</span>';
+            chip.title = m.url;
+            el.appendChild(chip);
+        });
+    }
+
+    async function fetchLinkRow(item) {
+        item.status = 'loading';
+        item.error = '';
+        renderLinkRows();
+        try {
+            item.text = await fetchLinkContent(item.url);
+            item.title = item.url.replace(/^https?:\/\//, '').slice(0, 40) || item.url;
+            item.status = 'ready';
+        } catch (err) {
+            item.error = err.message || '抓取失败';
+            item.status = 'error';
+        }
+        renderLinkRows();
+        renderLinkList();
+    }
+
+    function addLinkRow() {
+        linkMaterials.push({ url: '', title: '', text: '', status: 'pending', error: '' });
+        renderLinkRows();
+        var inputs = $('link-rows').querySelectorAll('input');
+        if (inputs.length) inputs[inputs.length - 1].focus();
+    }
+
+    $('btn-add-link').addEventListener('click', addLinkRow);
+    addLinkRow();
+
     // ── 阶段状态更新 ──
     function setStage(stageId, status) {
         const el = $(`stage-${stageId}`);
@@ -584,7 +693,8 @@
                     background: background,
                     challenge: $("f-challenge").value
                 },
-                uploadedFiles: uploadedFiles
+                uploadedFiles: uploadedFiles,
+                linkMaterials: linkMaterials
             }, {
                 signal: abortCtrl.signal,
                 onStageChange: function (stage, status) {
