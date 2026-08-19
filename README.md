@@ -49,7 +49,6 @@ smart-marketing-collection/
 | 夸克智能全域资产增值方案 | [QuarkAI.html](QuarkAI.html) | 科技/营销 |
 | DR.COSMO 品牌抖音执行规划 | [DR.COSMO.html](DR.COSMO.html) | 美妆 |
 | 滨江上市公司发展报告 | [binjiang-listed-company.html](binjiang-listed-company.html) | 区域经济 |
-| 品牌数字化方案 | [branding-digital.html](branding-digital.html) | 品牌/数字化 |
 | 辰时医疗方案 | [chenshiyiliao.html](chenshiyiliao.html) | 医疗 |
 | 国际贸易方案 | [guojimaoyi.html](guojimaoyi.html) | 跨境贸易 |
 | 赫联牛仔小红书运营方案 | [helian.html](helian.html) | 服装 |
