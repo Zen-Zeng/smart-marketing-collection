@@ -936,7 +936,30 @@
                             });
                             showToast('已加载方案: ' + slug, 'success');
                         } catch (e) {
-                            // data.json 不存在时仅展示视觉演示
+                            // data.json 不存在或读取失败 → 尝试通过 GitHub API 获取 HTML 原文
+                            try {
+                                var htmlText = await lib.readFile(f.path);
+                                activeHtml = htmlText;
+                                document.getElementById('proposal-html').textContent = htmlText;
+                            } catch (e2) {
+                                // HTML 也无法读取，忽略
+                            }
+                            // 无结构化数据
+                            document.getElementById('proposal-json').innerHTML = '<p class="text-slate-400 text-center p-8">该方案无结构化 JSON 数据（仅通过工作台生成的方案才有）</p>';
+                            // 无质检报告
+                            var criticEl = document.getElementById('critic-content');
+                            if (criticEl) {
+                                criticEl.innerHTML = '<div class="p-4 rounded-lg border border-slate-200 bg-slate-50 text-center">'
+                                    + '<i class="fa-solid fa-info-circle text-slate-400 mr-1.5"></i>'
+                                    + '<span class="text-slate-500">该方案为手动上传，无 AI 质检报告</span>'
+                                    + '</div>';
+                            }
+                            // 显示下载和复制按钮
+                            ['btn-download-html','btn-copy'].forEach(function (id) {
+                                var el = document.getElementById(id);
+                                if (el) el.classList.remove('hidden');
+                            });
+                            showToast('已加载方案: ' + slug + '（仅 HTML 源码）', 'info');
                         }
                         document.getElementById('tab-preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
                     })();
