@@ -892,14 +892,25 @@
             htmls.forEach(function (f) {
                 const slug = f.name.replace(/[.]html$/i, '');
                 const row = document.createElement('div');
-                row.className = 'flex items-center justify-between gap-2 p-2 border border-slate-200 rounded-lg bg-white';
+                row.className = 'flex items-center justify-between gap-2 p-2 border border-slate-200 rounded-lg bg-white cursor-pointer hover:border-indigo-300 hover:shadow-sm transition-all';
                 const label = f.account ? f.account + ' / ' + slug : slug;
+                // 构造 Pages 部署地址
+                const pagesUrl = 'https://zen-zeng.github.io/smart-marketing-collection/' + f.path;
                 row.innerHTML = '<span class="text-xs font-medium text-slate-700 truncate">' + label + '</span>'
                     + '<span class="flex items-center gap-1">'
-                    + '<a class="text-indigo-600 hover:text-indigo-800 text-xs" target="_blank" rel="noopener noreferrer" href="' + f.download_url + '"><i class="fa-solid fa-eye"></i></a>'
+                    + '<a class="text-indigo-600 hover:text-indigo-800 text-xs eye-preview" target="_blank" rel="noopener noreferrer" href="' + pagesUrl + '" title="在新标签页打开"><i class="fa-solid fa-eye"></i></a>'
                     + '<button class="text-emerald-600 hover:text-emerald-800 text-xs p-0.5" data-slug="' + slug + '" title="download"><i class="fa-solid fa-download"></i></button>'
                     + '<button class="text-rose-500 hover:text-rose-700 text-xs p-0.5" data-slug="' + slug + '" title="delete"><i class="fa-solid fa-trash"></i></button>'
                     + '</span>';
+                // 点击整行 → 在下方视觉演示 iframe 中加载方案
+                row.addEventListener('click', function (ev) {
+                    if (ev.target.closest('.eye-preview, button')) return;
+                    var frame = document.getElementById('preview-frame');
+                    if (frame) {
+                        frame.src = pagesUrl;
+                        document.getElementById('tab-preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
                 row.querySelectorAll('button[data-slug]').forEach(function (btn) {
                     btn.addEventListener('click', async function () {
                         if (btn.title === 'download') {
