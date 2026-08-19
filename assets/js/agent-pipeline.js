@@ -24,10 +24,11 @@
         }
 
         _getOpenAIClient() {
-            if (!this._openai && global.OpenAI) {
-                this._openai = new global.OpenAI({
+            if (!this._openai && (global.OpenAI || window.OpenAI)) {
+                var Ctor = global.OpenAI || window.OpenAI;
+                this._openai = new Ctor({
                     apiKey: this.apiKey,
-                    baseURL: this.baseUrl,
+                    baseURL: this._sdkBaseUrl(),
                     dangerouslyAllowBrowser: true
                 });
             }
@@ -35,10 +36,32 @@
         }
 
         _getAnthropicClient() {
-            if (!this._anthropic && global.anthropic) {
+            if (!this._anthropic && (global.Anthropic || window.Anthropic)) {
+                var Ctor = global.Anthropic || window.Anthropic;
+                this._anthropic = new Ctor({
+                    apiKey: this.apiKey,
+                    dangerouslyAllowBrowser: true
+                });
+            } else if (!this._anthropic && global.anthropic) {
                 this._anthropic = global.anthropic;
             }
             return this._anthropic;
+        }
+
+        _sdkBaseUrl() {
+            if (this.provider === 'claude') {
+                var b = this.baseUrl.replace(/\/v1\/messages\/?$/, '');
+                return b.replace(/\/+$/, '');
+            }
+            var sdk = this.baseUrl.replace(/\/chat\/completions\/?$/, '');
+            return sdk.replace(/\/+$/, '');
+        }
+
+        _endpointFor(suffix) {
+            var base = this.baseUrl.replace(/\/+$/, '');
+            var lower = base.toLowerCase();
+            if (lower.indexOf(suffix.toLowerCase()) >= 0) return base;
+            return base + suffix;
         }
 
         async *streamChatCompletion(params) {
@@ -109,7 +132,7 @@
                 temperature: 0.4
             };
             if (jsonMode) payload.response_format = { type: 'json_object' };
-            const res = await fetch(this.baseUrl, {
+            const res = await fetch(this._endpointFor('/chat/completions'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -124,7 +147,7 @@
         }
 
         async _fetchClaude(system, userMsg, signal) {
-            const res = await fetch(this.baseUrl, {
+            const res = await fetch(this._endpointFor('/v1/messages'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
