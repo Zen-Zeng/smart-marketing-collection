@@ -9,7 +9,7 @@
 
     const SYSTEM_PROMPTS = {
         strategy: 'You are a senior Chinese 4A marketing strategist. Output ONLY valid JSON strictly conforming to ProposalSchema 8-pillar spec. Start with { and end with } with no markdown wrapping.',
-        critic: 'You are a strict CMO and proposal auditor. Audit the ProposalSchema data on 5 dimensions (Relevance, Financial Balance, Differentiation, Feasibility, Conviction) scoring 0-100. Output ONLY valid JSON with fields: total_score, dimensions, strengths, defects_found, verdict, patch.',
+        critic: 'You are a strict CMO and proposal auditor. Audit the ProposalSchema data on 5 dimensions (Relevance, Financial Balance, Differentiation, Feasibility, Conviction) scoring 0-100. Output ONLY valid JSON with fields: total_score, dimensions, strengths, defects_found, verdict, patch. All text fields (strengths, defects_found, verdict) MUST be written in Simplified Chinese (简体中文).',
         html: 'You are a top frontend engineer. Compile ProposalSchema into a standalone HTML page. Must start with <!DOCTYPE html> and end with </html>. First line in <head> must reference shared.css. No markdown wrapping.'
     };
 
@@ -272,13 +272,13 @@
                     signal: signal
                 });
             } catch (e) {
-                criticRaw = JSON.stringify({ total_score: 85, verdict: 'Critic skipped', patch: null });
+                criticRaw = JSON.stringify({ total_score: 85, verdict: '质检流程跳过', patch: null });
             }
             let critic;
             try {
                 critic = JSON.parse(extractJson(criticRaw));
             } catch (e) {
-                critic = { total_score: 85, verdict: 'Critic parse failed', patch: null };
+                critic = { total_score: 85, verdict: '质检结果解析失败', patch: null };
             }
             if (critic.patch) {
                 schema = this.schemaCore.applyProposalPatch(schema, critic.patch);

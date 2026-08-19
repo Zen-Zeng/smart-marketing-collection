@@ -334,12 +334,12 @@
 
                     <!-- 结构化数据 Tab -->
                     <div id="tab-schema" class="tab-panel">
-                        <pre id="proposal-json" class="p-4 bg-slate-900 text-emerald-400 rounded-lg overflow-x-auto text-xs"></pre>
+                        <pre id="proposal-json" class="p-4 bg-slate-50 text-slate-800 border border-slate-200 rounded-lg overflow-x-auto text-xs"></pre>
                     </div>
 
                     <!-- HTML 源码 Tab -->
                     <div id="tab-html" class="tab-panel">
-                        <pre id="proposal-html" class="p-4 bg-slate-900 text-slate-100 rounded-lg overflow-x-auto text-xs"></pre>
+                        <pre id="proposal-html" class="p-4 bg-slate-50 text-slate-800 border border-slate-200 rounded-lg overflow-x-auto text-xs"></pre>
                     </div>
 
                     <!-- 质检报告 Tab -->
@@ -740,12 +740,33 @@
         }
     }
 
+    const CRITIC_DIM_LABELS = {
+        relevance: '战略针对性',
+        finance: '财务自洽性',
+        differentiation: '差异化力度',
+        feasibility: '执行可行性',
+        conviction: '客户说服力'
+    };
+
     function renderCriticView(critic) {
         const el = $('critic-content');
         if (!critic) { el.innerHTML = '<p class="text-slate-400">暂无质检数据</p>'; return; }
         const score = critic.total_score || 90;
         const scoreColor = score >= 90 ? 'text-emerald-600 bg-emerald-50 border-emerald-200' : 'text-amber-600 bg-amber-50 border-amber-200';
-        
+        const dims = critic.dimensions || {};
+        const dimKeys = ['relevance', 'finance', 'differentiation', 'feasibility', 'conviction'];
+        const dimBars = dimKeys.filter(function (k) { return typeof dims[k] === 'number'; }).map(function (k) {
+            const label = CRITIC_DIM_LABELS[k] || k;
+            const v = Math.max(0, Math.min(100, Math.round(dims[k])));
+            return '<div class="flex items-center gap-2">'
+                + '<span class="w-20 text-slate-600">' + label + '</span>'
+                + '<div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">'
+                + '<div class="h-full rounded-full ' + (v >= 90 ? 'bg-emerald-500' : v >= 75 ? 'bg-indigo-500' : 'bg-amber-500') + '" style="width:' + v + '%"></div>'
+                + '</div>'
+                + '<span class="w-8 text-right font-mono text-slate-500">' + v + '</span>'
+                + '</div>';
+        }).join('');
+
         el.innerHTML = `
             <div class="p-4 rounded-lg border ${scoreColor} flex items-center justify-between">
                 <div>
@@ -755,6 +776,7 @@
                 </div>
                 <i class="fa-solid fa-stamp text-2xl opacity-60"></i>
             </div>
+            ${dimBars ? '<div class="p-3 bg-white rounded-lg border border-slate-200 space-y-2">' + dimBars + '</div>' : ''}
             <div class="p-3 bg-white rounded-lg border border-slate-200">
                 <h4 class="font-bold text-slate-800 mb-2">⭐ 方案核心亮点</h4>
                 <ul class="list-disc list-inside space-y-1 text-slate-600">
