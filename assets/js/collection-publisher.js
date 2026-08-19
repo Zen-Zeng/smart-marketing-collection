@@ -172,20 +172,36 @@
 
     AccountLibrary.prototype.togglePublic = async function (htmlPath, isPublic) {
         var jsonPath = htmlPath.replace(/[.]html$/i, '.data.json');
-        var dataText = await this.readFile(jsonPath);
-        var data = JSON.parse(dataText);
-        data.public = isPublic;
-        var page = data.html || '';
+        var files = [];
+        var hasJson = false;
+        
+        // 尝试读取 .data.json，如果不存在则直接操作 HTML
+        try {
+            var dataText = await this.readFile(jsonPath);
+            var data = JSON.parse(dataText);
+            data.public = isPublic;
+            var page = data.html || '';
+            hasJson = true;
+        } catch (e) {
+            // .data.json 不存在，直接读取 HTML 文件
+            var page = await this.readFile(htmlPath);
+            var data = null;
+        }
+        
+        // 更新 HTML 中的 meta 标签
         if (page.indexOf('smc-public') >= 0) {
             page = page.replace(/<meta name="smc-public" content="[^"]*">/, '<meta name="smc-public" content="' + isPublic + '">');
         } else {
             page = page.replace(/<head>/i, '<head>\n<meta name="smc-public" content="' + isPublic + '">');
         }
-        data.html = page;
-        var files = [
-            { path: htmlPath, content: page },
-            { path: jsonPath, content: JSON.stringify(data, null, 2) }
-        ];
+        
+        files.push({ path: htmlPath, content: page });
+        
+        if (hasJson && data) {
+            data.html = page;
+            files.push({ path: jsonPath, content: JSON.stringify(data, null, 2) });
+        }
+        
         await this.createCommit(files, 'chore: toggle public=' + isPublic + ' for ' + htmlPath);
         return { isPublic: isPublic };
     };
