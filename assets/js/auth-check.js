@@ -5,6 +5,12 @@
     var TOKEN_KEY = 'smc_auth_ok';
     var page = location.pathname.split('/').pop() || 'index.html';
 
+    /* 根据 auth-check.js 的 script src 动态推算站点根路径前缀 */
+    var scripts = document.querySelectorAll('script[src*="auth-check"]');
+    var scriptSrc = scripts.length ? scripts[scripts.length - 1].getAttribute('src') : '';
+    var prefix = scriptSrc.replace(/assets\/js\/auth-check\.js(\?.*)?$/, '');
+    var loginUrl = prefix + 'login.html';
+
     /* 登录页本身直接放行 */
     if (page === 'login.html') return;
 
@@ -18,7 +24,7 @@
     /* 未登录 → 记录来源页后跳转到登录页 */
     if (!isPublic && sessionStorage.getItem(TOKEN_KEY) !== '1') {
         sessionStorage.setItem('smc_redirect', location.href);
-        location.replace('login.html');
+        location.replace(loginUrl);
         return;
     }
 
@@ -42,7 +48,7 @@
         btn.onclick = function () {
             sessionStorage.removeItem(TOKEN_KEY);
             sessionStorage.removeItem('smc_user');
-            location.replace('login.html');
+            location.replace(loginUrl);
         };
         document.body.appendChild(btn);
     });
