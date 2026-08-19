@@ -898,6 +898,7 @@
                 const pagesUrl = 'https://zen-zeng.github.io/smart-marketing-collection/' + f.path;
                 row.innerHTML = '<span class="text-xs font-medium text-slate-700 truncate">' + label + '</span>'
                     + '<span class="flex items-center gap-1">'
+                    + '<button class="text-slate-400 hover:text-amber-600 text-xs p-0.5 btn-toggle-public" data-slug="' + slug + '" data-path="' + f.path + '" title="公开/私密"><i class="fa-solid fa-lock"></i></button>'
                     + '<a class="text-indigo-600 hover:text-indigo-800 text-xs eye-preview" target="_blank" rel="noopener noreferrer" href="' + pagesUrl + '" title="在新标签页打开"><i class="fa-solid fa-eye"></i></a>'
                     + '<button class="text-emerald-600 hover:text-emerald-800 text-xs p-0.5" data-slug="' + slug + '" title="download"><i class="fa-solid fa-download"></i></button>'
                     + '<button class="text-rose-500 hover:text-rose-700 text-xs p-0.5" data-slug="' + slug + '" title="delete"><i class="fa-solid fa-trash"></i></button>'
@@ -982,6 +983,33 @@
                         }
                     });
                 });
+                // 公开/私密切换按钮事件
+                const toggleBtn = row.querySelector('.btn-toggle-public');
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', async function (ev) {
+                        ev.stopPropagation();
+                        const btn = ev.currentTarget;
+                        const htmlPath = btn.dataset.path;
+                        const icon = btn.querySelector('i');
+                        const isCurrentlyPublic = icon.classList.contains('fa-lock-open');
+                        const newPublic = !isCurrentlyPublic;
+                        btn.disabled = true;
+                        icon.classList.add('fa-spin');
+                        try {
+                            await lib.togglePublic(htmlPath, newPublic);
+                            icon.classList.remove('fa-lock', 'fa-lock-open', 'fa-spin');
+                            icon.classList.add(newPublic ? 'fa-lock-open' : 'fa-lock');
+                            icon.classList.remove('text-slate-400', 'text-amber-500');
+                            icon.classList.add(newPublic ? 'text-amber-500' : 'text-slate-400');
+                            showToast(newPublic ? '方案已公开，无需登录即可访问' : '方案已设为私密，需登录访问', 'success');
+                        } catch (e) {
+                            showToast('切换失败: ' + e.message, 'error');
+                            icon.classList.remove('fa-spin');
+                        } finally {
+                            btn.disabled = false;
+                        }
+                    });
+                }
                 wrap.appendChild(row);
             });
         } catch (e) {

@@ -156,12 +156,38 @@
         var dir = this.dirPath();
         var page = String(html || '');
         if (page.indexOf('assets/css/shared.css') < 0) page = page.replace(/href=\"shared.css\"/g, 'href=\"assets/css/shared.css\"');
+        var isPublic = false;
+        if (page.indexOf('smc-public') >= 0) {
+            page = page.replace(/<meta name="smc-public" content="[^"]*">/, '<meta name="smc-public" content="' + isPublic + '">');
+        } else {
+            page = page.replace(/<head>/i, '<head>\n<meta name="smc-public" content="' + isPublic + '">');
+        }
         var files = [
             { path: dir + '/' + slug + '.html', content: page },
-            { path: dir + '/' + slug + '.data.json', content: JSON.stringify({ schema: schema, html: page, savedAt: new Date().toISOString() }, null, 2) }
+            { path: dir + '/' + slug + '.data.json', content: JSON.stringify({ schema: schema, html: page, savedAt: new Date().toISOString(), public: isPublic }, null, 2) }
         ];
         var sha = await this.createCommit(files, 'feat(' + this.username + '): save proposal ' + slug);
-        return { slug: slug, commitSha: sha, htmlPath: dir + '/' + slug + '.html' };
+        return { slug: slug, commitSha: sha, htmlPath: dir + '/' + slug + '.html', isPublic: isPublic };
+    };
+
+    AccountLibrary.prototype.togglePublic = async function (htmlPath, isPublic) {
+        var jsonPath = htmlPath.replace(/[.]html$/i, '.data.json');
+        var dataText = await this.readFile(jsonPath);
+        var data = JSON.parse(dataText);
+        data.public = isPublic;
+        var page = data.html || '';
+        if (page.indexOf('smc-public') >= 0) {
+            page = page.replace(/<meta name="smc-public" content="[^"]*">/, '<meta name="smc-public" content="' + isPublic + '">');
+        } else {
+            page = page.replace(/<head>/i, '<head>\n<meta name="smc-public" content="' + isPublic + '">');
+        }
+        data.html = page;
+        var files = [
+            { path: htmlPath, content: page },
+            { path: jsonPath, content: JSON.stringify(data, null, 2) }
+        ];
+        await this.createCommit(files, 'chore: toggle public=' + isPublic + ' for ' + htmlPath);
+        return { isPublic: isPublic };
     };
 
     global.AccountLibrary = AccountLibrary;

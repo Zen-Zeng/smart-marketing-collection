@@ -8,15 +8,24 @@
     /* 登录页本身直接放行 */
     if (page === 'login.html') return;
 
+    /* 检查页面是否公开 */
+    var isPublic = false;
+    var metaTag = document.querySelector('meta[name="smc-public"]');
+    if (metaTag) {
+        isPublic = metaTag.content === 'true';
+    }
+
     /* 未登录 → 记录来源页后跳转到登录页 */
-    if (sessionStorage.getItem(TOKEN_KEY) !== '1') {
+    if (!isPublic && sessionStorage.getItem(TOKEN_KEY) !== '1') {
         sessionStorage.setItem('smc_redirect', location.href);
         location.replace('login.html');
         return;
     }
 
-    /* 已登录 → 页面加载完成后插入退出按钮 */
+    /* 已登录或非公开页面 → 页面加载完成后插入退出按钮 */
     document.addEventListener('DOMContentLoaded', function () {
+        /* 如果是公开页面且未登录，不显示退出按钮 */
+        if (isPublic && sessionStorage.getItem(TOKEN_KEY) !== '1') return;
         var btn = document.createElement('button');
         btn.id = 'smc-logout-btn';
         btn.textContent = '退出登录';
