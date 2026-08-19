@@ -902,14 +902,44 @@
                     + '<button class="text-emerald-600 hover:text-emerald-800 text-xs p-0.5" data-slug="' + slug + '" title="download"><i class="fa-solid fa-download"></i></button>'
                     + '<button class="text-rose-500 hover:text-rose-700 text-xs p-0.5" data-slug="' + slug + '" title="delete"><i class="fa-solid fa-trash"></i></button>'
                     + '</span>';
-                // 点击整行 → 在下方视觉演示 iframe 中加载方案
+                // 点击整行 → 加载方案到全部四个 Tab
                 row.addEventListener('click', function (ev) {
                     if (ev.target.closest('.eye-preview, button')) return;
-                    var frame = document.getElementById('preview-frame');
-                    if (frame) {
-                        frame.src = pagesUrl;
+                    (async function () {
+                        // 视觉演示
+                        var frame = document.getElementById('preview-frame');
+                        if (frame) frame.src = pagesUrl;
+                        // 尝试读取 data.json 填充其余三个 Tab
+                        try {
+                            var jsonText = await lib.readFile(f.path.replace(/[.]html$/i, '.data.json'));
+                            var parsed = JSON.parse(jsonText);
+                            if (parsed.schema) {
+                                activeSchema = parsed.schema;
+                                document.getElementById('proposal-json').textContent = JSON.stringify(parsed.schema, null, 2);
+                            }
+                            if (parsed.html) {
+                                activeHtml = parsed.html;
+                                document.getElementById('proposal-html').textContent = parsed.html;
+                            }
+                            // 质检报告：data.json 未存 critic，显示提示
+                            var criticEl = document.getElementById('critic-content');
+                            if (criticEl) {
+                                criticEl.innerHTML = '<div class="p-4 rounded-lg border border-slate-200 bg-slate-50 text-center">'
+                                    + '<i class="fa-solid fa-info-circle text-slate-400 mr-1.5"></i>'
+                                    + '<span class="text-slate-500">质检报告仅在方案生成时可用，从方案库加载的历史方案不含质检数据</span>'
+                                    + '</div>';
+                            }
+                            // 显示导出按钮
+                            ['btn-save-site','btn-export-pptx','btn-download-html','btn-copy'].forEach(function (id) {
+                                var el = document.getElementById(id);
+                                if (el) el.classList.remove('hidden');
+                            });
+                            showToast('已加载方案: ' + slug, 'success');
+                        } catch (e) {
+                            // data.json 不存在时仅展示视觉演示
+                        }
                         document.getElementById('tab-preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+                    })();
                 });
                 row.querySelectorAll('button[data-slug]').forEach(function (btn) {
                     btn.addEventListener('click', async function () {
