@@ -651,8 +651,8 @@
             $("modal-settings").classList.remove("hidden");
             throw new Error("请先在右上角配置 API Key");
         }
-        const adapter = new global.LlmAdapter({ provider: provider, apiKey: apiKey, baseUrl: baseUrl, model: model });
-        return new global.AgentPipelineRunner({ llmAdapter: adapter, schemaCore: global.ProposalSchemaCore });
+        const adapter = new window.LlmAdapter({ provider: provider, apiKey: apiKey, baseUrl: baseUrl, model: model });
+        return new window.AgentPipelineRunner({ llmAdapter: adapter, schemaCore: window.ProposalSchemaCore });
     }
 
     async function callLlmApi({ system, userMsg }) {
@@ -769,7 +769,7 @@
         if (!activeSchema) return;
         try {
             showToast('正在编译生成原生 PPTX 幻灯片...', 'info');
-            await global.PptxCompiler.exportProposalToPptx(activeSchema);
+            await window.PptxCompiler.exportProposalToPptx(activeSchema);
             showToast('PPTX 下载成功 🎉', 'success');
         } catch (e) {
             showToast(`PPTX 导出失败: ${e.message}`, 'error');
