@@ -59,24 +59,38 @@
         return this._listDir(this.dirPath(), this.username);
     };
 
-    AccountLibrary.prototype._listAllAccounts = async function () {
-        var self = this;
-        var root;
-        try {
-            root = await ghFetch(this.token, this.apiBase() + '/contents/projects?ref=' + this.branch);
-        } catch (e) {
-            if (String(e.message).indexOf('404') >= 0) return [];
-            throw e;
-        }
-        if (!Array.isArray(root)) return [];
-        var accounts = root.filter(function (item) { return item.type === 'dir'; });
+   AccountLibrary.prototype._listAllAccounts = async function () {
+       var self = this;
         var results = [];
-        for (var i = 0; i < accounts.length; i++) {
-            var dirItems = await self._listDir('projects/' + accounts[i].name, accounts[i].name);
-            results = results.concat(dirItems);
+        // 1. 扫描根目录方案页面（排除系统页面）
+        var skipPages = { 'generator.html': 1, 'login.html': 1, 'index.html': 1 };
+        try {
+            var rootFiles = await ghFetch(this.token, this.apiBase() + '/contents/?ref=' + this.branch);
+            if (Array.isArray(rootFiles)) {
+                rootFiles.forEach(function (item) {
+                    if (item.type === 'file' && /[.]html$/i.test(item.name) && !skipPages[item.name]) {
+                        results.push({ name: item.name, path: item.path, download_url: item.download_url, sha: item.sha, account: 'root' });
+                    }
+                });
+            }
+        } catch (e) {
+            if (String(e.message).indexOf('404') < 0) throw e;
         }
-        return results;
-    };
+        // 2. 扫描 projects/ 下各账号子目录
+        try {
+            var projectsRoot = await ghFetch(this.token, this.apiBase() + '/contents/projects?ref=' + this.branch);
+            if (Array.isArray(projectsRoot)) {
+                var accounts = projectsRoot.filter(function (item) { return item.type === 'dir'; });
+                for (var i = 0; i < accounts.length; i++) {
+                    var dirItems = await self._listDir('projects/' + accounts[i].name, accounts[i].name);
+                    results = results.concat(dirItems);
+                }
+            }
+        } catch (e) {
+            if (String(e.message).indexOf('404') < 0) throw e;
+        }
+       return results;
+   };
 
     AccountLibrary.prototype._listDir = async function (dirPath, account) {
         var path = encodeURIComponent(dirPath);
