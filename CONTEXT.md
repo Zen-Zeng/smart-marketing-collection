@@ -74,6 +74,10 @@ _Avoid_: Prompt stuffing, context injection
 A client-supplied online reference (URL) whose page body is fetched through the Jina Reader proxy and folded into the Grounding pipeline alongside uploaded local files.
 _Avoid_: Web clipping, URL bookmark, source link
 
+**Collection Publish**:
+The one-click action that commits a generated proposal HTML, an index.html entry card, and a README row into the repository via the GitHub Git Data API, triggering the Pages deployment pipeline.
+_Avoid_: Save to GitHub, push to repo
+
 **Document Chunk Index**:
 The browser-resident extracted heading structure and TF-IDF scored text segments sourced from uploaded client background files (PDF/DOCX/MD).
 _Avoid_: Vector store, raw text dump
