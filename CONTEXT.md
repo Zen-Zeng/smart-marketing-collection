@@ -74,6 +74,10 @@ _Avoid_: Prompt stuffing, context injection
 A client-supplied online reference (URL) whose page body is fetched through the Jina Reader proxy and folded into the Grounding pipeline alongside uploaded local files.
 _Avoid_: Web clipping, URL bookmark, source link
 
+**Per-Account Proposal Library**:
+The account-scoped proposal store at projects/<username>/ in the repository, listing only proposals saved by the currently logged-in account and persisting HTML plus a data snapshot.
+_Avoid_: Save to collection, shared proposal list
+
 **Collection Publish**:
 The one-click action that commits a generated proposal HTML, an index.html entry card, and a README row into the repository via the GitHub Git Data API, triggering the Pages deployment pipeline.
 _Avoid_: Save to GitHub, push to repo

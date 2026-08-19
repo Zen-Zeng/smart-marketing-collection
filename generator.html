@@ -143,7 +143,7 @@
                 <input type="text" id="input-model-name" class="form-input font-mono text-xs" value="deepseek-chat">
             </div>
 <div>
-                <label class="form-label" for="input-github-token">GitHub Token (PAT, 保存到集合页用)</label>
+                <label class="form-label" for="input-github-token">GitHub Token (PAT, 个人方案库写入用)</label>
                 <div class="relative">
                     <input type="password" id="input-github-token" class="form-input pr-10 font-mono text-xs" placeholder="ghp_... 需 repo / contents:write 权限">
                     <button id="btn-toggle-gh" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -302,6 +302,16 @@
                 </div>
             </div>
 
+            <!-- 我的方案库（跟随登录账号） -->
+            <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-bookmark text-indigo-600"></i>我的方案库 · 账号: <span id="account-user" class="text-indigo-600 font-bold">guest</span>
+                    </span>
+                </div>
+                <div id="account-list" class="space-y-1.5"><p class="text-xs text-slate-400">加载中...</p></div>
+            </div>
+
             <!-- 结果展示主卡片 -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col min-h-[580px] overflow-hidden">
                 
@@ -315,7 +325,7 @@
                     </div>
                     <div class="flex items-center gap-2 py-2">
                         <button id="btn-save-site" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 hidden">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>保存到集合页
+                            <i class="fa-solid fa-bookmark"></i>保存到我的方案库
                         </button>
                         <button id="btn-export-pptx" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 hidden">
                             <i class="fa-solid fa-file-powerpoint"></i>导出 PPTX 幻灯片
@@ -858,63 +868,89 @@
         showToast('已填入 DR.COSMO 品牌示例数据', 'info');
     });
 
-    // ── 保存到集合页 ──
+    // ── 我的方案库（跟随登录账号）──
+    function currentUser() {
+        return sessionStorage.getItem('smc_user') || 'guest';
+    }
+
+    function accountLibrary() {
+        const token = (localStorage.getItem(LS_KEY_GH_TOKEN) || '').trim();
+        return new window.AccountLibrary({ token: token, username: currentUser() });
+    }
+
+    async function refreshAccountList() {
+        const wrap = document.getElementById('account-list');
+        if (!wrap) return;
+        const user = currentUser();
+        document.getElementById('account-user').textContent = user;
+        try {
+            const lib = accountLibrary();
+            const items = await lib.listProposals();
+            const htmls = items.filter(function (f) { return /[.]html$/i.test(f.name); });
+            if (!htmls.length) { wrap.innerHTML = '<p class="text-xs text-slate-400">该账号暂无已保存方案</p>'; return; }
+            wrap.innerHTML = '';
+            htmls.forEach(function (f) {
+                const slug = f.name.replace(/[.]html$/i, '');
+                const row = document.createElement('div');
+                row.className = 'flex items-center justify-between gap-2 p-2 border border-slate-200 rounded-lg bg-white';
+                row.innerHTML = '<span class="text-xs font-medium text-slate-700 truncate">' + slug + '</span>'
+                    + '<span class="flex items-center gap-1">'
+                    + '<a class="text-indigo-600 hover:text-indigo-800 text-xs" target="_blank" rel="noopener noreferrer" href="' + f.download_url + '"><i class="fa-solid fa-eye"></i></a>'
+                    + '<button class="text-emerald-600 hover:text-emerald-800 text-xs p-0.5" data-slug="' + slug + '" title="download"><i class="fa-solid fa-download"></i></button>'
+                    + '<button class="text-rose-500 hover:text-rose-700 text-xs p-0.5" data-slug="' + slug + '" title="delete"><i class="fa-solid fa-trash"></i></button>'
+                    + '</span>';
+                row.querySelectorAll('button[data-slug]').forEach(function (btn) {
+                    btn.addEventListener('click', async function () {
+                        if (btn.title === 'download') {
+                            try {
+                                const data = await lib.readFile(f.path.replace(/[.]html$/i, '.data.json'));
+                                const parsed = JSON.parse(data);
+                                const blob = new Blob([parsed.html], { type: 'text/html;charset=utf-8' });
+                                const url = URL.createObjectURL(blob);
+                                const a = Object.assign(document.createElement('a'), { href: url, download: slug + '.html' });
+                                a.click();
+                                URL.revokeObjectURL(url);
+                            } catch (e) { showToast('下载失败: ' + e.message, 'error'); }
+                        } else if (btn.title === 'delete') {
+                            if (!confirm('确认删除方案 ' + slug + ' 吗？')) return;
+                            showToast('删除功能需手动在仓库清理', 'info');
+                        }
+                    });
+                });
+                wrap.appendChild(row);
+            });
+        } catch (e) {
+            wrap.innerHTML = '<p class="text-xs text-rose-500">读取方案库失败: ' + e.message + '</p>';
+        }
+    }
+
     async function saveToCollection() {
         if (!activeSchema || !activeHtml) { showToast('请先生成方案', 'error'); return; }
         const token = (localStorage.getItem(LS_KEY_GH_TOKEN) || '').trim();
         if (!token) {
-            $('modal-settings').classList.remove('hidden');
+            document.getElementById('modal-settings').classList.remove('hidden');
             showToast('请先在模型配置中填写 GitHub Token', 'error');
             return;
         }
-        const btn = $('btn-save-site');
+        const btn = document.getElementById('btn-save-site');
         btn.disabled = true;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i>提交中...';
         try {
-            const publisher = new window.CollectionPublisher({ token: token });
-            const result = await publisher.saveProposal(activeSchema, activeHtml);
-            showToast('已提交到仓库，正在自动部署...', 'success', 4000);
-            const runLink = 'https://github.com/Zen-Zeng/smart-marketing-collection/actions';
-            const pageUrl = 'https://zen-zeng.github.io/smart-marketing-collection/' + result.fileName;
-            let tries = 0;
-            const timer = setInterval(async () => {
-                tries++;
-                try {
-                    const run = await publisher.latestRun();
-                    if (run && (run.status === 'completed' || tries > 20)) {
-                        clearInterval(timer);
-                        btn.disabled = false;
-                        btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i>保存到集合页';
-                        if (run.conclusion === 'success') {
-                            showToast('部署完成，已上线: ' + pageUrl, 'success', 6000);
-                            window.open(pageUrl, '_blank');
-                        } else {
-                            showToast('提交成功但部署未通过，查看: ' + runLink, 'error', 6000);
-                            window.open(runLink, '_blank');
-                        }
-                    } else if (tries > 20) {
-                        clearInterval(timer);
-                        btn.disabled = false;
-                        btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i>保存到集合页';
-                        showToast('提交成功，部署中，稍后查看: ' + runLink, 'info', 5000);
-                    }
-                } catch (e) {
-                    if (tries > 20) {
-                        clearInterval(timer);
-                        btn.disabled = false;
-                        btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i>保存到集合页';
-                    }
-                }
-            }, 5000);
+            const lib = accountLibrary();
+            const result = await lib.saveProposal(activeSchema, activeHtml);
+            showToast('已保存到 ' + currentUser() + ' 的方案库', 'success', 4000);
+            refreshAccountList();
         } catch (err) {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i>保存到集合页';
             showToast('保存失败: ' + err.message, 'error', 6000);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-bookmark"></i>保存到我的方案库';
         }
     }
 
-    $('btn-save-site').addEventListener('click', saveToCollection);
-
+    document.getElementById('btn-save-site').addEventListener('click', saveToCollection);
+    // 初始化账号方案库
+    refreshAccountList();
     // ── 初始化检查 ──
     loadSettings();
 })();
