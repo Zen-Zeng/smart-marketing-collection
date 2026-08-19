@@ -14,6 +14,17 @@
     <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
     <script src="assets/js/schema.js"></script>
     <script src="assets/js/pptx-compiler.js"></script>
+    <script src="assets/js/agent-pipeline.js"></script>
+    <script type="module">
+        try {
+            const { default: OpenAI } = await import("https://esm.sh/openai@4.73.1");
+            window.OpenAI = OpenAI;
+        } catch (e) { console.warn("OpenAI SDK unavailable, using fetch fallback", e); }
+        try {
+            const { default: Anthropic } = await import("https://esm.sh/@anthropic-ai/sdk@0.32.1");
+            window.Anthropic = Anthropic;
+        } catch (e) { console.warn("Anthropic SDK unavailable, using fetch fallback", e); }
+    </script>
     <script>
         tailwind.config = {
             theme: {
@@ -486,176 +497,6 @@
         $('file-input').value = '';
     });
 
-    // ── 智能体 API 请求封装 ──
-    async function callLlmApi({ system, userMsg, temperature = 0.7, jsonMode = false }) {
-        const provider = localStorage.getItem(LS_KEY_PROVIDER) || 'deepseek';
-        const apiKey   = (localStorage.getItem(LS_KEY_KEY) || '').replace(/[^ -~]/g, '');
-        const baseUrl  = localStorage.getItem(LS_KEY_URL) || PROVIDER_DEFAULTS[provider].url;
-        const model    = localStorage.getItem(LS_KEY_MODEL) || PROVIDER_DEFAULTS[provider].model;
-
-        if (!apiKey) {
-            $('modal-settings').classList.remove('hidden');
-            throw new Error('请先在右上角配置 API Key');
-        }
-
-        const headers = { 'Content-Type': 'application/json' };
-        let payload = {};
-
-        if (provider === 'claude') {
-            headers['x-api-key'] = apiKey;
-            headers['anthropic-version'] = '2023-06-01';
-            headers['anthropic-dangerous-direct-browser-access'] = 'true';
-            payload = {
-                model,
-                max_tokens: 8192,
-                system,
-                messages: [{ role: 'user', content: userMsg }],
-                temperature
-            };
-        } else {
-            headers['Authorization'] = `Bearer ${apiKey}`;
-            payload = {
-                model,
-                messages: [
-                    { role: 'system', content: system },
-                    { role: 'user', content: userMsg }
-                ],
-                temperature
-            };
-            if (jsonMode && (provider === 'openai' || provider === 'deepseek')) {
-                payload.response_format = { type: 'json_object' };
-            }
-        }
-
-        abortCtrl = new AbortController();
-        const res = await fetch(baseUrl, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(payload),
-            signal: abortCtrl.signal
-        });
-
-        if (!res.ok) {
-            const errText = await res.text();
-            throw new Error(`API 错误 (${res.status}): ${errText}`);
-        }
-        const data = await res.json();
-        if (provider === 'claude') {
-            return data.content?.[0]?.text || '';
-        }
-        return data.choices?.[0]?.message?.content || '';
-    }
-
-    // ── 提示词体系 (Prompts Architecture) ──
-    const SYS_STRATEGY = `你是一位资深中国 4A 战略营销总监兼商业咨询专家。
-请根据用户提供的信息与背景资料，推导并生成一份极其专业、可直接发给客户用于提案决策的营销方案。
-输出必须严格符合 ProposalSchema 规范，返回纯 JSON 格式（以 { 开头，以 } 结尾，严禁任何 Markdown 说明包裹）。
-
-JSON Schema 结构规范：
-{
-  "meta": {
-    "brand_name": "品牌名",
-    "proposal_title": "方案主标题",
-    "industry": "美妆个护/3C数码/科技/B2B制造/企业服务/医疗大健康/跨境电商/出海/食品饮料/餐饮/经典商务",
-    "target_period": "如 2026年Q3-Q4",
-    "total_budget": "总预算描述与金额",
-    "slogan": "战役核心Slogan口号"
-  },
-  "executive_summary": {
-    "core_takeaways": ["核心战略要点1", "核心战略要点2", "核心战略要点3", "核心战略要点4"],
-    "action_slogan": "落地行动主张"
-  },
-  "market_insight": {
-    "industry_background": "行业现状与宏观趋势分析",
-    "market_opportunities": ["机遇1", "机遇2", "机遇3"],
-    "market_challenges": ["挑战1", "挑战2", "挑战3"],
-    "competitors": [
-      { "name": "竞品A", "advantage": "优势", "weakness": "劣势", "our_opportunity": "破局点" },
-      { "name": "竞品B", "advantage": "优势", "weakness": "劣势", "our_opportunity": "破局点" }
-    ],
-    "personas": [
-      { "name": "人群A", "age_range": "25-35岁", "tags": ["标签1", "标签2"], "pain_points": ["痛点1", "痛点2"], "channel_preference": ["小红书", "抖音"] },
-      { "name": "人群B", "age_range": "30-45岁", "tags": ["标签1", "标签2"], "pain_points": ["痛点1", "痛点2"], "channel_preference": ["微信", "知乎"] }
-    ]
-  },
-  "core_strategy": {
-    "brand_positioning": "品牌破局定位语",
-    "core_value_prop": "核心价值主张",
-    "campaign_theme": "全案营销战役大主题",
-    "strategic_framework_4p": { "product": "产品策略", "price": "价格与包装策略", "place": "渠道策略", "promotion": "推广策略" },
-    "battle_phases_overview": ["阶段1概述", "阶段2概述", "阶段3概述"]
-  },
-  "channel_matrix": [
-    { "platform": "小红书", "role": "内容种草与心智渗透", "content_types": ["深度测评", "场景植入"], "key_tactics": ["头部背书+腰部扩散"], "kpi_focus": "互动率与回搜率" },
-    { "platform": "抖音", "role": "流量破圈与直播转化", "content_types": ["短视频带货", "达人专场"], "key_tactics": ["爆款视频+千川推流"], "kpi_focus": "GMV与完播率" }
-  ],
-  "influencer_matrix": {
-    "tier_breakdown": [
-      { "tier": "头部KOL (Top)", "percentage": 25, "unit_price_range": "8-15万/篇", "count": 2, "purpose": "树立标杆与权威背书" },
-      { "tier": "腰部垂类 (Mid)", "percentage": 50, "unit_price_range": "2-5万/篇", "count": 15, "purpose": "深度测评与场景渗透" },
-      { "tier": "KOC素人 (Tail)", "percentage": 25, "unit_price_range": "300-800元/篇", "count": 100, "purpose": "口碑铺量与搜索霸屏" }
-    ],
-    "selection_criteria": ["垂直度>85%", "近30天互动率>5%", "粉丝画像与受众重合度>70%"]
-  },
-  "timeline_phases": [
-    { "phase_name": "蓄水筹备期", "period": "第1-2周", "focus": "素材准备与达人建联", "milestones": ["完成达人签约", "首批产品寄送"], "deliverables": ["达人合作清单", "脚本规范"] },
-    { "phase_name": "引爆扩散期", "period": "第3-6周", "focus": "全网集中发声与大促承接", "milestones": ["头部KOL统一上线", "信息流追投"], "deliverables": ["曝光数据日报", "转化漏斗报表"] },
-    { "phase_name": "沉淀复购期", "period": "第7-8周", "focus": "私域沉淀与长尾长效转化", "milestones": ["私域入会转化", "爆文二剪复用"], "deliverables": ["复盘结案报告", "资产沉淀库"] }
-  ],
-  "finance_and_kpi": {
-    "total_budget_amount": "100万",
-    "budget_breakdown": [
-      { "channel": "KOL达人内容采买", "percentage": 60, "amount": "60万", "note": "梯队达人图文与视频采买" },
-      { "channel": "平台效果广告推流 (千川/聚光)", "percentage": 25, "amount": "25万", "note": "爆文放大与搜索拦截" },
-      { "channel": "内容制作与物料设计", "percentage": 10, "amount": "10万", "note": "专业视觉与视频剪辑" },
-      { "channel": "风险机动备用金", "percentage": 5, "amount": "5万", "note": "应对突发热点加投" }
-    ],
-    "conversion_funnel": [
-      { "stage": "曝光触达 (Awareness)", "metric_name": "全网总曝光量", "target_value": "3,000万+" },
-      { "stage": "兴趣互动 (Interest)", "metric_name": "互动与回搜量", "target_value": "150万+" },
-      { "stage": "转化购买 (Action)", "metric_name": "全渠道GMV", "target_value": "500万+" }
-    ],
-    "expected_roi": "预期全案综合 ROI 达到 1:4.5 至 1:5.2",
-    "risk_mitigations": [
-      { "risk": "达人内容违规或翻车", "mitigation": "严审脚本，设立违约赔付条款与备选达人池" },
-      { "risk": "竞品跟风降价拦截", "mitigation": "强调差异化价值体验，推行买赠权益提升粘性" }
-    ]
-  }
-}`;
-
-    const SYS_CRITIC = `你是一位严谨苛刻的 CMO 兼商业方案审计员 (Critic Agent)。
-请审计传入的 ProposalSchema 方案数据，按照以下 5 个维度打分 (0-100)：
-1. 战略与痛点针对性 (Relevance)
-2. 财务与预算自洽性 (Financial Balance: 检查比例求和是否闭环)
-3. 竞品与差异化力度 (Differentiation)
-4. 执行排期与里程碑可行性 (Feasibility)
-5. 整体提案专业度与客户说服力 (Conviction)
-
-如果发现方案有明显逻辑硬伤、预算不闭环或表达空洞，请输出修正补丁 patch（用于更新 ProposalSchema 的子对象）。
-返回严格纯 JSON（以 { 开头，以 } 结尾）：
-{
-  "total_score": 92,
-  "dimensions": { "relevance": 95, "finance": 90, "differentiation": 92, "feasibility": 90, "conviction": 94 },
-  "strengths": ["优点1", "优点2"],
-  "defects_found": ["问题1（如无则写空数组）"],
-  "verdict": "方案结构严密，财务测算闭环，具备直接交付客户的成熟度",
-  "patch": null
-}`;
-
-    function buildHtmlCompilerPrompt(schema) {
-        const theme = global.ProposalSchemaCore.getThemeForIndustry(schema.meta?.industry);
-        return `你是一位顶级前端工程师与视觉设计师。请根据传入的完整 ProposalSchema 结构化方案，编译生成一份视觉华丽、动效丰富、适合直接交付给客户演示的完整独立 HTML 页面。
-
-【技术与架构约束】
-- 必须以 <!DOCTYPE html> 开头，以 </html> 结尾，严禁任何额外解释文字。
-- 必须在 <head> 第一行引入鉴权脚本 (assets/js/auth-check.js) 与公共样式 (assets/css/shared.css)
-- 必须引入 Tailwind CSS 与 FontAwesome CDN。
-- 必须在 </body> 前最后一行引入公共脚本 assets/js/shared.js
-- 主题主色：${theme.primary}，暗色：${theme.primaryDark}，浅色背景：${theme.primaryLight}
-- 页面包含：粘性顶部导航、全屏 Hero 战役主张区、执行摘要卡片、市场与竞品对比表、受众画像卡片、4P战略架构区、全渠道矩阵表、KOL采买阶梯模型、甘特推进路线图、预算分配与ROI漏斗区、页脚返回链接。
-- 充分使用 .card-hover, .section-fade 工具类与现代卡片排版。`;
-    }
-
     // ── 阶段状态更新 ──
     function setStage(stageId, status) {
         const el = $(`stage-${stageId}`);
@@ -692,127 +533,99 @@ JSON Schema 结构规范：
     });
 
     // ── 核心多智能体生成流水线 ──
+    function createPipelineRunner() {
+        const provider = localStorage.getItem(LS_KEY_PROVIDER) || "deepseek";
+        const apiKey = (localStorage.getItem(LS_KEY_KEY) || "").replace(/[^ -~]/g, "");
+        const baseUrl = localStorage.getItem(LS_KEY_URL) || PROVIDER_DEFAULTS[provider].url;
+        const model = localStorage.getItem(LS_KEY_MODEL) || PROVIDER_DEFAULTS[provider].model;
+        if (!apiKey) {
+            $("modal-settings").classList.remove("hidden");
+            throw new Error("请先在右上角配置 API Key");
+        }
+        const adapter = new global.LlmAdapter({ provider: provider, apiKey: apiKey, baseUrl: baseUrl, model: model });
+        return new global.AgentPipelineRunner({ llmAdapter: adapter, schemaCore: global.ProposalSchemaCore });
+    }
+
+    async function callLlmApi({ system, userMsg }) {
+        const runnerAdapter = createPipelineRunner().llm;
+        return runnerAdapter.chatCompletion({ system: system, userMsg: userMsg, jsonMode: false });
+    }
+
     async function runAgentPipeline() {
-        const brand = $('f-brand').value.trim();
-        const background = $('f-background').value.trim();
+        const brand = $("f-brand").value.trim();
+        const background = $("f-background").value.trim();
         if (!brand || !background) {
-            showToast('请填写品牌名称与核心诉求', 'error');
+            showToast("请填写品牌名称与核心诉求", "error");
             return;
         }
 
-        // 重置 UI 状态
-        $('empty-state').classList.add('hidden');
-        $('btn-generate').disabled = true;
-        $('btn-generate').innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i>Agent 协同推演中...';
-        $('btn-abort').classList.remove('hidden');
-        $('btn-export-pptx').classList.add('hidden');
-        $('btn-download-html').classList.add('hidden');
-        $('btn-copy').classList.add('hidden');
+        $("empty-state").classList.add("hidden");
+        $("btn-generate").disabled = true;
+        $("btn-generate").innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i>Agent 协同推演中...';
+        $("btn-abort").classList.remove("hidden");
+        $("btn-export-pptx").classList.add("hidden");
+        $("btn-download-html").classList.add("hidden");
+        $("btn-copy").classList.add("hidden");
+        for (let i = 1; i <= 4; i++) setStage(i, "idle");
 
-        for (let i = 1; i <= 4; i++) setStage(i, 'idle');
+        const stageMap = { research: 1, strategy: 2, critic: 3, compiler: 4 };
+        abortCtrl = new AbortController();
 
         try {
-            // ──── Stage 1: Research & Grounding ────
-            setStage(1, 'running');
-            setPipelineProgress(15, 'Stage 1 · 正在萃取客户资料与事实依据...');
-            
-            const groundedFacts = global.ProposalSchemaCore.buildGroundedContext(
-                uploadedFiles,
-                `${brand} ${$('f-industry').value} ${$('f-type').value} ${$('f-challenge').value}`
-            );
-            setStage(1, 'done');
-
-            // ──── Stage 2: Strategy Formulation ────
-            setStage(2, 'running');
-            setPipelineProgress(40, 'Stage 2 · Strategy Agent 正在推演全案策略与数值模型...');
-
-            const userStrategyPrompt = `【提案需求】\n品牌名：${brand}\n行业：${$('f-industry').value}\n方案类型：${$('f-type').value}\n预算：${$('f-budget').value || '根据行业常规配置'}\n周期：${$('f-period').value || '季度'}\n受众：${$('f-audience').value || '目标消费群体'}\n核心痛点与诉求：${background}\n核心挑战：${$('f-challenge').value || '突破增长瓶颈'}\n\n${groundedFacts}`;
-
-            const rawSchemaText = await callLlmApi({
-                system: SYS_STRATEGY,
-                userMsg: userStrategyPrompt,
-                temperature: 0.6,
-                jsonMode: true
+            const runner = createPipelineRunner();
+            const result = await runner.execute({
+                formValues: {
+                    brand: brand,
+                    industry: $("f-industry").value,
+                    campaignType: $("f-type").value,
+                    budget: $("f-budget").value,
+                    period: $("f-period").value,
+                    audience: $("f-audience").value,
+                    background: background,
+                    challenge: $("f-challenge").value
+                },
+                uploadedFiles: uploadedFiles
+            }, {
+                signal: abortCtrl.signal,
+                onStageChange: function (stage, status) {
+                    const id = stageMap[stage];
+                    if (id) setStage(id, status);
+                },
+                onProgress: function (pct, text) {
+                    setPipelineProgress(Math.round(pct * 100), text);
+                },
+                onChunk: function (kind, chunk) {
+                    if (kind === "strategy") {
+                        $("proposal-json").textContent += chunk;
+                    } else if (kind === "html") {
+                        $("proposal-html").textContent += chunk;
+                    }
+                }
             });
 
-            let parsedSchema = null;
-            try {
-                const jsonMatch = rawSchemaText.match(/\{[\s\S]*\}/);
-                parsedSchema = JSON.parse(jsonMatch ? jsonMatch[0] : rawSchemaText);
-            } catch (e) {
-                throw new Error('策略模型输出 JSON 解析失败，请重试');
-            }
-            setStage(2, 'done');
-
-            // ──── Stage 3: Critic Audit & Patching ────
-            setStage(3, 'running');
-            setPipelineProgress(70, 'Stage 3 · Critic Agent 正在执行商业与财务质检...');
-
-            const rawCriticText = await callLlmApi({
-                system: SYS_CRITIC,
-                userMsg: `请审查以下方案数据：\n\n${JSON.stringify(parsedSchema, null, 2)}`,
-                temperature: 0.3,
-                jsonMode: true
-            });
-
-            let criticObj = null;
-            try {
-                const jsonMatch = rawCriticText.match(/\{[\s\S]*\}/);
-                criticObj = JSON.parse(jsonMatch ? jsonMatch[0] : rawCriticText);
-            } catch (e) {
-                criticObj = { total_score: 90, verdict: '方案通过基础质检', patch: null };
-            }
-
-            // 若存在补丁则应用
-            if (criticObj.patch) {
-                parsedSchema = global.ProposalSchemaCore.applyProposalPatch(parsedSchema, criticObj.patch);
-            }
-            activeSchema = parsedSchema;
-            activeCriticReport = criticObj;
-            setStage(3, 'done');
-
-            // ──── Stage 4: HTML Presentation Compilation ────
-            setStage(4, 'running');
-            setPipelineProgress(90, 'Stage 4 · 正在编译独立 HTML 演示交互站...');
-
-            const rawHtml = await callLlmApi({
-                system: buildHtmlCompilerPrompt(activeSchema),
-                userMsg: `请将以下结构化方案数据编译为高端可交互 HTML 演示页面：\n\n${JSON.stringify(activeSchema, null, 2)}`,
-                temperature: 0.5
-            });
-
-            let cleanedHtml = rawHtml;
-            const htmlMatch = rawHtml.match(/```html\s*([\s\S]*?)\s*```/) || rawHtml.match(/(<!DOCTYPE[\s\S]*<\/html>)/i);
-            if (htmlMatch) cleanedHtml = htmlMatch[1].trim();
-            activeHtml = cleanedHtml;
-            setStage(4, 'done');
-
-            // ──── Stage 5: Ready for Dual Delivery ────
-            setPipelineProgress(100, '✓ 方案生成完毕！已就绪双模交付 (Web / PPTX)');
-            
-            // 渲染数据与预览
-            $('proposal-json').textContent = JSON.stringify(activeSchema, null, 2);
-            $('proposal-html').textContent = activeHtml;
-            renderCriticView(criticObj);
+            activeSchema = result.schema;
+            activeHtml = result.html;
+            activeCriticReport = result.critic;
+            $("proposal-json").textContent = JSON.stringify(activeSchema, null, 2);
+            $("proposal-html").textContent = activeHtml;
+            renderCriticView(result.critic);
             await renderPreviewHtml(activeHtml);
-
-            $('btn-export-pptx').classList.remove('hidden');
-            $('btn-download-html').classList.remove('hidden');
-            $('btn-copy').classList.remove('hidden');
-            showToast('方案生成与质检完毕 🎉', 'success', 4000);
-
+            $("btn-export-pptx").classList.remove("hidden");
+            $("btn-download-html").classList.remove("hidden");
+            $("btn-copy").classList.remove("hidden");
+            showToast("方案生成与质检完毕", "success", 4000);
         } catch (err) {
-            if (err.name === 'AbortError') {
-                showToast('已中止生成', 'info');
-                setPipelineProgress(0, '生成已中止');
+            if (err.name === "AbortError") {
+                showToast("已中止生成", "info");
+                setPipelineProgress(0, "生成已中止");
             } else {
-                showToast(`生成失败: ${err.message}`, 'error', 5000);
-                setPipelineProgress(0, `出错: ${err.message}`);
+                showToast("生成失败: " + err.message, "error", 5000);
+                setPipelineProgress(0, "出错: " + err.message);
             }
         } finally {
-            $('btn-generate').disabled = false;
-            $('btn-generate').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>启动 AI Agent 流水线生成方案';
-            $('btn-abort').classList.add('hidden');
+            $("btn-generate").disabled = false;
+            $("btn-generate").innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>启动 AI Agent 流水线生成方案';
+            $("btn-abort").classList.add("hidden");
             abortCtrl = null;
         }
     }

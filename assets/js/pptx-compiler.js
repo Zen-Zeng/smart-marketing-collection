@@ -45,6 +45,9 @@
             });
         }
 
+        const slidePlan = listSlideRenderers();
+        var activeSlidePlan = slidePlan;
+
         // 1. 封面页 (Cover Slide)
         const sCover = pptx.addSlide();
         sCover.background = { color: theme.pptxHeaderBg };
@@ -343,5 +346,20 @@
         return pptx.writeFile({ fileName });
     }
 
-    global.PptxCompiler = { exportProposalToPptx };
+    function listSlideRenderers() {
+        return [
+            "cover", "summary", "market", "competitors", "personas",
+            "strategy", "channels", "influencers", "timeline", "finance", "closing"
+        ];
+    }
+
+    function compileWithRegistry(schema, options) {
+        return exportProposalToPptx(schema, options);
+    }
+
+    global.PptxCompiler = {
+        exportProposalToPptx: exportProposalToPptx,
+        listSlideRenderers: listSlideRenderers,
+        compileWithRegistry: compileWithRegistry
+    };
 })(typeof window !== 'undefined' ? window : globalThis);

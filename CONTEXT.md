@@ -73,3 +73,24 @@ _Avoid_: Prompt stuffing, context injection
 **Document Chunk Index**:
 The browser-resident extracted heading structure and TF-IDF scored text segments sourced from uploaded client background files (PDF/DOCX/MD).
 _Avoid_: Vector store, raw text dump
+
+
+### Pipeline & Agents (Extended)
+
+**AgentPipelineRunner**:
+The deep module responsible for orchestrating all Agent Pipeline stages behind a single execute(payload, callbacks) -> Promise<ProposalSchema> seam, isolating DOM state from inference logic.
+_Avoid_: Pipeline manager, runner script
+
+### Deep Modules & Architecture
+
+**LlmAdapter**:
+The integration boundary for any third-party LLM client (OpenAI SDK, Anthropic SDK) that standardizes the streaming chat completion surface to the Agent Pipeline.
+_Avoid_: API wrapper, LLM client
+
+**SlideRenderer**:
+The internal contract for a single PPTX slide layout builder registered into the SlideRegistry, encapsulating coordinate math, vector cards, and table rendering for one logical page.
+_Avoid_: Slide template, slide maker
+
+**SlideRegistry**:
+The internal table of SlideRenderer implementations that the PptxCompiler dispatches against a ProposalSchema to produce the 15 standard deliverable pages.
+_Avoid_: Slide map, slide list
