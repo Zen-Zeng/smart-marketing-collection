@@ -870,7 +870,10 @@
 
     // ── 我的方案库（跟随登录账号）──
     function currentUser() {
-        return sessionStorage.getItem('smc_user') || 'guest';
+        var u = sessionStorage.getItem('smc_user') || 'guest';
+        var el = document.getElementById('account-user');
+        if (el) el.textContent = u;
+        return u;
     }
 
     function accountLibrary() {
