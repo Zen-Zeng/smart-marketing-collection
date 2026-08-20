@@ -878,46 +878,7 @@
         return new window.AccountLibrary({ token: token, username: currentUser() });
     }
 
-    async function refreshAccountList() {
-        const wrap = document.getElementById('account-list');
-        if (!wrap) return;
-        const user = currentUser();
-        document.getElementById('account-user').textContent = user;
-        try {
-            const lib = accountLibrary();
-            const items = await lib.listProposals();
-            const htmls = items.filter(function (f) { return /[.]html$/i.test(f.name); });
-            if (!htmls.length) { wrap.innerHTML = '<p class="text-xs text-slate-400">该账号暂无已保存方案</p>'; return; }
-            wrap.innerHTML = '';
-            htmls.forEach(function (f) {
-                const slug = f.name.replace(/[.]html$/i, '');
-                const row = document.createElement('div');
-                row.className = 'flex items-center justify-between gap-2 p-2 border border-slate-200 rounded-lg bg-white cursor-pointer hover:border-indigo-300 hover:shadow-sm transition-all';
-                const label = f.account ? f.account + ' / ' + slug : slug;
-                // 构造 Pages 部署地址
-                const pagesUrl = 'https://zen-zeng.github.io/smart-marketing-collection/' + f.path;
-                row.innerHTML = '<span class="text-xs font-medium text-slate-700 truncate">' + label + '</span>'
-                    + '<span class="flex items-center gap-1">'
-                    + '<button class="text-slate-400 hover:text-amber-600 text-xs p-0.5 btn-toggle-public" data-slug="' + slug + '" data-path="' + f.path + '" title="公开/私密"><i class="fa-solid fa-lock"></i></button>'
-                    + '<a class="text-indigo-600 hover:text-indigo-800 text-xs eye-preview" target="_blank" rel="noopener noreferrer" href="' + pagesUrl + '" title="在新标签页打开"><i class="fa-solid fa-eye"></i></a>'
-                    + '<button class="text-emerald-600 hover:text-emerald-800 text-xs p-0.5" data-slug="' + slug + '" title="download"><i class="fa-solid fa-download"></i></button>'
-                    + '<button class="text-rose-500 hover:text-rose-700 text-xs p-0.5" data-slug="' + slug + '" title="delete"><i class="fa-solid fa-trash"></i></button>'
-                    + '</span>';
-                // 点击整行 → 加载方案到全部四个 Tab
-                row.addEventListener('click', function (ev) {
-                    if (ev.target.closest('.eye-preview, button')) return;
-                    (async function () {
-                        // 视觉演示
-                        var frame = document.getElementById('preview-frame');
-                        if (frame) frame.src = pagesUrl;
-                        // 尝试读取 data.json 填充其余三个 Tab
-                        try {
-                            var jsonText = await lib.readFile(f.path.replace(/[.]html$/i, '.data.json'));
-                            var parsed = JSON.parse(jsonText);
-                            if (parsed.schema) {
-                                activeSchema = parsed.schema;
-                                document.getElementById('proposal-json').textContent = JSON.stringify(parsed.schema, null, 2);
-                            }
+    
                             if (parsed.html) {
                                 activeHtml = parsed.html;
                                 document.getElementById('proposal-html').textContent = parsed.html;
@@ -1017,6 +978,20 @@
         }
     }
 
+    async function refreshAccountList() {
+        const wrap = document.getElementById('account-list');
+        if (!wrap) return;
+        document.getElementById('account-user').textContent = currentUser();
+        try {
+            const lib = accountLibrary();
+            const items = await lib.listProposals();
+            const htmls = items.filter(function (f) { return /[.]html$/i.test(f.name); });
+            if (!htmls.length) { wrap.innerHTML = '<p class="text-xs text-slate-400">该账号暂无已保存方案</p>'; return; }
+            LibraryRenderer.render(wrap, htmls, lib, refreshAccountList);
+        } catch (e) {
+            wrap.innerHTML = '<p class="text-xs text-rose-500">读取方案库失败: ' + e.message + '</p>';
+        }
+    }
     async function saveToCollection() {
         if (!activeSchema || !activeHtml) { showToast('请先生成方案', 'error'); return; }
         const token = (localStorage.getItem(LS_KEY_GH_TOKEN) || '').trim();
