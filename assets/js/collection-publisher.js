@@ -210,3 +210,12 @@
     global.AccountLibraryUtils = { normalizeSlug: normalizeSlug };
 
 })(typeof window !== 'undefined' ? window : globalThis);
+    AccountLibrary.prototype.deleteProposal = async function (htmlPath) {
+        var jsonPath = htmlPath.replace(/[.]html$/i, '.data.json');
+        var files = [
+            { path: htmlPath, content: null },
+            { path: jsonPath, content: null }
+        ];
+        await this.createCommit(files, 'chore: delete proposal ' + htmlPath);
+        return true;
+    };
