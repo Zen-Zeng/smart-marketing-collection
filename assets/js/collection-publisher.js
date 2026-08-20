@@ -30,7 +30,11 @@
         if (!res.ok) {
             var body = '';
             try { body = await res.text(); } catch (e) { body = ''; }
-            throw new Error('GitHub API (' + res.status + '): ' + body.slice(0, 200));
+            var hint = '';
+            if ((res.status === 403 || res.status === 401 || res.status === 429) && !token) {
+                hint = '（未提供 GitHub Token，请在「模型配置」中填写具有 repo / contents:write 权限的 PAT 后再试）';
+            }
+            throw new Error('GitHub API (' + res.status + '): ' + body.slice(0, 200) + hint);
         }
         return res.json();
     }
@@ -53,10 +57,30 @@
     };
 
     AccountLibrary.prototype.listProposals = async function () {
-        if (this.username === 'admin') {
-            return this._listAllAccounts();
+        var cacheKey = 'smc_library_cache_' + this.username;
+        var cached = null;
+        if (typeof sessionStorage !== 'undefined') {
+            try { cached = JSON.parse(sessionStorage.getItem(cacheKey)); } catch (e) { cached = null; }
         }
-        return this._listDir(this.dirPath(), this.username);
+        if (cached && cached.ts && (Date.now() - cached.ts < 5 * 60 * 1000) && Array.isArray(cached.items)) {
+            return cached.items;
+        }
+        var items;
+        if (this.username === 'admin') {
+            items = await this._listAllAccounts();
+        } else {
+            items = await this._listDir(this.dirPath(), this.username);
+        }
+        if (typeof sessionStorage !== 'undefined') {
+            try { sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), items: items })); } catch (e) {}
+        }
+        return items;
+    };
+
+    AccountLibrary.prototype.clearCache = function () {
+        if (typeof sessionStorage !== 'undefined') {
+            try { sessionStorage.removeItem('smc_library_cache_' + this.username); } catch (e) {}
+        }
     };
 
    AccountLibrary.prototype._listAllAccounts = async function () {
@@ -211,14 +235,27 @@
 
 
     AccountLibrary.prototype.isPublic = async function (htmlPath) {
+        var self = this;
+        async function readPage() {
+            if (self.token) {
+                return await self.readFile(htmlPath);
+            }
+            // 未提供 Token 时走 raw.githubusercontent，不消耗 API 限额
+            var rawUrl = 'https://raw.githubusercontent.com/' + self.owner + '/' + self.repo + '/' + self.branch + '/' + htmlPath;
+            var res = await fetch(rawUrl);
+            if (!res.ok) throw new Error('raw fetch failed');
+            return await res.text();
+        }
         var jsonPath = htmlPath.replace(/[.]html$/i, '.data.json');
+        if (this.token) {
+            try {
+                var dataText = await this.readFile(jsonPath);
+                var data = JSON.parse(dataText);
+                if (data && typeof data.public !== 'undefined') return !!data.public;
+            } catch (e) {}
+        }
         try {
-            var dataText = await this.readFile(jsonPath);
-            var data = JSON.parse(dataText);
-            if (data && typeof data.public !== 'undefined') return !!data.public;
-        } catch (e) {}
-        try {
-            var page = await this.readFile(htmlPath);
+            var page = await readPage();
             var m = page.match(/<meta name=['"]smc-public['"] content=['"]([^'"]*)['"]/i);
             return m ? m[1] === 'true' : false;
         } catch (e) {

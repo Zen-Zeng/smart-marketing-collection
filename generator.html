@@ -878,7 +878,12 @@
     }
 
     function accountLibrary() {
-        const token = (localStorage.getItem(LS_KEY_GH_TOKEN) || '').trim();
+        var token = (localStorage.getItem(LS_KEY_GH_TOKEN) || '').trim();
+        // 允许尚未点击保存时，优先取设置框里的值
+        if (!token) {
+            var input = document.getElementById('input-github-token');
+            token = (input && input.value || '').trim();
+        }
         return new window.AccountLibrary({ token: token, username: currentUser() });
     }
 
@@ -891,12 +896,18 @@
         console.log('[refreshAccountList] user=' + u);
         try {
             const lib = accountLibrary();
+            lib.clearCache();
             const items = await lib.listProposals();
             const htmls = items.filter(function (f) { return /[.]html$/i.test(f.name); });
             if (!htmls.length) { wrap.innerHTML = '<p class="text-xs text-slate-400">该账号暂无已保存方案</p>'; return; }
             LibraryRenderer.render(wrap, htmls, lib, refreshAccountList);
         } catch (e) {
-            wrap.innerHTML = '<p class="text-xs text-rose-500">读取方案库失败: ' + e.message + '</p>';
+            var msg = e.message || String(e);
+            if (msg.indexOf('未提供 GitHub Token') >= 0 || msg.indexOf('rate limit') >= 0 || msg.indexOf('403') >= 0) {
+                wrap.innerHTML = '<p class="text-xs text-rose-500">读取方案库失败：GitHub API 未认证或已超限。请在右上角「模型配置」中填写 GitHub Token（需 repo / contents:write 权限）后刷新。</p>';
+            } else {
+                wrap.innerHTML = '<p class="text-xs text-rose-500">读取方案库失败: ' + msg + '</p>';
+            }
         }
     }
 
