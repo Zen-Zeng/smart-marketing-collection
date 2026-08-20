@@ -143,15 +143,24 @@
                 <label class="form-label" for="input-model-name">模型标识 (Model Name)</label>
                 <input type="text" id="input-model-name" class="form-input font-mono text-xs" value="deepseek-chat">
             </div>
-<div>
-                <label class="form-label" for="input-github-token">GitHub Token (PAT, 个人方案库写入用)</label>
+<div id="wrapper-github-token">
+                <label class="form-label" for="input-github-token">GitHub Token (PAT)</label>
                 <div class="relative">
                     <input type="password" id="input-github-token" class="form-input pr-10 font-mono text-xs" placeholder="ghp_... 需 repo / contents:write 权限">
                     <button id="btn-toggle-gh" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                         <i class="fa-solid fa-eye text-sm"></i>
                     </button>
                 </div>
-                <p class="text-xs text-slate-400 mt-1">仅存浏览器本地，直接请求 api.github.com，用于把方案提交到本仓库</p>
+                <p class="text-xs text-slate-400 mt-1">仅存浏览器本地。admin 保存后将自动作为共享 Token 供所有登录账号使用；非 admin 不可见、不可修改。</p>
+            </div>
+            <div id="wrapper-shared-token-notice" class="hidden p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-800">
+                <div class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-info mt-0.5"></i>
+                    <div>
+                        <div class="font-semibold mb-1">正在使用 admin 共享的 GitHub Token</div>
+                        <div>当前账号无独立的写权限，可生成/保存/修改/查询方案，不可删除。如需独立 Token，请联系管理员。</div>
+                    </div>
+                </div>
             </div>
             <div class="flex items-center justify-between pt-2 border-t border-slate-100">
                 <button id="btn-test-conn" type="button" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1">
@@ -398,6 +407,7 @@
     const LS_KEY_URL      = 'smc_base_url';
     const LS_KEY_MODEL    = 'smc_model_name';
     const LS_KEY_GH_TOKEN = 'smc_gh_token';
+    const LS_KEY_SHARED_GH_TOKEN = 'smc_shared_gh_token';
 
     const PROVIDER_DEFAULTS = {
         deepseek: { url: 'https://api.deepseek.com/v1', model: 'deepseek-chat' },
@@ -430,7 +440,19 @@
         $('input-base-url').value = localStorage.getItem(LS_KEY_URL) || PROVIDER_DEFAULTS[p].url;
         $('input-api-key').value = localStorage.getItem(LS_KEY_KEY) || '';
         $('input-model-name').value = localStorage.getItem(LS_KEY_MODEL) || PROVIDER_DEFAULTS[p].model;
-        $('input-github-token').value = localStorage.getItem(LS_KEY_GH_TOKEN) || '';
+        var u = currentUser();
+        var tokenInput = $('input-github-token');
+        var wrapperToken = document.getElementById('wrapper-github-token');
+        var wrapperNotice = document.getElementById('wrapper-shared-token-notice');
+        if (u === 'admin') {
+            if (wrapperToken) wrapperToken.classList.remove('hidden');
+            if (wrapperNotice) wrapperNotice.classList.add('hidden');
+            tokenInput.value = localStorage.getItem(LS_KEY_GH_TOKEN) || '';
+        } else {
+            if (wrapperToken) wrapperToken.classList.add('hidden');
+            if (wrapperNotice) wrapperNotice.classList.remove('hidden');
+            tokenInput.value = '';
+        }
     }
 
     function saveSettings() {
@@ -439,9 +461,15 @@
         localStorage.setItem(LS_KEY_URL, $('input-base-url').value.trim());
         localStorage.setItem(LS_KEY_KEY, $('input-api-key').value.trim());
         localStorage.setItem(LS_KEY_MODEL, $('input-model-name').value.trim());
-        localStorage.setItem(LS_KEY_GH_TOKEN, $('input-github-token').value.trim());
+        var u = currentUser();
+        if (u === 'admin') {
+            var token = $('input-github-token').value.trim();
+            localStorage.setItem(LS_KEY_GH_TOKEN, token);
+            // admin 的 Token 自动作为共享 Token 供所有登录账号使用
+            localStorage.setItem(LS_KEY_SHARED_GH_TOKEN, token);
+        }
         $('modal-settings').classList.add('hidden');
-        showToast('API 配置已保存', 'success');
+        showToast(u === 'admin' ? 'API 配置已保存（Token 已共享给所有账号）' : 'API 配置已保存', 'success');
     }
 
     $('select-provider').addEventListener('change', e => {
@@ -878,13 +906,16 @@
     }
 
     function accountLibrary() {
-        var token = (localStorage.getItem(LS_KEY_GH_TOKEN) || '').trim();
-        // 允许尚未点击保存时，优先取设置框里的值
-        if (!token) {
+        var u = currentUser();
+        var token = (localStorage.getItem(LS_KEY_SHARED_GH_TOKEN) || localStorage.getItem(LS_KEY_GH_TOKEN) || '').trim();
+        // 允许 admin 尚未点击保存时，优先取设置框里的值
+        if (!token && u === 'admin') {
             var input = document.getElementById('input-github-token');
             token = (input && input.value || '').trim();
         }
-        return new window.AccountLibrary({ token: token, username: currentUser() });
+        var lib = new window.AccountLibrary({ token: token, username: u });
+        lib.canDelete = (u === 'admin');
+        return lib;
     }
 
     async function refreshAccountList() {
@@ -900,7 +931,7 @@
             const items = await lib.listProposals();
             const htmls = items.filter(function (f) { return /[.]html$/i.test(f.name); });
             if (!htmls.length) { wrap.innerHTML = '<p class="text-xs text-slate-400">该账号暂无已保存方案</p>'; return; }
-            LibraryRenderer.render(wrap, htmls, lib, refreshAccountList);
+            LibraryRenderer.render(wrap, htmls, lib, refreshAccountList, { canDelete: lib.canDelete });
         } catch (e) {
             var msg = e.message || String(e);
             if (msg.indexOf('未提供 GitHub Token') >= 0 || msg.indexOf('rate limit') >= 0 || msg.indexOf('403') >= 0) {

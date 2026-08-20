@@ -1,8 +1,9 @@
 (function(global) {
     'use strict';
     global.LibraryRenderer = {
-        render: function(wrap, items, lib, refreshCb) {
+        render: function(wrap, items, lib, refreshCb, opts) {
             wrap.innerHTML = '';
+            var canDelete = !!(opts && opts.canDelete);
             items.forEach(function (f) {
                 const slug = f.name.replace(/[.]html$/i, '');
                 const row = document.createElement('div');
@@ -14,7 +15,7 @@
                     + '<button class="text-slate-400 hover:text-amber-600 text-xs p-0.5 btn-toggle-public" data-slug="' + slug + '" data-path="' + f.path + '" data-public="false" title="公开/私密"><i class="fa-solid fa-lock"></i></button>'
                     + '<a class="text-indigo-600 hover:text-indigo-800 text-xs eye-preview" target="_blank" rel="noopener noreferrer" href="' + pagesUrl + '" title="在新标签页打开"><i class="fa-solid fa-eye"></i></a>'
                     + '<button class="text-emerald-600 hover:text-emerald-800 text-xs p-0.5" data-slug="' + slug + '" title="download"><i class="fa-solid fa-download"></i></button>'
-                    + '<button class="text-rose-500 hover:text-rose-700 text-xs p-0.5" data-slug="' + slug + '" title="delete"><i class="fa-solid fa-trash"></i></button>'
+                    + (canDelete ? '<button class="text-rose-500 hover:text-rose-700 text-xs p-0.5" data-slug="' + slug + '" title="delete"><i class="fa-solid fa-trash"></i></button>' : '')
                     + '</span>';
 
                 // 根据实际文件内容同步公开/私密图标

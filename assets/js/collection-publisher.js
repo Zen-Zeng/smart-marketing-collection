@@ -264,6 +264,9 @@
     };
 
     AccountLibrary.prototype.deleteProposal = async function (htmlPath) {
+        if (this.username !== 'admin') {
+            throw new Error('权限不足：删除仅限管理员 (admin) 账号');
+        }
         var self = this;
         async function del(path) {
             var enc = path.split('/').map(encodeURIComponent).join('/');
