@@ -1,4 +1,3 @@
-
 (function(global) {
     'use strict';
     global.LibraryRenderer = {
@@ -12,12 +11,22 @@
                 const pagesUrl = 'https://zen-zeng.github.io/smart-marketing-collection/' + f.path;
                 row.innerHTML = '<span class="text-xs font-medium text-slate-700 truncate">' + label + '</span>'
                     + '<span class="flex items-center gap-1">'
-                    + '<button class="text-slate-400 hover:text-amber-600 text-xs p-0.5 btn-toggle-public" data-slug="' + slug + '" data-path="' + f.path + '" title="公开/私密"><i class="fa-solid fa-lock"></i></button>'
+                    + '<button class="text-slate-400 hover:text-amber-600 text-xs p-0.5 btn-toggle-public" data-slug="' + slug + '" data-path="' + f.path + '" data-public="false" title="公开/私密"><i class="fa-solid fa-lock"></i></button>'
                     + '<a class="text-indigo-600 hover:text-indigo-800 text-xs eye-preview" target="_blank" rel="noopener noreferrer" href="' + pagesUrl + '" title="在新标签页打开"><i class="fa-solid fa-eye"></i></a>'
                     + '<button class="text-emerald-600 hover:text-emerald-800 text-xs p-0.5" data-slug="' + slug + '" title="download"><i class="fa-solid fa-download"></i></button>'
                     + '<button class="text-rose-500 hover:text-rose-700 text-xs p-0.5" data-slug="' + slug + '" title="delete"><i class="fa-solid fa-trash"></i></button>'
                     + '</span>';
-                
+
+                // 根据实际文件内容同步公开/私密图标
+                (function(publicBtn) {
+                    lib.isPublic(f.path).then(function(isPub) {
+                        publicBtn.dataset.public = isPub ? 'true' : 'false';
+                        const icon = publicBtn.querySelector('i');
+                        icon.classList.remove('fa-lock', 'fa-lock-open');
+                        icon.classList.add(isPub ? 'fa-lock-open' : 'fa-lock');
+                    }).catch(function() {});
+                })(row.querySelector('.btn-toggle-public'));
+
                 row.addEventListener('click', function (ev) {
                     if (ev.target.closest('.eye-preview, button')) return;
                     (async function () {
@@ -59,14 +68,15 @@
                     ev.stopPropagation();
                     const btn = ev.currentTarget;
                     const icon = btn.querySelector('i');
-                    const newPublic = !icon.classList.contains('fa-lock-open');
+                    const newPublic = btn.dataset.public !== 'true';
                     btn.disabled = true; icon.classList.add('fa-spin');
                     try {
                         await lib.togglePublic(f.path, newPublic);
+                        btn.dataset.public = newPublic ? 'true' : 'false';
                         icon.classList.remove('fa-lock', 'fa-lock-open', 'fa-spin');
                         icon.classList.add(newPublic ? 'fa-lock-open' : 'fa-lock');
                         global.showToast(newPublic ? '已设为公开' : '已设为私密', 'success');
-                    } catch(e) { global.showToast('切换失败', 'error'); icon.classList.remove('fa-spin'); }
+                    } catch(e) { global.showToast('切换失败: ' + e.message, 'error'); icon.classList.remove('fa-spin'); }
                     finally { btn.disabled = false; }
                 });
 
@@ -84,14 +94,14 @@
                             } catch (e) { global.showToast('下载失败: ' + e.message, 'error'); }
                         } else if (btn.title === 'delete') {
                             if (!confirm('确认删除方案 ' + slug + ' 吗？')) return;
-                            const btn = this;
-                            const icon = btn.querySelector('i');
-                            btn.disabled = true; icon.className = 'fa-solid fa-spinner fa-spin';
+                            const delBtn = this;
+                            const icon = delBtn.querySelector('i');
+                            delBtn.disabled = true; icon.className = 'fa-solid fa-spinner fa-spin';
                             try {
                                 await lib.deleteProposal(f.path);
                                 global.showToast('删除成功', 'success');
                                 refreshCb();
-                            } catch(e) { global.showToast('删除失败: ' + e.message, 'error'); icon.className = 'fa-solid fa-trash'; btn.disabled = false; }
+                            } catch(e) { global.showToast('删除失败: ' + e.message, 'error'); icon.className = 'fa-solid fa-trash'; delBtn.disabled = false; }
                         }
                     });
                 });

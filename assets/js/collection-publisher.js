@@ -158,7 +158,7 @@
         if (page.indexOf('assets/css/shared.css') < 0) page = page.replace(/href=\"shared.css\"/g, 'href=\"assets/css/shared.css\"');
         var isPublic = false;
         if (page.indexOf('smc-public') >= 0) {
-            page = page.replace(/<meta name="smc-public" content="[^"]*">/, '<meta name="smc-public" content="' + isPublic + '">');
+            page = page.replace(/<meta name=['"]smc-public['"] content=['"][^'"]*['"]>/i, '<meta name="smc-public" content="' + isPublic + '">');
         } else {
             page = page.replace(/<head>/i, '<head>\n<meta name="smc-public" content="' + isPublic + '">');
         }
@@ -190,7 +190,7 @@
         
         // 更新 HTML 中的 meta 标签
         if (page.indexOf('smc-public') >= 0) {
-            page = page.replace(/<meta name="smc-public" content="[^"]*">/, '<meta name="smc-public" content="' + isPublic + '">');
+            page = page.replace(/<meta name=['"]smc-public['"] content=['"][^'"]*['"]>/i, '<meta name="smc-public" content="' + isPublic + '">');
         } else {
             page = page.replace(/<head>/i, '<head>\n<meta name="smc-public" content="' + isPublic + '">');
         }
@@ -209,13 +209,43 @@
     global.AccountLibrary = AccountLibrary;
     global.AccountLibraryUtils = { normalizeSlug: normalizeSlug };
 
-})(typeof window !== 'undefined' ? window : globalThis);
-    AccountLibrary.prototype.deleteProposal = async function (htmlPath) {
+
+    AccountLibrary.prototype.isPublic = async function (htmlPath) {
         var jsonPath = htmlPath.replace(/[.]html$/i, '.data.json');
-        var files = [
-            { path: htmlPath, content: null },
-            { path: jsonPath, content: null }
-        ];
-        await this.createCommit(files, 'chore: delete proposal ' + htmlPath);
+        try {
+            var dataText = await this.readFile(jsonPath);
+            var data = JSON.parse(dataText);
+            if (data && typeof data.public !== 'undefined') return !!data.public;
+        } catch (e) {}
+        try {
+            var page = await this.readFile(htmlPath);
+            var m = page.match(/<meta name=['"]smc-public['"] content=['"]([^'"]*)['"]/i);
+            return m ? m[1] === 'true' : false;
+        } catch (e) {
+            return false;
+        }
+    };
+
+    AccountLibrary.prototype.deleteProposal = async function (htmlPath) {
+        var self = this;
+        async function del(path) {
+            var enc = path.split('/').map(encodeURIComponent).join('/');
+            try {
+                var info = await ghFetch(self.token, self.apiBase() + '/contents/' + enc + '?ref=' + self.branch);
+                if (!info.sha) throw new Error('无法获取文件 sha: ' + path);
+                await ghFetch(self.token, self.apiBase() + '/contents/' + enc, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: 'chore: delete ' + path, sha: info.sha, branch: self.branch })
+                });
+            } catch (e) {
+                if (String(e.message).indexOf('404') < 0) throw e;
+            }
+        }
+        await del(htmlPath);
+        await del(htmlPath.replace(/[.]html$/i, '.data.json'));
         return true;
     };
+
+})(typeof window !== 'undefined' ? window : globalThis);
+
