@@ -981,7 +981,10 @@
     async function refreshAccountList() {
         const wrap = document.getElementById('account-list');
         if (!wrap) return;
-        document.getElementById('account-user').textContent = currentUser();
+        var u = currentUser();
+        var el = document.getElementById('account-user');
+        if (el) el.textContent = u;
+        console.log('[refreshAccountList] user=' + u);
         try {
             const lib = accountLibrary();
             const items = await lib.listProposals();
