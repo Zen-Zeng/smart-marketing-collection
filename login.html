@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 | 智能营销方案集合</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .login-card { animation: fadeUp .4s ease both; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .input-field {
+            width: 100%; padding: .625rem .875rem; border-radius: .5rem;
+            border: 1px solid #e2e8f0; font-size: .9rem; color: #1e293b;
+            background: #fff; transition: border-color .2s, box-shadow .2s;
+            outline: none;
+        }
+        .input-field:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.12); }
+        .input-field.err { border-color: #ef4444; }
+        .btn-primary {
+            width: 100%; padding: .75rem; border-radius: .625rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff; font-weight: 700; font-size: .95rem;
+            border: none; cursor: pointer; transition: opacity .2s, transform .1s;
+        }
+        .btn-primary:hover  { opacity: .9; }
+        .btn-primary:active { transform: scale(.98); }
+        .btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+        #err-msg { display: none; }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 flex items-center justify-center p-4">
+
+    <div class="login-card w-full max-w-sm">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+            </div>
+            <h1 class="text-2xl font-black text-white">智能营销方案集合</h1>
+            <p class="text-indigo-200 text-sm mt-1">请登录以访问内容</p>
+        </div>
+
+        <!-- 登录卡片 -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <form id="login-form" novalidate>
+                <!-- 错误提示 -->
+                <div id="err-msg" class="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-5 text-sm text-red-700">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    <span id="err-text">账号或密码错误</span>
+                </div>
+
+                <!-- 账号 -->
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="username">账号</label>
+                    <input type="text" id="username" class="input-field" placeholder="请输入账号"
+                        autocomplete="username" autocapitalize="none" spellcheck="false">
+                </div>
+
+                <!-- 密码 -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="password">密码</label>
+                    <div class="relative">
+                        <input type="password" id="password" class="input-field pr-10" placeholder="请输入密码"
+                            autocomplete="current-password">
+                        <button type="button" id="toggle-pw"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                            aria-label="显示/隐藏密码">
+                            <svg id="eye-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-login" class="btn-primary">登 录</button>
+            </form>
+
+            <p class="text-center text-xs text-slate-400 mt-5">
+                仅限授权人员访问 · 会话关闭后自动退出
+            </p>
+        </div>
+    </div>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ══════════════════════════════════════════════
+       账号密码配置 — 在此处修改
+       格式：'账号': '密码'，可添加多个账号
+    ══════════════════════════════════════════════ */
+    var USERS = {
+        'admin':        'smc@2025',
+        'viewer':       'view2025',
+        'zhangyiding':  'yiding@2026'
+    };
+    /* ══════════════════════════════════════════════ */
+
+    var TOKEN_KEY = 'smc_auth_ok';
+
+    /* 已登录则直接跳首页 */
+    if (sessionStorage.getItem(TOKEN_KEY) === '1') {
+        location.replace('index.html');
+        return;
+    }
+
+    var form     = document.getElementById('login-form');
+    var elUser   = document.getElementById('username');
+    var elPw     = document.getElementById('password');
+    var elErr    = document.getElementById('err-msg');
+    var elErrTxt = document.getElementById('err-text');
+    var elBtn    = document.getElementById('btn-login');
+    var elToggle = document.getElementById('toggle-pw');
+
+    /* 密码显示切换 */
+    elToggle.addEventListener('click', function () {
+        var isPass = elPw.type === 'password';
+        elPw.type = isPass ? 'text' : 'password';
+        document.getElementById('eye-icon').innerHTML = isPass
+            ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>'
+            : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>';
+    });
+
+    function showError(msg) {
+        elErrTxt.textContent = msg || '账号或密码错误';
+        elErr.style.display  = 'flex';
+        elUser.classList.add('err');
+        elPw.classList.add('err');
+    }
+
+    function clearError() {
+        elErr.style.display = 'none';
+        elUser.classList.remove('err');
+        elPw.classList.remove('err');
+    }
+
+    [elUser, elPw].forEach(function (el) {
+        el.addEventListener('input', clearError);
+    });
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var u = elUser.value.trim();
+        var p = elPw.value;
+
+        if (!u || !p) { showError('请填写账号和密码'); return; }
+
+        elBtn.disabled = true;
+        elBtn.textContent = '验证中…';
+
+        /* 简单延迟模拟，防止暴力尝试过快 */
+        setTimeout(function () {
+            if (USERS[u] && USERS[u] === p) {
+                sessionStorage.setItem(TOKEN_KEY, '1');
+                sessionStorage.setItem('smc_user', u);
+                var redirect = sessionStorage.getItem('smc_redirect') || 'index.html';
+                sessionStorage.removeItem('smc_redirect');
+                location.replace(redirect);
+            } else {
+                showError('账号或密码错误，请重试');
+                elBtn.disabled = false;
+                elBtn.textContent = '登 录';
+                elPw.value = '';
+                elPw.focus();
+            }
+        }, 600);
+    });
+
+    /* Enter 键提交 */
+    [elUser, elPw].forEach(function (el) {
+        el.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') form.dispatchEvent(new Event('submit'));
+        });
+    });
+
+    /* 自动聚焦 */
+    elUser.focus();
+})();
+</script>
+</body>
+</html>

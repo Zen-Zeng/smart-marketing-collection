@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DR.COSMO品牌抖音执行规划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 自定义变量 */
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-secondary: #F4E4BC;
+            --gold-dark: #B8860B;
+            --text-primary: #2C2C2C;
+            --text-secondary: #6B7280;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8F9FA;
+            --bg-gradient: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --shadow-heavy: 0 15px 45px rgba(0, 0, 0, 0.12);
+            --border-radius: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        /* 全局背景 */
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* 自定义玻璃卡片效果 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold-primary), var(--gold-secondary), var(--gold-primary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-8px);
+        }
+
+        .glass-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* 自定义标题样式 */
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold-primary), var(--gold-dark));
+            border-radius: 2px;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        /* 段落样式 */
+        p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+        }
+
+        /* 响应式导航栏 */
+        .nav-links {
+            transition: var(--transition);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+                border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                padding: 1.5rem;
+                box-shadow: var(--shadow-medium);
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+        }
+
+        /* 导航链接样式 */
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold-primary), var(--gold-secondary));
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* 图片容器样式 */
+        .image-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+            background: var(--bg-primary);
+            position: relative;
+        }
+
+        .image-container:hover {
+            box-shadow: var(--shadow-medium);
+            transform: scale(1.02);
+        }
+
+        /* 动画效果增强 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* 延迟动画 */
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+
+        .image-container img {
+            transition: var(--transition);
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* 表格样式 */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background: var(--bg-primary);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+        }
+
+        table:hover {
+            box-shadow: var(--shadow-medium);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: white;
+            font-weight: 600;
+            padding: 15px 20px;
+            text-align: left;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #F1F3F4;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        tr:hover {
+            background-color: #FAFBFC;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* 列表样式 */
+        ul, ol {
+            padding-left: 25px;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            position: relative;
+        }
+
+        ul li::marker {
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+        }
+
+        /* 按钮样式 */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-block;
+            box-shadow: var(--shadow-light);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary));
+        }
+
+        /* 分隔线样式 */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-secondary), transparent);
+            margin: 3rem 0;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            p {
+                font-size: 0.95rem;
+            }
+            
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--gold-primary), var(--gold-dark));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--gold-dark), var(--gold-primary));
+        }
+        /* Tailwind 配置 */
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="glass-card fixed w-full top-0 z-50 bg-white/80 backdrop-blur-xl">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">DC</span>
+                </div>
+                <div class="text-2xl font-bold bg-gradient-to-r from-amber-500 to-amber-700 bg-clip-text text-transparent">DR.COSMO</div>
+                <div class="ml-2 text-sm text-gray-500 hidden md:inline">品牌抖音执行规划</div>
+            </div>
+            <div class="hidden md:flex space-x-10">
+                <a href="#section1" class="nav-links text-sm font-medium hover:text-amber-600 transition-colors">品牌与市场分析</a>
+                <a href="#section2" class="nav-links text-sm font-medium hover:text-amber-600 transition-colors">竞对分析</a>
+                <a href="#section3" class="nav-links text-sm font-medium hover:text-amber-600 transition-colors">货品策略</a>
+                <a href="#section4" class="nav-links text-sm font-medium hover:text-amber-600 transition-colors">营销策略及预算</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-gray-500 hover:text-amber-600 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t-0">
+            <div class="container mx-auto px-4 py-3 space-y-3">
+                <a href="#section1" class="block py-3 px-4 rounded-lg hover:bg-amber-50 text-gray-700 hover:text-amber-600 transition-all">品牌与市场分析</a>
+                <a href="#section2" class="block py-3 px-4 rounded-lg hover:bg-amber-50 text-gray-700 hover:text-amber-600 transition-all">竞对分析</a>
+                <a href="#section3" class="block py-3 px-4 rounded-lg hover:bg-amber-50 text-gray-700 hover:text-amber-600 transition-all">货品策略</a>
+                <a href="#section4" class="block py-3 px-4 rounded-lg hover:bg-amber-50 text-gray-700 hover:text-amber-600 transition-all">营销策略及预算</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- 标题页 -->
+        <section class="text-center py-24 md:py-32 animate-fade-in-up">
+            <div class="max-w-4xl mx-auto">
+                <div class="inline-block p-3 bg-gradient-to-br from-amber-100 to-amber-200 rounded-full mb-6">
+                    <div class="h-14 w-14 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white text-2xl"></i>
+                    </div>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-8">
+                    <span class="bg-gradient-to-r from-amber-500 to-amber-700 bg-clip-text text-transparent">DR.COSMO</span>
+                    <br class="md:hidden">
+                    <span class="text-gray-800">品牌抖音执行规划</span>
+                </h1>
+                <div class="w-32 h-1 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 mx-auto my-8 rounded-full"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
+                    全面剖析DR.COSMO品牌在抖音平台的市场机会、竞争策略与执行路径
+                </p>
+                <div class="mt-12 flex justify-center">
+                    <a href="#section1" class="btn-primary group">
+                        开始探索
+                        <i class="fas fa-arrow-down ml-2 transition-transform group-hover:translate-y-1"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 一、品牌与市场深度分析 -->
+        <section id="section1" class="mb-24 animate-fade-in-up">
+            <div class="mb-16">
+                <div class="inline-block p-2 bg-amber-100 rounded-full mb-4">
+                    <div class="h-8 w-8 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
+                        <span class="text-white font-bold">1</span>
+                    </div>
+                </div>
+                <h2 class="section-title">品牌与市场深度分析</h2>
+                <p class="text-gray-600 max-w-3xl">深入分析DR.COSMO品牌的核心竞争力、市场定位以及目标客群特征</p>
+            </div>
+            
+            <!-- （一）DR.COSMO核心竞争力 -->
+            <div class="mb-16">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-star text-amber-500 mr-3"></i>
+                    DR.COSMO核心竞争力
+                </h3>
+                <p class="text-gray-600 mb-6">DR.COSMO的产品不是一个“单点技术”的故事，而是一个“豪华复合成分矩阵”。其核心优势在于：</p>
+                
+                <div class="glass-card p-6 mb-8">
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 mt-1">
+                                <i class="fas fa-check-circle text-amber-500"></i>
+                            </div>
+                            <div class="ml-4">
+                                <strong class="text-gray-800">成分浓度与纯度：</strong>
+                                <span class="text-gray-600">506770ppm的高含量、100倍价格的腺苷，直接对标并超越GENABELLE的55000ppm数字游戏。</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 mt-1">
+                                <i class="fas fa-check-circle text-amber-500"></i>
+                            </div>
+                            <div class="ml-4">
+                                <strong class="text-gray-800">专利复合物集群：</strong>
+                                <span class="text-gray-600">六重专利（Eosidin, RiFerm, MATRIXYL等）与三重专利（8重透明质酸复合物等），提供了从屏障修护、抗老到保湿的全通路解决方案。</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 mt-1">
+                                <i class="fas fa-check-circle text-amber-500"></i>
+                            </div>
+                            <div class="ml-4">
+                                <strong class="text-gray-800">珍稀植萃的应用：</strong>
+                                <span class="text-gray-600">五月玫瑰、大马士革玫瑰愈伤组织培养提取物、有机德国洋甘菊，提供了高端品牌的故事和感官体验。</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 mt-1">
+                                <i class="fas fa-check-circle text-amber-500"></i>
+                            </div>
+                            <div class="ml-4">
+                                <strong class="text-gray-800">高附加值成分：</strong>
+                                <span class="text-gray-600">24k纯金胶体、5重EGF、神经肽，这些是普通平价竞品绝不会使用的“奢华级”增效成分。</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="glass-card p-4 mb-6">
+                    <p class="text-gray-700 font-medium">
+                        <i class="fas fa-lightbulb text-amber-500 mr-2"></i>
+                        <strong>产品优势：</strong>
+                        <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm">高浓度</span>
+                        <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm ml-2">专利成分</span>
+                        <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm ml-2">明确的功能体系</span>
+                        ，符合中国消费者对“功效护肤”的追求。
+                    </p>
+                </div>
+                
+                <div class="glass-card p-4 overflow-hidden">
+                    <img src="images/image1.png" alt="DR.COSMO核心竞争力示意图" class="w-full h-auto transition-transform hover:scale-105 duration-700 object-cover">
+                </div>
+            </div>
+            
+            <!-- （三）DR.COSMO目标客群画像 -->
+            <div class="mb-16">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-user-check text-amber-500 mr-3"></i>
+                    DR.COSMO目标客群画像
+                </h3>
+                <p class="text-gray-600 mb-8">OGANACELL和GENABELLE成功开辟了“100-250元价格带的韩系功效护肤品”市场。DR.COSMO的目标不是做另一个他们，而是在他们之上，与修丽可、倩碧、部分国产功效品牌争夺专业修护市场”。</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="glass-card p-6 hover:translate-y-2 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center mb-4">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">核心人群</h4>
+                        <p class="text-gray-600">25-40岁，居住于一二线城市，肌肤类型为干性/敏感性/轻熟龄肌的精致女性。</p>
+                    </div>
+                    <div class="glass-card p-6 hover:translate-y-2 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-4">
+                            <i class="fas fa-shopping-bag text-white"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">消费特征</h4>
+                        <p class="text-gray-600">成分党，小红书/抖音深度用户，信赖KOL/KOC测评，愿意为“科技+功效+体验”付费，客单价预期在500-1500元。</p>
+                    </div>
+                    <div class="glass-card p-6 hover:translate-y-2 transition-transform">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mb-4">
+                            <i class="fas fa-heart text-white"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">心理诉求</h4>
+                        <p class="text-gray-600">寻求安全有效的“肌肤急救方案”与长期维稳抗老的“护肤伴侣”。</p>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-4 overflow-hidden">
+                    <img src="images/image3.png" alt="目标客群画像示意图" class="w-full h-auto transition-transform hover:scale-105 duration-700 object-cover">
+            </div>
+            
+            <!-- （二）竞争对手核心竞争力 -->
+            <div class="mb-16">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-chart-line text-amber-500 mr-3"></i>
+                    竞争对手核心竞争力
+                </h3>
+                
+                <!-- OGANACELL（奥嘉娜） -->
+                <div class="glass-card mb-8 p-6 hover:translate-y-2 transition-transform">
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mr-3">
+                            <span class="text-white font-bold">O</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-800">OGANACELL（奥嘉娜）</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        <strong class="text-gray-800">优势洞察：</strong>
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex">
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs mr-3 mt-0.5">错位竞争</span>
+                            <span class="text-gray-600">没有在抖音硬推其可能昂贵的高科技精华，而是选择“洁面”这个流量最大、决策门槛最低的品类进行破局。“院线级小气泡”的概念，将专业护理体验居家化，很有吸引力。</span>
+                        </li>
+                        <li class="flex">
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs mr-3 mt-0.5">数据化营销</span>
+                            <span class="text-gray-600">“一次清洗最大减少60.62%”（应指油脂或污垢）用具体数字建立强功效认知。</span>
+                        </li>
+                        <li class="flex">
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs mr-3 mt-0.5">信任状齐全</span>
+                            <span class="text-gray-600">“敏感肌护肤榜TOP6”、“好评榜第1名”——这些标签是说服新用户最直接、最有力的工具。它成功将自己从“陌生海外品牌”转变为“市场验证的爆款”。</span>
+                        </li>
+                    </ul>
+                    <p class="text-gray-600 mt-4 italic">
+                        这是一个“以爆款带品牌”的经典抖音打法。用超高性价比和强功能性的洁面吸引海量用户入店，形成消费体验，为日后推荐店内其他高价产品（如精华）建立用户基础和数据资产。
+                    </p>
+                </div>
+                
+                <!-- GENABELLE（洁娜倍） -->
+                <div class="glass-card mb-8 p-6 hover:translate-y-2 transition-transform">
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mr-3">
+                            <span class="text-white font-bold">G</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-800">GENABELLE（洁娜倍）</h4>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        <strong class="text-gray-800">优势洞察：</strong>
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex">
+                            <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs mr-3 mt-0.5">聚焦核心成分</span>
+                            <span class="text-gray-600">所有文案突出“Melacare complex”及“55000ppm”高浓度，直击成分党偏好，建立专业、高效的品牌形象。</span>
+                        </li>
+                        <li class="flex">
+                            <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs mr-3 mt-0.5">精准定位</span>
+                            <span class="text-gray-600">明确针对“美白”、“祛斑”、“集中护理”需求，用户画像清晰。</span>
+                        </li>
+                        <li class="flex">
+                            <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs mr-3 mt-0.5">价格策略</span>
+                            <span class="text-gray-600">148元定价，属于功效性护肤品中尝试门槛较低的价位。</span>
+                        </li>
+                    </ul>
+                    <p class="text-gray-600 mt-4 italic">
+                        目前还处于“积累初期”。粉丝量少，但产品逻辑清晰。它的挑战在于如何将“成分故事”转化为广泛的用户认知和购买动力。可能需要更多“真人评测”、“前后对比”的内容来弥补销量和榜单信任状的不足。
+                    </p>
+                </div>
+                
+                <div class="glass-card p-4 overflow-hidden">
+                    <img src="images/image2.png" alt="竞争对手核心竞争力对比图" class="w-full h-auto transition-transform hover:scale-105 duration-700 object-cover">
+                </div>
+        </section>
+
+        <!-- 二、竞对分析 -->
+        <section id="section2" class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+                <i class="fas fa-users text-amber-500 mr-3"></i>
+                二、竞对分析
+                <span class="ml-3 h-1 w-16 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"></span>
+            </h2>
+            
+            <!-- （一）竞对生意结构拆解 -->
+            <div class="mb-16">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-chart-pie text-amber-500 mr-3"></i>
+                    竞对生意结构拆解
+                </h3>
+                
+                <!-- OGANACELL(奥嘉娜） -->
+                <div class="glass-card mb-8 p-6 hover:translate-y-2 transition-transform">
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mr-3">
+                            <span class="text-white font-bold">O</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-800">OGANACELL(奥嘉娜）</h4>
+                    </div>
+                    <p class="text-gray-600 mb-3">
+                        <strong class="text-gray-800">销售结构：</strong>OGANACELL(奥嘉娜）2025全年销售达人占比60%，自播占比22%，商品卡占比18%，季度销售达人占比30%，自播占比51%，商品卡占比19%。
+                    </p>
+                    <p class="text-gray-600 mb-3">
+                        <strong class="text-gray-800">发展历程：</strong>OGANA CELL从2023年2月开始进行抖音销售，由【美co在韩国】单达人进行销售，全月直播两场。2023全年拓展了15个带货达人，主力销售由4个达人带来，基础属性都为代购人设的达人，没有实际大量的产出。23年全年销售额200w左右。
+                    </p>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">销售爆发：</strong>首次销售爆发来源于2024年4月，主要销售由【搭搭】完成。全年销售额在6000w-1亿左右，其中【搭搭】带来60%销售额。第二名达人【韦雪】12月进行合作，增长趋势极好（当时韦雪直播间八卦聊天属性流量高，加上本人符合美妆类目达人的属性）
+                    </p>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">未来预估：</strong>2025年全年生意预估3-5亿，1月到3月，由【韦雪】带来品牌的绝大部分销售数据，最高值为当月销售额5000w+。2025年2025年4月开启品牌自播，首月GMV75w-100w，到7月份完成单月1000wgmv的增长曲线，10月份达到自播销售最高值，11月同比有所下滑。
+                    </p>
+                </div>
+                
+                <!-- GENABELLE（洁娜倍） -->
+                <div class="glass-card mb-6 hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="flex items-center sub-sub-section-title">
+                        <span class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-2">G</span>
+                        GENABELLE（洁娜倍）
+                    </h4>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">销售结构：</strong>GENABELLE（洁娜倍）全年销售达人占比85%，自播占比不到1%，商品卡占比14%，季度销售达人占比72.5%，自播占比1.5%，商品卡占比26%。
+                    </p>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">销售爆发：</strong>首次销售爆发来源于2024年4月，主要销售由【搭搭】完成，首月上了9个达人，除【搭搭】外其他达人数据一般
+                    </p>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">增长趋势：</strong>5月19个合作达人，6月22个合作达人，GMV仅10-25w，效果一般。
+                    </p>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">关键节点：</strong>7月业绩爆发也由【搭搭】完成。同年10月商品卡数据进行一波较大增长，同时和后续核心带货主播【ally】进行首次合作。同年11月合作达人【金爱麟夫妇】均有较好产出。
+                    </p>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">未来规划：</strong>2025年-
+                    </p>
+                </div>
+                
+                <div class="glass-card p-6 mb-8 animate-fade-in-up">
+                    <h4 class="flex items-center text-xl text-gray-800 font-semibold mb-6">
+                        <span class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-3">📊</span>
+                        竞对销售结构对比
+                    </h4>
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>品牌</th>
+                                    <th>全年销售达人占比</th>
+                                    <th>全年自播占比</th>
+                                    <th>全年商品卡占比</th>
+                                    <th>季度销售达人占比</th>
+                                    <th>季度自播占比</th>
+                                    <th>季度商品卡占比</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>OGANACELL</td>
+                                    <td>60%</td>
+                                    <td>22%</td>
+                                    <td>18%</td>
+                                    <td>30%</td>
+                                    <td>51%</td>
+                                    <td>19%</td>
+                                </tr>
+                                <tr>
+                                    <td>GENABELLE</td>
+                                    <td>85%</td>
+                                    <td>&lt;1%</td>
+                                    <td>14%</td>
+                                    <td>72.5%</td>
+                                    <td>1.5%</td>
+                                    <td>26%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="image-container glass-card p-6 animate-fade-in-up">
+                    <img src="images/image4.png" alt="竞对生意结构拆解图" width="800">
+                </div>
+            </div>
+            
+            <!-- （二）货品策略 -->
+            <div class="mb-12 animate-fade-in-up">
+                <h3 class="flex items-center sub-section-title">
+                    <span class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-3">📦</span>
+                    （二）货品策略
+                </h3>
+                <h4 class="flex items-center sub-sub-section-title">
+                    <span class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mr-2">🔍</span>
+                    OGANACELL(奥嘉娜）&GENABELLE（洁娜倍）
+                </h4>
+                <div class="image-container glass-card p-6 my-6">
+                    <img src="images/image5.png" alt="货品策略表格" width="800">
+                </div>
+                <p class="text-center text-gray-500">点击图片可查看完整电子表格</p>
+            </div>
+            
+            <!-- （三）人群画像 -->
+            <div class="mb-12 animate-fade-in-up">
+                <h3 class="flex items-center sub-section-title">
+                    <span class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-3">👥</span>
+                    （三）人群画像
+                </h3>
+                <h4 class="flex items-center sub-sub-section-title">
+                    <span class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mr-2">🔍</span>
+                    OGANACELL(奥嘉娜）&GENABELLE（洁娜倍）
+                </h4>
+                <p class="text-gray-600 glass-card p-6 mt-4">
+                    消费者人群画像基本一致，地域分布重合度也较高，自营画像由于GENABELLE（洁娜倍）基本上销售来源于达人推广所以画像不准确。OGANACELL(奥嘉娜）的自营画像基本是由新锐白领、精致妈妈和小镇青年为主。
+                </p>
+                <h4 class="flex items-center sub-sub-section-title mt-8">
+                    <span class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mr-2">☁️</span>
+                    关键词云
+                </h4>
+                <div class="image-container glass-card p-6 mt-4">
+                    <img src="images/image6.png" alt="人群画像关键词云" width="800">
+                </div>
+            </div>
+            
+            <!-- （四）对标品牌小红书种草策略 -->
+            <div class="mb-12 animate-fade-in-up">
+                <h3 class="flex items-center sub-section-title">
+                    <span class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-3">📱</span>
+                    （四）对标品牌小红书种草策略
+                </h3>
+                
+                <!-- OGANACELL（奥嘉娜） -->
+                <div class="glass-card mb-8 hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="flex items-center sub-sub-section-title">
+                        <span class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-2">O</span>
+                        OGANACELL（奥嘉娜）
+                    </h4>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">推广节奏：</strong>OGANACELL(奥嘉娜）从24年一季度大量铺商业笔记，月均商业笔记数30+，月平均阅读数100w+，日均获赞1000+
+                    </p>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">全年铺量：</strong>全年持续铺量，第一季度及第二季度商单数量约90单，月均30单。
+                    </p>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">内容策略：</strong>第三、第四季度略有减少，月均20单商业笔记，主打韩女精致生活内容，到2024年底开始植入“跟着韦雪买”的话题。
+                    </p>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">数据表现：</strong>2025年二季度达到数据峰值，月均商业笔记数30+，月平均阅读数250w+，日均获赞3000+，三季度后数据开始下滑。
+                    </p>
+                    <p class="text-gray-600">
+                        <strong class="text-gray-800">协同策略：</strong>小红书节奏及抖音节奏一致。铺小红书商业笔记后上播搭搭产生第一次爆发，后续均是随着达人进行小红书铺排。
+                    </p>
+                </div>
+                
+                <div class="image-container glass-card p-6 mb-8">
+                    <img src="images/image7.png" alt="OGANACELL小红书数据2025年第二季度" width="800">
+                </div>
+                
+                <!-- GENABELLE（洁娜倍） -->
+                <div class="glass-card mt-8 mb-8 hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="flex items-center sub-sub-section-title">
+                        <span class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-2">G</span>
+                        GENABELLE（洁娜倍）
+                    </h4>
+                    <p class="text-gray-600">
+                        GENABELLE（洁娜倍）2024年基本上没有商业笔记，以自运营品牌账号内容发布为主，2024年Q4新增一篇商业笔记，2025年第二季度开始加入商业笔记，月均商业笔记数15+，月平均阅读数30w+，日均获赞200+。
+                    </p>
+                </div>
+                
+                <div class="glass-card p-6 animate-fade-in-up">
+                    <h4 class="flex items-center text-xl text-gray-800 font-semibold mb-6">
+                        <span class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-3">📊</span>
+                        对标品牌小红书种草数据对比
+                    </h4>
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>品牌</th>
+                                    <th>时间段</th>
+                                    <th>月均商业笔记数</th>
+                                    <th>月平均阅读数</th>
+                                    <th>日均获赞数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="4">OGANACELL</td>
+                                    <td>2024 Q1-Q2</td>
+                                    <td>30+</td>
+                                    <td>100w+</td>
+                                    <td>1000+</td>
+                                </tr>
+                                <tr>
+                                    <td>2024 Q3-Q4</td>
+                                    <td>20+</td>
+                                    <td>100w+</td>
+                                    <td>1000+</td>
+                                </tr>
+                                <tr>
+                                    <td>2025 Q2</td>
+                                    <td>30+</td>
+                                    <td>250w+</td>
+                                    <td>3000+</td>
+                                </tr>
+                                <tr>
+                                    <td>2025 Q3+</td>
+                                    <td>30+</td>
+                                    <td>&lt;250w</td>
+                                    <td>&lt;3000</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2">GENABELLE</td>
+                                    <td>2024 Q1-Q3</td>
+                                    <td>0</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>2025 Q2+</td>
+                                    <td>15+</td>
+                                    <td>30w+</td>
+                                    <td>200+</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 三、货品策略 -->
+        <section id="section3" class="mb-16 animate-fade-in-up">
+            <h2 class="flex items-center section-title">
+                <span class="w-12 h-12 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-4">📦</span>
+                三、货品策略
+            </h2>
+            <p class="text-gray-600 glass-card p-6 mt-4">
+                我们将复杂的成分表，翻译成消费者易懂、抖音易传播的“购买理由”。
+            </p>
+            
+            <!-- （一）单品卖点 -->
+            <div class="mb-12 animate-fade-in-up">
+                <h3 class="flex items-center sub-section-title">
+                    <span class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-3">✨</span>
+                    （一）单品卖点
+                </h3>
+                <div class="image-container glass-card p-6 mt-4">
+                    <img src="images/image8.png" alt="单品卖点表格" width="800">
+                </div>
+                <p class="text-center text-gray-500 mt-2">点击图片可查看完整电子表格</p>
+            </div>
+            
+            <!-- （二）CP套装卖点 -->
+            <div class="mb-12 animate-fade-in-up">
+                <h3 class="flex items-center sub-section-title">
+                    <span class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-3">🎯</span>
+                    （二）CP套装卖点
+                </h3>
+                <div class="glass-card p-6 mt-4 hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="font-semibold text-gray-800 text-xl mb-4 flex items-center">
+                        <span class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 mr-2">🛡️</span>
+                        定位：皮肤的全天候修护官
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                        <div class="glass-card p-4">
+                            <h5 class="font-medium text-gray-800 mb-2 flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-2">☀️</span>
+                                日间
+                            </h5>
+                            <p class="text-gray-600">精华打底，快速退红维稳，让皮肤处于“冷静”状态，方便上妆。</p>
+                        </div>
+                        <div class="glass-card p-4">
+                            <h5 class="font-medium text-gray-800 mb-2 flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-2">🌙</span>
+                                夜间
+                            </h5>
+                            <p class="text-gray-600">精华+面霜组合，完成“舒缓（精华）→ 强韧修复（面霜）”的闭环，应对一整天的损伤。</p>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-amber-50 to-amber-100 p-5 rounded-lg border-l-4 border-amber-500">
+                        <p class="text-amber-800 font-medium">沟通话术：</p>
+                        <p class="text-gray-700 italic mt-2">“单用是猛药，合用是系统疗程。精华负责「救火」，面霜负责「筑墙」，一套带走敏感、干燥和初老问题。”</p>
+                    </div>
+                </div>
+                
+                <div class="image-container glass-card p-6 mt-6">
+                    <img src="images/image9.png" alt="CP套装卖点示意图" width="800">
+                </div>
+            </div>
+        </section>
+
+        <!-- 四、营销策略及预算 -->
+        <section id="section4" class="mb-16 animate-fade-in-up">
+            <h2 class="flex items-center section-title">
+                <span class="w-12 h-12 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-4">📈</span>
+                四、营销策略及预算
+            </h2>
+            
+            <!-- （一）分节点达人策略 -->
+            <div class="mb-12 animate-fade-in-up">
+                <h3 class="flex items-center sub-section-title">
+                    <span class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-3">🎯</span>
+                    （一）分节点达人策略
+                </h3>
+                <div class="image-container glass-card p-6 mt-4">
+                    <img src="images/image10.png" alt="分节点达人策略表格" width="800">
+                </div>
+                <p class="text-center text-gray-500 mt-2">点击图片可查看完整电子表格</p>
+                
+                <div class="glass-card mt-8 hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="font-semibold text-gray-800 text-xl mb-4 flex items-center">
+                        <span class="w-8 h-8 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-3">💹</span>
+                        达人合作ROI要求
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-300">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800">KOC/素人</p>
+                                <p class="text-gray-600">ROI≥3（主要承担内容产出与口碑）</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-300">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 mr-4">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800">中腰部达人</p>
+                                <p class="text-gray-600">ROI≥2.5（主要承担日常转化）</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-300">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mr-4">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800">头部达人</p>
+                                <p class="text-gray-600">ROI≥2（主要承担节点爆发与品宣）</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-300">
+                            <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 mr-4">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800">超头/明星</p>
+                                <p class="text-gray-600">ROI≥1.5（主要承担品牌背书与破圈）</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- （二）内容策略与商品卡运营 -->
+            <div class="mb-12 animate-fade-in-up">
+                <h3 class="flex items-center sub-section-title">
+                    <span class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center text-white mr-3">📝</span>
+                    （二）内容策略与商品卡运营
+                </h3>
+                
+                <!-- 内容矩阵 -->
+                <div class="glass-card mb-8 hover:shadow-lg transition-shadow duration-300">
+                    <h4 class="font-semibold text-gray-800 text-xl mb-4 flex items-center">
+                        <span class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">🎨</span>
+                        内容矩阵
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-300">
+                            <h5 class="font-medium text-gray-800 mb-2 flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 mr-2">1</span>
+                                单品内容线
+                            </h5>
+                            <p class="text-gray-600">聚焦"即时效果"，主打精华的退红、急救</p>
+                        </div>
+                        <div class="p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-300">
+                            <h5 class="font-medium text-gray-800 mb-2 flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-green-200 flex items-center justify-center text-green-700 mr-2">2</span>
+                                CP内容线
+                            </h5>
+                            <p class="text-gray-600">聚焦"系统修护"，主打组合的科学性与完整性</p>
+                        </div>
+                        <div class="p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors duration-300">
+                            <h5 class="font-medium text-gray-800 mb-2 flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-purple-200 flex items-center justify-center text-purple-700 mr-2">3</span>
+                                场景内容线
+                            </h5>
+                            <p class="text-gray-600">绑定具体场景（熬夜、换季、妆前、送礼）</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 商品卡优化策略 -->
+                <div class="glass-card mb-6 hover:shadow-lg transition-shadow duration-300 animate-fade-in-up">
+                    <h4 class="font-semibold text-gray-800 text-xl mb-4 flex items-center">
+                        <span class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3">🛒</span>
+                        商品卡优化策略
+                    </h4>
+                    <div class="space-y-4">
+                        <div class="p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-300">
+                            <h5 class="font-medium text-gray-800 flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 mr-2">📊</span>
+                                前期（1-2月）
+                            </h5>
+                            <p class="text-gray-600 pl-8">重点优化商品卡基础信息（标题、主图、详情）</p>
+                        </div>
+                        <div class="p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-300">
+                            <h5 class="font-medium text-gray-800 flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-green-200 flex items-center justify-center text-green-700 mr-2">🔬</span>
+                                测试期
+                            </h5>
+                            <p class="text-gray-600 pl-8">A/B测试不同商品卡组合的点击率与转化率</p>
+                        </div>
+                        <div class="p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors duration-300">
+                            <h5 class="font-medium text-gray-800 flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-purple-200 flex items-center justify-center text-purple-700 mr-2">🚀</span>
+                                放大期
+                            </h5>
+                            <p class="text-gray-600 pl-8">将高转化商品卡组合通过付费流量放大</p>
+                        </div>
+                        <div class="p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors duration-300">
+                            <h5 class="font-medium text-gray-800 flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-amber-200 flex items-center justify-center text-amber-700 mr-2">🔄</span>
+                                维护期
+                            </h5>
+                            <p class="text-gray-600 pl-8">定期更新商品卡内容，保持新鲜度</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 付费流量分配 -->
+                <div class="glass-card hover:shadow-lg transition-shadow duration-300 animate-fade-in-up">
+                    <h4 class="font-semibold text-gray-800 text-xl mb-4 flex items-center">
+                        <span class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 mr-3">💰</span>
+                        付费流量分配
+                    </h4>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">🛒</span>
+                                <span class="text-gray-700">商品卡推广</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-40 bg-gray-200 rounded-full h-4 mr-3 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 30%"></div>
+                                </div>
+                                <span class="text-blue-600 font-semibold">30%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3">🔥</span>
+                                <span class="text-gray-700">内容加热</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-40 bg-gray-200 rounded-full h-4 mr-3 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-green-400 to-green-600 h-4 rounded-full transition-all duration-1000 ease-out delay-300" style="width: 40%"></div>
+                                </div>
+                                <span class="text-green-600 font-semibold">40%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3">📱</span>
+                                <span class="text-gray-700">直播间引流</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-40 bg-gray-200 rounded-full h-4 mr-3 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-4 rounded-full transition-all duration-1000 ease-out delay-600" style="width: 30%"></div>
+                                </div>
+                                <span class="text-purple-600 font-semibold">30%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="image-container glass-card p-6 mt-8 animate-fade-in-up">
+                    <img src="images/image11.png" alt="内容策略与商品卡运营示意图" width="800">
+                </div>
+            </div>
+            
+            <!-- （三）推荐达人List -->
+            <div class="mb-12">
+                <h3 class="sub-section-title">（三）推荐达人List</h3>
+                <div class="image-container">
+                    <img src="images/image12.png" alt="推荐达人List表格" width="800">
+                </div>
+                <p class="text-center text-gray-500">点击图片可查看完整电子表格</p>
+                <p class="content-paragraph text-center mt-4">抖音筛选指标以GMV产出为核心推荐，小红书筛选指标以互动数为核心推荐</p>
+            </div>
+            
+            <!-- （四）分阶段执行策略与预算分配 -->
+            <div class="mb-12">
+                <h3 class="sub-section-title">（四）分阶段执行策略与预算分配</h3>
+                
+                <!-- 1.营销预算月度分配 -->
+                <div class="mb-8">
+                    <h4 class="sub-sub-section-title">1.营销预算月度分配（总计：1000万）</h4>
+                    <div class="image-container">
+                        <img src="images/image13.png" alt="营销预算月度分配表格" width="800">
+                    </div>
+                    <p class="text-center text-gray-500">点击图片可查看完整电子表格</p>
+                </div>
+                
+                <!-- 2.运营费用预算 -->
+                <div class="mb-8">
+                    <h4 class="sub-sub-section-title">2.运营费用预算</h4>
+                    <div class="image-container">
+                        <img src="images/image14.png" alt="运营费用预算表格" width="800">
+                    </div>
+                    <p class="text-center text-gray-500">点击图片可查看完整电子表格</p>
+                    <p class="content-paragraph text-center mt-4">若全年GMV达成率超100%，全年GMV额外5%的分成奖励。</p>
+                </div>
+                
+                <div class="image-container">
+                    <img src="images/image15.png" alt="分阶段执行策略示意图" width="800">
+                </div>
+            </div>
+            
+            <!-- （五）整体规划 -->
+            <div class="mb-12">
+                <h3 class="sub-section-title">（五）整体规划</h3>
+                <div class="glass-card grid grid-cols-1 md:grid-cols-4 gap-6 p-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-amber-500 mb-2">5820万</div>
+                        <p class="text-gray-700 font-medium">年度GMV目标</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-amber-500 mb-2">1000万</div>
+                        <p class="text-gray-700 font-medium">年度营销总预算</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-amber-500 mb-2">2.2</div>
+                        <p class="text-gray-700 font-medium">ROI目标</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-amber-500 mb-2">50%</div>
+                        <p class="text-gray-700 font-medium">达播费用占比</p>
+                    </div>
+                </div>
+                
+                <div class="glass-card mt-8">
+                    <h4 class="font-semibold text-gray-700 mb-4">服务费结构</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h5 class="font-medium text-gray-700 mb-2">前期（不自播期）</h5>
+                            <p class="text-gray-600">15万/月服务费+5%销售佣金</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h5 class="font-medium text-gray-700 mb-2">自播启动后</h5>
+                            <p class="text-gray-600">20万/月服务费 + 8%销售佣金</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="image-container mt-8">
+                    <img src="images/image16.png" alt="整体规划示意图" width="800">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="text-2xl font-bold text-amber-400 mb-4">DR.COSMO</div>
+                    <p class="text-gray-400">高端功效护肤品牌，以奢华复合成分矩阵为核心竞争力</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">执行规划要点</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-chevron-right text-amber-400 mr-2"></i>品牌与市场深度分析</li>
+                        <li><i class="fas fa-chevron-right text-amber-400 mr-2"></i>竞争对手策略拆解</li>
+                        <li><i class="fas fa-chevron-right text-amber-400 mr-2"></i>货品策略与卖点提炼</li>
+                        <li><i class="fas fa-chevron-right text-amber-400 mr-2"></i>营销预算与执行路径</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">联系信息</h4>
+                    <p class="text-gray-400 mb-2">项目负责人：XXX</p>
+                    <p class="text-gray-400 mb-2">联系方式：XXX</p>
+                    <p class="text-gray-400">日期：XXXX年XX月</p>
+                </div>
+            </div>
+            <div class="w-full h-px bg-gray-700 my-8"></div>
+            <p class="text-center text-gray-500">© 2025 DR.COSMO品牌抖音执行规划. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单切换
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // 关闭移动端菜单
+                    mobileMenu.classList.add('hidden');
+                    
+                    // 滚动到目标位置
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 导航高亮
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 100) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${currentSection}`) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

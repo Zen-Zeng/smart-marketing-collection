@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="全链路AI驱动的跨境医美出海执行方案，涵盖基建安全、Agent矩阵、SOP交付与ROI财务测算。">
+    <title>跨境医美出海方案 | 智能营销方案集合</title>
+    <script src="assets/js/auth-check.js"></script>
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: Warm Neutral Luxury (Stone, Teals for trust, Rose for aesthetics) -->
+    <!-- Application Structure Plan: The SPA is structured into four main interactive sections designed for high-end decision-makers. 1. 'Global Infrastructure' uses a visual flex-layout to explain the Cloud-Edge synergy. 2. 'AI Agent Matrix' uses interactive cards to detail the routing and capabilities of each AI persona. 3. 'Conversion SOP' utilizes a dynamic side-tab interface to walk through the customer journey step-by-step. 4. 'Financial Projections & Risks' combines Chart.js visual data with KPI cards for clear ROI understanding. This structure logically flows from technical setup -> AI capabilities -> operational workflow -> business outcomes. -->
+    <!-- Visualization & Content Choices: 1. Infrastructure: CSS layout to show Cloud vs Edge isolation (Goal: Organize). 2. Agents: Grid of cards showing model/temp stats (Goal: Inform/Organize). 3. SOP: Interactive list updating a main view to show the timeline (Goal: Change/Process). 4. Financials: Chart.js Bar Chart comparing minimal costs vs high profits, emphasizing the 2000% ROI (Goal: Compare). NO SVG or Mermaid utilized; relying on Unicode, CSS shapes, and Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .glass-panel { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(229, 231, 235, 0.5); }
+        .step-active { border-color: #e11d48; color: #e11d48; background-color: #fff1f2; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased selection:bg-rose-200">
+
+    <nav class="sticky top-0 z-50 glass-panel border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🦋</span>
+                    <span class="font-bold text-xl tracking-tight text-stone-900">OpenClaw <span class="text-rose-600">MedBeauty</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-stone-600">
+                    <a href="#infrastructure" class="hover:text-rose-600 transition">基建与安全</a>
+                    <a href="#agents" class="hover:text-rose-600 transition">Agent矩阵</a>
+                    <a href="#sop" class="hover:text-rose-600 transition">交付SOP</a>
+                    <a href="#roi" class="hover:text-rose-600 transition">财务测算</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-20 text-center bg-gradient-to-b from-stone-100 to-stone-50">
+        <div class="max-w-4xl mx-auto px-4">
+            <span class="inline-block py-1 px-3 rounded-full bg-rose-100 text-rose-800 text-xs font-bold tracking-wider mb-4">VERSION 1.0 (高客单价 O2O 专项版)</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-stone-900 tracking-tight mb-6">全链路 AI 驱动跨境医美执行方案</h1>
+            <p class="text-lg md:text-xl text-stone-600 mb-8 leading-relaxed">基于云边协同架构，打造全球审美镜像与 1:1 专家级咨询系统。建立从海外社媒流量到国内医院交付的自动化筛选闭环。</p>
+            <div class="flex flex-wrap justify-center gap-4 text-sm font-medium">
+                <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-stone-200 flex items-center gap-2">🛡️ 隐私脱敏影子学习</div>
+                <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-stone-200 flex items-center gap-2">🤖 多模型动态路由</div>
+                <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-stone-200 flex items-center gap-2">🚀 目标：累计净利破 $5k 解锁 v2.0</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+
+        <!-- 基础设施部分 -->
+        <section id="infrastructure" class="scroll-mt-24">
+            <div class="mb-10 text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 mb-4">阶段一：基础设施与隐私安全架构</h2>
+                <p class="text-stone-600">医美行业对客户肖像及医疗隐私有着极高的要求。本模块展示了 OpenClaw 为符合 GDPR/CCPA 及国内网络安全规范而设计的物理部署架构。点击下方模块了解其具体定位与功能。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div class="bg-white rounded-2xl p-6 shadow-md border-t-4 border-blue-500 hover:shadow-lg transition cursor-pointer text-center" onclick="updateInfra('cloud')">
+                    <div class="text-4xl mb-4">☁️</div>
+                    <h3 class="text-xl font-bold mb-2">海外云大脑 (Cloud Hub)</h3>
+                    <p class="text-sm text-stone-500">部署于阿里云硅谷节点</p>
+                </div>
+                
+                <div class="flex flex-col items-center justify-center space-y-2 cursor-pointer" onclick="updateInfra('tunnel')">
+                    <div class="text-xs font-bold text-stone-400 tracking-widest uppercase">Cloudflare Tunnel</div>
+                    <div class="w-full flex justify-center items-center gap-1 text-stone-300">
+                        <span>●</span><span>●</span><span>●</span><span class="text-2xl text-teal-500">🔒</span><span>●</span><span>●</span><span>●</span>
+                    </div>
+                    <div class="text-xs font-bold text-stone-400 tracking-widest uppercase text-center">内网穿透加密传输</div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-md border-t-4 border-rose-500 hover:shadow-lg transition cursor-pointer text-center" onclick="updateInfra('edge')">
+                    <div class="text-4xl mb-4">🏥</div>
+                    <h3 class="text-xl font-bold mb-2">国内边缘节点 (Edge Node)</h3>
+                    <p class="text-sm text-stone-500">部署于杭州/上海（医美高地）</p>
+                </div>
+            </div>
+
+            <div id="infra-detail" class="mt-8 bg-stone-100 rounded-xl p-6 border border-stone-200 text-stone-700 fade-in min-h-[120px] flex items-center justify-center text-center">
+                <p class="text-lg">请点击上方架构图中的节点，查看详细的隐私隔离与数据流转策略。</p>
+            </div>
+        </section>
+
+        <!-- Agent 矩阵 -->
+        <section id="agents" class="scroll-mt-24">
+            <div class="mb-10 text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 mb-4">阶段二 & 三：核心网关与 Agent 矩阵</h2>
+                <p class="text-stone-600">医美咨询对“同理心”和“专业性”要求极高。此模块展示了参与转化流程的各个智能体。我们通过模型路由向高智力模型倾斜，并为每个 Agent 设定了特定的温度值（Temperature）以平衡严谨性与创造力。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Agent 0 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 hover:border-stone-400 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-stone-800 text-white text-xs px-3 py-1 rounded-bl-lg font-mono">Temp: 0.1</div>
+                    <div class="text-3xl mb-3">👔</div>
+                    <h3 class="text-lg font-bold mb-1">Agent 0 (CEO)</h3>
+                    <div class="text-sm font-semibold text-rose-600 mb-3">模型驱动: gpt-4o</div>
+                    <p class="text-sm text-stone-600"><strong>决策中心。</strong> 核心网关大脑，负责判断海外客户意向等级，调度整个跨国转化流程。</p>
+                </div>
+
+                <!-- Agent 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 hover:border-stone-400 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-stone-800 text-white text-xs px-3 py-1 rounded-bl-lg font-mono">Temp: 0.7</div>
+                    <div class="text-3xl mb-3">✨</div>
+                    <h3 class="text-lg font-bold mb-1">Agent 1 (Trend)</h3>
+                    <div class="text-sm font-semibold text-teal-600 mb-3">模型驱动: claude-3-5-sonnet</div>
+                    <p class="text-sm text-stone-600"><strong>流行趋势专家。</strong> 每日扫描 IG/TikTok 审美动态，分析地区差异，确保出海方案符合目标市场审美。</p>
+                </div>
+
+                <!-- Agent 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 hover:border-stone-400 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-stone-800 text-white text-xs px-3 py-1 rounded-bl-lg font-mono">Temp: 0.1</div>
+                    <div class="text-3xl mb-3">🩺</div>
+                    <h3 class="text-lg font-bold mb-1">Agent 2 (Medical)</h3>
+                    <div class="text-sm font-semibold text-rose-600 mb-3">模型驱动: gpt-4o</div>
+                    <p class="text-sm text-stone-600"><strong>方案专家。</strong> 抓取国内案例，基于专业医学百科，为客户匹配个性化手术方案建议。</p>
+                </div>
+
+                <!-- Agent 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 hover:border-stone-400 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-stone-800 text-white text-xs px-3 py-1 rounded-bl-lg font-mono">Full-Stack</div>
+                    <div class="text-3xl mb-3">📅</div>
+                    <h3 class="text-lg font-bold mb-1">Agent 3 (Booking)</h3>
+                    <div class="text-sm font-semibold text-stone-500 mb-3">自动化预约工程师</div>
+                    <p class="text-sm text-stone-600">集成支付接口，对接医院 CRM，自动发放手术预定编码及 PDF 确认函。</p>
+                </div>
+
+                <!-- Agent 4 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 hover:border-stone-400 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-stone-800 text-white text-xs px-3 py-1 rounded-bl-lg font-mono">Temp: 0.8</div>
+                    <div class="text-3xl mb-3">📸</div>
+                    <h3 class="text-lg font-bold mb-1">Agent 4 (Social)</h3>
+                    <div class="text-sm font-semibold text-teal-600 mb-3">模型驱动: claude-3-5-sonnet</div>
+                    <p class="text-sm text-stone-600"><strong>流量黑客。</strong> 负责视觉内容生成与社媒矩阵发布，利用 Imagen 4.0 进行“美学升维”。</p>
+                </div>
+
+                <!-- Agent 5 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 hover:border-stone-400 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-stone-800 text-white text-xs px-3 py-1 rounded-bl-lg font-mono">Temp: 0.5</div>
+                    <div class="text-3xl mb-3">🧠</div>
+                    <h3 class="text-lg font-bold mb-1">Agent 5 (Aura)</h3>
+                    <div class="text-sm font-semibold text-rose-600 mb-3">模型驱动: gpt-4o</div>
+                    <p class="text-sm text-stone-600"><strong>同理心 Agent。</strong> 影子学习金牌咨询师，处理客户信任顾虑，优化回复模板，极大提高转化率。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOP 流程 -->
+        <section id="sop" class="scroll-mt-24">
+            <div class="mb-10 text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 mb-4">阶段四：咨询到交付的 SOP 流转</h2>
+                <p class="text-stone-600">探索从发现流量到完成交付的完整业务闭环。点击下方步骤查看 AI 具体的干预策略。</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8 bg-white p-6 rounded-3xl shadow-sm border border-stone-200">
+                <div class="w-full md:w-1/3 flex flex-col space-y-2 border-l-2 border-stone-100 pl-4" id="sop-nav">
+                    <button onclick="showSOP(1)" id="sop-btn-1" class="sop-btn step-active text-left px-4 py-3 rounded-xl transition-all font-bold">1. 触达 (Reach)</button>
+                    <button onclick="showSOP(2)" id="sop-btn-2" class="sop-btn text-left px-4 py-3 rounded-xl transition-all font-medium text-stone-500 hover:bg-stone-50">2. 咨询 (Inquiry)</button>
+                    <button onclick="showSOP(3)" id="sop-btn-3" class="sop-btn text-left px-4 py-3 rounded-xl transition-all font-medium text-stone-500 hover:bg-stone-50">3. 方案 (Plan)</button>
+                    <button onclick="showSOP(4)" id="sop-btn-4" class="sop-btn text-left px-4 py-3 rounded-xl transition-all font-medium text-stone-500 hover:bg-stone-50">4. 转化 (Deposit)</button>
+                    <button onclick="showSOP(5)" id="sop-btn-5" class="sop-btn text-left px-4 py-3 rounded-xl transition-all font-medium text-stone-500 hover:bg-stone-50">5. 交付 (Delivery)</button>
+                    <button onclick="showSOP(6)" id="sop-btn-6" class="sop-btn text-left px-4 py-3 rounded-xl transition-all font-medium text-stone-500 hover:bg-stone-50">6. 学习 (Learning)</button>
+                </div>
+                
+                <div class="w-full md:w-2/3 bg-stone-50 rounded-2xl p-8 min-h-[300px] flex items-center shadow-inner">
+                    <div id="sop-content" class="fade-in w-full">
+                        <div class="text-5xl mb-4">📱</div>
+                        <h3 class="text-2xl font-bold text-stone-900 mb-2">1. 触达 (Reach)</h3>
+                        <p class="text-rose-600 text-sm font-bold mb-4 uppercase tracking-wider">执行角色：Agent 4 (Social)</p>
+                        <p class="text-stone-700 text-lg leading-relaxed">利用 Imagen 4.0 制作符合海外审美的模特海报，将国内真实案例图进行“视觉升维”处理。通过矩阵式社媒发布，吸引全球流量进入私域。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROI 部分 -->
+        <section id="roi" class="scroll-mt-24">
+            <div class="mb-10 text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 mb-4">阶段五：项目财务与 ROI 测算</h2>
+                <p class="text-stone-600">通过极轻的系统成本撬动高客单价医美需求。由于初期利用 Agent 4 铺设自然流量，获客成本极低，ROI 表现惊人。</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 text-center">
+                    <div class="text-xs text-stone-500 mb-1">月度系统费</div>
+                    <div class="text-2xl font-bold text-stone-900">$300</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 text-center">
+                    <div class="text-xs text-stone-500 mb-1">预期询盘/月</div>
+                    <div class="text-2xl font-bold text-stone-900">100</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 text-center">
+                    <div class="text-xs text-stone-500 mb-1">单人净利润</div>
+                    <div class="text-2xl font-bold text-teal-600">~$2k</div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border-2 border-teal-500 text-center">
+                    <div class="text-xs font-bold text-teal-600 mb-1">首月预估 ROI</div>
+                    <div class="text-3xl font-black text-teal-600">2000%</div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-stone-200">
+                <h3 class="text-lg font-bold text-center mb-6 text-stone-800">支出与利润对比 (单位: USD)</h3>
+                <div class="chart-container">
+                    <canvas id="roiChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 风险管控 -->
+        <section class="pb-20">
+            <div class="bg-stone-900 rounded-3xl p-8 md:p-12 text-stone-300 shadow-xl">
+                <h2 class="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                    <span class="text-2xl text-rose-500">⚠️</span> 专家建议与风险管控
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div>
+                        <h4 class="text-white font-bold mb-3 flex items-center gap-2">⚖️ 法律合规</h4>
+                        <p class="text-sm leading-relaxed">Agent 4 在发布内容时已强制内置免责声明，明确表示内容不构成医疗建议。所有跨境交付均签署电子版国际协议。</p>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-3 flex items-center gap-2">🛡️ 隐私脱敏</h4>
+                        <p class="text-sm leading-relaxed">所有客户照片在进入大模型处理前，会经过杭州边缘节点的脚本进行面部局部打码或特征模糊，保护客户隐私不外泄。</p>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-3 flex items-center gap-2">🚗 交付标准</h4>
+                        <p class="text-sm leading-relaxed">1.0 阶段建议完全外包地接社。Agent 3 自动对接第三方 API，确保护理、接送、住宿标准化，降低自建团队的重资产风险。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-stone-200 py-10 text-center text-stone-400 text-sm">
+        <p>OpenClaw 专家驱动 · 跨境医美项目执行方案 v1.0</p>
+    </footer>
+
+    <script>
+        // 基础设施详情数据
+        const infraData = {
+            cloud: {
+                icon: "☁️",
+                title: "海外云大脑 (Cloud Hub)",
+                desc: "作为决策中枢，运行 CEO、Trend、Social 等核心逻辑。它位于物理层面的‘无污染’区，直接对接海外社媒流量，并托管所有加密的 Agent 指令库。"
+            },
+            tunnel: {
+                icon: "🔒",
+                title: "Cloudflare Tunnel 加密隧道",
+                desc: "通过该加密隧道，海外云大脑可以安全地调取国内医院节点的实时库存。无需公网 IP 暴露，最大化安全性。"
+            },
+            edge: {
+                icon: "🏥",
+                title: "国内边缘节点 (Edge Node)",
+                desc: "部署在业务交付最前线。负责抓取本地真实案例进行影子学习，并将处理后的脱敏数据通过隧道上传，同时直接对接医院 CRM 系统。"
+            }
+        };
+
+        // SOP 流程详情数据
+        const sopData = {
+            1: {
+                icon: "📱", title: "1. 触达 (Reach)",
+                role: "Agent 4 (Social)",
+                desc: "利用生成式 AI 制作高审美海报和 Vlog。将国内平庸的术前术后图进行视觉升维，发布至 IG/TikTok Reel，利用标签穿透精准触达海外医美潜在客群。"
+            },
+            2: {
+                icon: "💬", title: "2. 咨询 (Inquiry)",
+                role: "Agent 0 (CEO) & Agent 5 (Aura)",
+                desc: "客户通过 WhatsApp 或私信进入系统。CEO Agent 负责判定客户意向（初、中、高），Aura 则以极具同理心的口吻处理初级疑虑，建立信任基石。"
+            },
+            3: {
+                icon: "📋", title: "3. 方案 (Plan)",
+                role: "Agent 2 (Medical)",
+                desc: "AI 引导客户上传照片（边缘节点即时脱敏）。Medical Agent 基于内部案例库，自动生成包含手术方案、医生建议、恢复期对比的个性化美学建议书。"
+            },
+            4: {
+                icon: "💳", title: "4. 转化 (Deposit)",
+                role: "Agent 3 (Booking)",
+                desc: "发送定金支付链接。客户支付后，Agent 3 自动触发国内医院预约接口，生成专属‘手术预定编码’并同步给地接服务商。"
+            },
+            5: {
+                icon: "✈️", title: "5. 交付 (Delivery)",
+                role: "系统协同流转",
+                desc: "自动化触发地接任务。客户飞抵国内后享受一站式闭环服务。医院术后反馈通过边缘节点回传系统，完成闭环。"
+            },
+            6: {
+                icon: "🧠", title: "6. 学习 (Learning)",
+                role: "Agent 5 (Aura)",
+                desc: "Aura 会复盘所有成交及失败的对话细节。通过影子学习，不断修正对不同文化背景（如审美差异、支付担忧）的应答策略。"
+            }
+        };
+
+        // 更新基础设施详情
+        function updateInfra(type) {
+            const detailBox = document.getElementById('infra-detail');
+            const data = infraData[type];
+            detailBox.innerHTML = `
+                <div class="flex flex-col items-center">
+                    <span class="text-4xl mb-3">${data.icon}</span>
+                    <h4 class="text-xl font-bold mb-2 text-stone-900">${data.title}</h4>
+                    <p class="max-w-2xl text-stone-600 leading-relaxed">${data.desc}</p>
+                </div>
+            `;
+            detailBox.classList.remove('fade-in');
+            void detailBox.offsetWidth; // 触发回流
+            detailBox.classList.add('fade-in');
+        }
+
+        // 切换 SOP 展示
+        function showSOP(step) {
+            // 更新按钮样式
+            document.querySelectorAll('.sop-btn').forEach((btn) => {
+                btn.classList.remove('step-active');
+                btn.classList.add('text-stone-500', 'font-medium');
+            });
+            document.getElementById('sop-btn-' + step).classList.add('step-active');
+            document.getElementById('sop-btn-' + step).classList.remove('text-stone-500', 'font-medium');
+
+            // 更新内容
+            const contentBox = document.getElementById('sop-content');
+            const data = sopData[step];
+            contentBox.innerHTML = `
+                <div class="text-5xl mb-4">${data.icon}</div>
+                <h3 class="text-2xl font-bold text-stone-900 mb-2">${data.title}</h3>
+                <p class="text-rose-600 text-sm font-bold mb-4 uppercase tracking-wider">执行角色：${data.role}</p>
+                <p class="text-stone-700 text-lg leading-relaxed">${data.desc}</p>
+            `;
+            contentBox.classList.remove('fade-in');
+            void contentBox.offsetWidth;
+            contentBox.classList.add('fade-in');
+        }
+
+        // 初始化 ROI 图表
+        window.onload = function() {
+            const ctx = document.getElementById('roiChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['月度固定支出', '预期月净利润'],
+                    datasets: [{
+                        label: '金额 (USD)',
+                        data: [300, 6000], // $300 基础费 vs $6000 (3单均利)
+                        backgroundColor: [
+                            'rgba(120, 113, 108, 0.6)',
+                            'rgba(13, 148, 136, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgb(120, 113, 108)',
+                            'rgb(13, 148, 136)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+    </script>
+    <script src="assets/js/shared.js"></script>
+</body>
+</html>

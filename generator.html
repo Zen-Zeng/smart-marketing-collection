@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI方案大师——端侧多角色智能体驱动，生成可交付的专业营销方案、Web演示站与原生可编辑PPTX">
+    <title>AI 方案大师 | 智能营销方案集合</title>
+    <script src="assets/js/auth-check.js"></script>
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+    <script src="assets/js/schema.js"></script>
+    <script src="assets/js/pptx-compiler.js"></script>
+    <script src="assets/js/agent-pipeline.js"></script>
+    <script src="assets/js/collection-publisher.js"></script>
+    <script type="module">
+        try {
+            const { default: OpenAI } = await import("https://esm.sh/openai@4.73.1");
+            window.OpenAI = OpenAI;
+        } catch (e) { console.warn("OpenAI SDK unavailable, using fetch fallback", e); }
+        try {
+            const { default: Anthropic } = await import("https://esm.sh/@anthropic-ai/sdk@0.32.1");
+            window.Anthropic = Anthropic;
+        } catch (e) { console.warn("Anthropic SDK unavailable, using fetch fallback", e); }
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { primary: '#4f46e5', dark: '#312e81', light: '#eef2ff' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .form-input {
+            width: 100%; border: 1px solid #e2e8f0; border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem; font-size: 0.875rem; color: #1e293b;
+            background: #fff; transition: all 0.2s;
+        }
+        .form-input:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        .form-input.error { border-color: #ef4444; }
+        .form-label { display: block; font-size: 0.8125rem; font-weight: 600; color: #475569; margin-bottom: 0.375rem; }
+        .form-label .required { color: #ef4444; margin-left: 2px; }
+        .tab-btn { padding: 0.6rem 1.1rem; font-size: 0.875rem; font-weight: 500; border-bottom: 2px solid transparent; color: #64748b; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .tab-btn.active { border-bottom-color: #4f46e5; color: #4f46e5; font-weight: 600; }
+        .tab-btn:hover:not(.active) { color: #1e293b; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        #proposal-json, #proposal-html, #proposal-critic { white-space: pre-wrap; font-size: 0.78rem; line-height: 1.6; font-family: 'Menlo', 'Monaco', monospace; color: #1e293b; }
+        .progress-fill { height: 100%; width: 0%; border-radius: 9999px; background: linear-gradient(90deg, #4f46e5, #06b6d4); transition: width 0.4s ease; }
+        .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; padding: 0.75rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.12); transform: translateY(100px); opacity: 0; transition: all 0.3s; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .toast.error   { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        .toast.info    { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+        .stage-card { transition: all 0.2s; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 0.5rem 0.75rem; }
+        .stage-card.running { border-color: #4f46e5; background: #eef2ff; }
+        .stage-card.done { border-color: #86efac; background: #f0fdf4; }
+        .stage-card.idle { background: #f8fafc; opacity: 0.7; }
+        #preview-frame { width: 100%; height: 600px; border: none; border-radius: 0.5rem; background: #fff; }
+        .upload-zone { border: 2px dashed #c7d2fe; border-radius: 0.75rem; padding: 1rem; text-align: center; cursor: pointer; transition: all 0.2s; background: #fafbff; }
+        .upload-zone:hover, .upload-zone.dragover { border-color: #4f46e5; background: #eef2ff; }
+        .file-chip { display: inline-flex; align-items: center; gap: 0.4rem; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 0.25rem 0.5rem; font-size: 0.75rem; max-width: 100%; }
+        .file-chip .chip-name { color: #334155; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 130px; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(2px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+        .modal-overlay.hidden { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<a href="#main" class="skip-link">跳转到主内容</a>
+
+<!-- ===== 导航栏 ===== -->
+<nav class="sticky top-0 z-50 bg-white border-b border-slate-200 transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shadow-sm">
+                <i class="fa-solid fa-wand-magic-sparkles text-white text-sm"></i>
+            </div>
+            <div>
+                <span class="font-bold text-base text-slate-900">AI 方案大师</span>
+                <span class="text-xs text-indigo-600 font-medium ml-1.5 px-1.5 py-0.5 bg-indigo-50 rounded border border-indigo-100 hidden sm:inline">多角色 Agent 工作台</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="text-sm text-slate-500 hover:text-slate-800 transition-colors hidden sm:flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-left text-xs"></i>方案广场
+            </a>
+            <button id="btn-settings" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium flex items-center gap-1.5 transition-colors" title="API 设置">
+                <i class="fa-solid fa-sliders text-xs"></i>
+                <span class="hidden sm:inline">模型配置</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== 设置模态框 ===== -->
+<div id="modal-settings" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="API 设置">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6">
+        <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-gear text-indigo-600"></i>
+                <h2 class="text-lg font-bold text-slate-900">大模型 API 与服务配置</h2>
+            </div>
+            <button id="btn-close-settings" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-slate-600"></i>
+            </button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="form-label" for="select-provider">模型供应商 (Provider)</label>
+                <select id="select-provider" class="form-input font-medium">
+                    <option value="deepseek">DeepSeek（默认推荐 · 速度快逻辑强）</option>
+                    <option value="openai">OpenAI (GPT-4o / GPT-4o-mini)</option>
+                    <option value="claude">Anthropic Claude (3.7 Sonnet)</option>
+                    <option value="custom">自定义 OpenAI 兼容接口 (One API / 本地网关)</option>
+                </select>
+            </div>
+            <div id="wrapper-base-url">
+                <label class="form-label" for="input-base-url">API Endpoint URL</label>
+                <input type="text" id="input-base-url" class="form-input text-xs font-mono" value="https://api.deepseek.com/v1/chat/completions">
+            </div>
+            <div>
+                <label class="form-label" for="input-api-key">
+                    API Key <span class="required">*</span>
+                </label>
+                <div class="relative">
+                    <input type="password" id="input-api-key" class="form-input pr-10 font-mono text-xs" placeholder="sk-...">
+                    <button id="btn-toggle-key" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-eye text-sm"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">Key 仅保存在浏览器本地 localStorage，直接请求服务商，不经中间服务器</p>
+            </div>
+            <div>
+                <label class="form-label" for="input-model-name">模型标识 (Model Name)</label>
+                <input type="text" id="input-model-name" class="form-input font-mono text-xs" value="deepseek-chat">
+            </div>
+<div>
+                <label class="form-label" for="input-github-token">GitHub Token (PAT, 个人方案库写入用)</label>
+                <div class="relative">
+                    <input type="password" id="input-github-token" class="form-input pr-10 font-mono text-xs" placeholder="ghp_... 需 repo / contents:write 权限">
+                    <button id="btn-toggle-gh" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-eye text-sm"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">仅存浏览器本地，直接请求 api.github.com，用于把方案提交到本仓库</p>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                <button id="btn-test-conn" type="button" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1">
+                    <i class="fa-solid fa-plug"></i>测试连接
+                </button>
+                <button id="btn-save-settings" type="button" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    保存配置
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 主内容区 ===== -->
+<main id="main" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- 左侧输入表单 -->
+        <section class="lg:col-span-5 bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-5">
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-list text-indigo-600"></i>方案需求输入
+                </h2>
+                <button id="btn-fill-sample" type="button" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">
+                    <i class="fa-solid fa-magic mr-1"></i>填入示例
+                </button>
+            </div>
+
+            <form id="proposal-form" class="space-y-4" onsubmit="return false;">
+                <div>
+                    <label class="form-label" for="f-brand">品牌/客户名称 <span class="required">*</span></label>
+                    <input type="text" id="f-brand" class="form-input" placeholder="例如：DR.COSMO / 辰时医疗 / 顺鑫农业" required>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="form-label" for="f-industry">所属行业 <span class="required">*</span></label>
+                        <select id="f-industry" class="form-input font-medium">
+                            <option value="美妆个护">美妆个护</option>
+                            <option value="3C数码/科技">3C数码/科技</option>
+                            <option value="B2B制造/企业服务">B2B制造/企业服务</option>
+                            <option value="医疗大健康">医疗大健康</option>
+                            <option value="跨境电商/出海">跨境电商/出海</option>
+                            <option value="食品饮料/餐饮">食品饮料/餐饮</option>
+                            <option value="经典商务">经典商务</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label" for="f-type">方案类型</label>
+                        <select id="f-type" class="form-input">
+                            <option value="全域整合营销方案">全域整合营销</option>
+                            <option value="小红书KOL种草破圈">小红书种草</option>
+                            <option value="抖音电商直播增长">抖音电商增长</option>
+                            <option value="新品牌上市破局战役">新品牌上市</option>
+                            <option value="私域流量沉淀与复购">私域复购</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="form-label" for="f-budget">总预算范围</label>
+                        <input type="text" id="f-budget" class="form-input" placeholder="如：50万 / 100-200万">
+                    </div>
+                    <div>
+                        <label class="form-label" for="f-period">执行周期</label>
+                        <input type="text" id="f-period" class="form-input" placeholder="如：Q3季度 / 6个月">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-label" for="f-background">品牌现状与核心诉求 <span class="required">*</span></label>
+                    <textarea id="f-background" class="form-input h-20 resize-none text-xs" placeholder="简述品牌定位、主推产品、当前客单价与痛点..." required></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="form-label" for="f-challenge">核心挑战/突破口</label>
+                        <input type="text" id="f-challenge" class="form-input text-xs" placeholder="如：知名度低、同质化严重">
+                    </div>
+                    <div>
+                        <label class="form-label" for="f-audience">核心目标受众</label>
+                        <input type="text" id="f-audience" class="form-input text-xs" placeholder="如：25-35岁精致白领女性">
+                    </div>
+                </div>
+
+                <!-- 背景资料上传区 (Grounding) -->
+                <div>
+                    <label class="form-label">客户背景资料/素材注入 (PDF/Word/Markdown)</label>
+                    <div id="drop-zone" class="upload-zone">
+                        <input type="file" id="file-input" class="hidden" multiple accept=".pdf,.docx,.doc,.txt,.md">
+                        <i class="fa-solid fa-cloud-arrow-up text-indigo-400 text-xl mb-1"></i>
+                        <p class="text-xs text-slate-500 font-medium">点击或拖拽文件到此处</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">端侧自动萃取高价值段落用于策略增强</p>
+                    </div>
+                    <div id="file-list" class="flex flex-wrap gap-1.5 mt-2"></div>
+                </div>
+
+                <!-- 在线链接资料区 (Link Grounding) -->
+                <div>
+                    <label class="form-label">在线链接资料 (自动抓取网页正文)</label>
+                    <div id="link-rows" class="space-y-2"></div>
+                    <button id="btn-add-link" type="button" class="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                        <i class="fa-solid fa-plus"></i>添加链接
+                    </button>
+                    <div id="link-list" class="flex flex-wrap gap-1.5 mt-2"></div>
+                </div>
+
+                <button id="btn-generate" type="button" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>启动 AI Agent 流水线生成方案
+                </button>
+                <button id="btn-abort" type="button" class="w-full py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg text-sm font-medium transition-colors hidden">
+                    <i class="fa-solid fa-stop mr-1.5"></i>中止生成
+                </button>
+            </form>
+        </section>
+
+        <!-- 右侧工作台结果与看板 -->
+        <section class="lg:col-span-7 flex flex-col gap-4">
+
+            <!-- 智能体流水线看板 -->
+            <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-network-wired text-indigo-600"></i>Agent 流水线状态
+                    </span>
+                    <span id="pipeline-status-text" class="text-xs font-semibold text-indigo-600">待就绪</span>
+                </div>
+                <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                    <div id="stage-1" class="stage-card idle">
+                        <p class="font-bold">1. 事实萃取</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Research</p>
+                    </div>
+                    <div id="stage-2" class="stage-card idle">
+                        <p class="font-bold">2. 策略推演</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Strategy</p>
+                    </div>
+                    <div id="stage-3" class="stage-card idle">
+                        <p class="font-bold">3. 质检反思</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Critic</p>
+                    </div>
+                    <div id="stage-4" class="stage-card idle">
+                        <p class="font-bold">4. 双模编译</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Compiler</p>
+                    </div>
+                </div>
+                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-3">
+                    <div id="progress-bar" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- 我的方案库（跟随登录账号） -->
+            <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-bookmark text-indigo-600"></i>我的方案库 · 账号: <span id="account-user" class="text-indigo-600 font-bold">guest</span>
+                    </span>
+                </div>
+                <div id="account-list" class="space-y-1.5"><p class="text-xs text-slate-400">加载中...</p></div>
+            </div>
+
+            <!-- 结果展示主卡片 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col min-h-[580px] overflow-hidden">
+                
+                <!-- 结果操作栏与 Tab 切换 -->
+                <div class="border-b border-slate-200 px-4 flex items-center justify-between flex-wrap gap-2 bg-slate-50/50">
+                    <div class="flex items-center">
+                        <button class="tab-btn active" data-tab="preview"><i class="fa-solid fa-desktop mr-1.5 text-xs"></i>视觉演示</button>
+                        <button class="tab-btn" data-tab="schema"><i class="fa-solid fa-code mr-1.5 text-xs"></i>结构化 JSON</button>
+                        <button class="tab-btn" data-tab="html"><i class="fa-solid fa-file-code mr-1.5 text-xs"></i>HTML 源码</button>
+                        <button class="tab-btn" data-tab="critic"><i class="fa-solid fa-shield-halved mr-1.5 text-xs"></i>质检报告</button>
+                    </div>
+                    <div class="flex items-center gap-2 py-2">
+                        <button id="btn-save-site" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 hidden">
+                            <i class="fa-solid fa-bookmark"></i>保存到我的方案库
+                        </button>
+                        <button id="btn-export-pptx" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 hidden">
+                            <i class="fa-solid fa-file-powerpoint"></i>导出 PPTX 幻灯片
+                        </button>
+                        <button id="btn-download-html" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 hidden">
+                            <i class="fa-solid fa-download"></i>下载 HTML
+                        </button>
+                        <button id="btn-copy" class="p-1.5 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 text-xs transition-colors hidden" title="复制内容">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab 内容容器 -->
+                <div class="flex-1 p-4 overflow-auto bg-slate-50/30">
+                    
+                    <!-- 空状态 -->
+                    <div id="empty-state" class="h-full flex flex-col items-center justify-center text-center py-20">
+                        <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mb-4 text-indigo-500 text-2xl shadow-inner">
+                            <i class="fa-solid fa-compass-drafting"></i>
+                        </div>
+                        <p class="text-slate-600 font-bold text-base">准备就绪</p>
+                        <p class="text-slate-400 text-xs mt-1 max-w-sm">在左侧输入客户核心诉求或上传方案文档，AI Agent 将自动推演全链路商业策略并编译为 PPTX 与交互式页面</p>
+                    </div>
+
+                    <!-- 视觉预览 Tab -->
+                    <div id="tab-preview" class="tab-panel active">
+                        <iframe id="preview-frame" sandbox="allow-scripts allow-same-origin" title="方案预览"></iframe>
+                    </div>
+
+                    <!-- 结构化数据 Tab -->
+                    <div id="tab-schema" class="tab-panel">
+                        <pre id="proposal-json" class="p-4 bg-slate-50 text-slate-800 border border-slate-200 rounded-lg overflow-x-auto text-xs"></pre>
+                    </div>
+
+                    <!-- HTML 源码 Tab -->
+                    <div id="tab-html" class="tab-panel">
+                        <pre id="proposal-html" class="p-4 bg-slate-50 text-slate-800 border border-slate-200 rounded-lg overflow-x-auto text-xs"></pre>
+                    </div>
+
+                    <!-- 质检报告 Tab -->
+                    <div id="tab-critic" class="tab-panel">
+                        <div id="critic-content" class="space-y-3 text-xs"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<footer class="bg-slate-900 text-white py-6 px-4 mt-auto border-t border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
+        <p class="text-slate-400">© 2026 AI 方案大师 · 端侧多智能体商业营销方案引擎</p>
+        <div class="flex items-center gap-4 text-slate-400">
+            <span>基于 ProposalSchema 强类型规约</span>
+            <a href="index.html" class="hover:text-white transition-colors">返回方案广场</a>
+        </div>
+    </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script src="assets/js/shared.js"></script>
+<script>
+(function () {
+    'use strict';
+
+    const LS_KEY_PROVIDER = 'smc_provider';
+    const LS_KEY_KEY      = 'smc_api_key';
+    const LS_KEY_URL      = 'smc_base_url';
+    const LS_KEY_MODEL    = 'smc_model_name';
+    const LS_KEY_GH_TOKEN = 'smc_gh_token';
+
+    const PROVIDER_DEFAULTS = {
+        deepseek: { url: 'https://api.deepseek.com/v1', model: 'deepseek-chat' },
+        openai:   { url: 'https://api.openai.com/v1', model: 'gpt-4o' },
+        claude:   { url: 'https://api.anthropic.com', model: 'claude-3-7-sonnet-20250219' },
+        custom:   { url: 'https://api.deepseek.com/v1', model: 'deepseek-chat' }
+    };
+
+    const uploadedFiles = [];
+    const linkMaterials = [];
+    let activeSchema = null;
+    let activeHtml = '';
+    let activeCriticReport = null;
+    let abortCtrl = null;
+
+    const $ = id => document.getElementById(id);
+
+    // ── Toast 通知 ──
+    function showToast(msg, type = 'info', duration = 3000) {
+        const t = $('toast');
+        t.textContent = msg;
+        t.className = `toast ${type} show`;
+        setTimeout(() => { t.classList.remove('show'); }, duration);
+    }
+
+    // ── 设置模态框管理 ──
+    function loadSettings() {
+        const p = localStorage.getItem(LS_KEY_PROVIDER) || 'deepseek';
+        $('select-provider').value = p;
+        $('input-base-url').value = localStorage.getItem(LS_KEY_URL) || PROVIDER_DEFAULTS[p].url;
+        $('input-api-key').value = localStorage.getItem(LS_KEY_KEY) || '';
+        $('input-model-name').value = localStorage.getItem(LS_KEY_MODEL) || PROVIDER_DEFAULTS[p].model;
+        $('input-github-token').value = localStorage.getItem(LS_KEY_GH_TOKEN) || '';
+    }
+
+    function saveSettings() {
+        const p = $('select-provider').value;
+        localStorage.setItem(LS_KEY_PROVIDER, p);
+        localStorage.setItem(LS_KEY_URL, $('input-base-url').value.trim());
+        localStorage.setItem(LS_KEY_KEY, $('input-api-key').value.trim());
+        localStorage.setItem(LS_KEY_MODEL, $('input-model-name').value.trim());
+        localStorage.setItem(LS_KEY_GH_TOKEN, $('input-github-token').value.trim());
+        $('modal-settings').classList.add('hidden');
+        showToast('API 配置已保存', 'success');
+    }
+
+    $('select-provider').addEventListener('change', e => {
+        const def = PROVIDER_DEFAULTS[e.target.value] || PROVIDER_DEFAULTS.deepseek;
+        $('input-base-url').value = def.url;
+        $('input-model-name').value = def.model;
+    });
+
+    $('btn-settings').addEventListener('click', () => {
+        loadSettings();
+        $('modal-settings').classList.remove('hidden');
+    });
+    $('btn-close-settings').addEventListener('click', () => $('modal-settings').classList.add('hidden'));
+    $('btn-save-settings').addEventListener('click', saveSettings);
+    // ── 测试连接 ──
+    $('btn-test-conn').addEventListener('click', async () => {
+        const btn = $('btn-test-conn');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>测试中...';
+        btn.disabled = true;
+        try {
+            const res = await callLlmApi({
+                system: 'You are a test helper.',
+                userMsg: 'Respond with OK',
+                temperature: 0.1
+            });
+            showToast('API 连接测试成功！' + (res.slice(0, 20) || 'OK'), 'success');
+        } catch (e) {
+            showToast('连接测试失败: ' + e.message, 'error', 4000);
+        } finally {
+            btn.innerHTML = '<i class="fa-solid fa-plug mr-1"></i>测试连接';
+            btn.disabled = false;
+        }
+    });
+
+    $('btn-toggle-gh').addEventListener('click', () => {
+        const gh = $('input-github-token');
+        gh.type = gh.type === 'password' ? 'text' : 'password';
+    });
+
+    $('btn-toggle-key').addEventListener('click', () => {
+        const input = $('input-api-key');
+        input.type = input.type === 'password' ? 'text' : 'password';
+    });
+
+    // ── 文件解析与上传 (PDF, DOCX, Markdown) ──
+    async function parseFile(file) {
+        const name = file.name;
+        const ext = name.split('.').pop().toLowerCase();
+        let text = '';
+        if (ext === 'pdf') {
+            const ab = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+            let pages = [];
+            for (let i = 1; i <= Math.min(pdf.numPages, 30); i++) {
+                const p = await pdf.getPage(i);
+                const tc = await p.getTextContent();
+                pages.push(tc.items.map(s => s.str).join(' '));
+            }
+            text = pages.join('\n');
+        } else if (ext === 'docx' || ext === 'doc') {
+            const ab = await file.arrayBuffer();
+            const res = await mammoth.extractRawText({ arrayBuffer: ab });
+            text = res.value;
+        } else {
+            text = await file.text();
+        }
+        return { name, text };
+    }
+
+    function renderFileList() {
+        const el = $('file-list');
+        el.innerHTML = '';
+        uploadedFiles.forEach((f, idx) => {
+            const chip = document.createElement('div');
+            chip.className = 'file-chip';
+            chip.innerHTML = `<i class="fa-solid fa-file-lines text-indigo-500"></i><span class="chip-name">${f.name}</span><button class="chip-remove text-slate-400 hover:text-rose-500 ml-1" data-idx="${idx}"><i class="fa-solid fa-xmark"></i></button>`;
+            el.appendChild(chip);
+        });
+        el.querySelectorAll('.chip-remove').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const i = parseInt(btn.dataset.idx);
+                uploadedFiles.splice(i, 1);
+                renderFileList();
+            });
+        });
+    }
+
+    $('drop-zone').addEventListener('click', () => $('file-input').click());
+    $('file-input').addEventListener('change', async e => {
+        for (const file of e.target.files) {
+            try {
+                const parsed = await parseFile(file);
+                uploadedFiles.push(parsed);
+            } catch (err) { showToast(`解析文件 ${file.name} 失败: ${err.message}`, 'error'); }
+        }
+        renderFileList();
+        $('file-input').value = '';
+    });
+
+
+    // ── 在线链接资料 (Link Grounding) ──
+    function normalizeUrl(raw) {
+        var url = (raw || '').trim();
+        if (!url) return '';
+        if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+        return url;
+    }
+
+    async function fetchLinkContent(url) {
+        var res = await fetch('https://r.jina.ai/' + url, { signal: AbortSignal.timeout(20000) });
+        if (!res.ok) throw new Error('抓取失败 (' + res.status + ')');
+        var body = await res.text();
+        if (!body || body.trim().length < 40) throw new Error('未抓取到有效正文');
+        return body;
+    }
+
+    function renderLinkRows() {
+        var el = $('link-rows');
+        el.innerHTML = '';
+        linkMaterials.forEach(function (item, idx) {
+            var row = document.createElement('div');
+            row.className = 'flex items-center gap-1.5';
+            var icon = item.status === 'loading'
+                ? '<i class="fa-solid fa-spinner fa-spin text-indigo-400 text-xs"></i>'
+                : item.status === 'ready'
+                    ? '<i class="fa-solid fa-circle-check text-emerald-500 text-xs"></i>'
+                    : '<i class="fa-solid fa-circle-exclamation text-rose-500 text-xs"></i>';
+            var input = document.createElement('input');
+            input.type = 'url';
+            input.className = 'form-input text-xs font-mono flex-1';
+            input.value = item.url || '';
+            input.placeholder = 'https://example.com/...';
+            input.disabled = item.status === 'loading';
+            input.addEventListener('change', function () {
+                item.url = normalizeUrl(input.value);
+                item.status = 'pending';
+                item.text = '';
+                item.error = '';
+                if (item.url) fetchLinkRow(item);
+                renderLinkRows();
+            });
+            var statusEl = document.createElement('span');
+            statusEl.className = 'w-4 flex items-center justify-center';
+            statusEl.innerHTML = icon;
+            var remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'text-slate-400 hover:text-rose-500 text-sm p-0.5';
+            remove.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            remove.addEventListener('click', function () {
+                linkMaterials.splice(idx, 1);
+                renderLinkRows();
+            });
+            row.appendChild(input);
+            row.appendChild(statusEl);
+            row.appendChild(remove);
+            el.appendChild(row);
+        });
+    }
+
+    function renderLinkList() {
+        var el = $('link-list');
+        el.innerHTML = '';
+        linkMaterials.filter(function (m) { return m.status === 'ready'; }).forEach(function (m) {
+            var chip = document.createElement('div');
+            chip.className = 'file-chip';
+            chip.innerHTML = '<i class="fa-solid fa-link text-indigo-500"></i><span class="chip-name">' + (m.title || m.url) + '</span>';
+            chip.title = m.url;
+            el.appendChild(chip);
+        });
+    }
+
+    async function fetchLinkRow(item) {
+        item.status = 'loading';
+        item.error = '';
+        renderLinkRows();
+        try {
+            item.text = await fetchLinkContent(item.url);
+            item.title = item.url.replace(/^https?:\/\//, '').slice(0, 40) || item.url;
+            item.status = 'ready';
+        } catch (err) {
+            item.error = err.message || '抓取失败';
+            item.status = 'error';
+        }
+        renderLinkRows();
+        renderLinkList();
+    }
+
+    function addLinkRow() {
+        linkMaterials.push({ url: '', title: '', text: '', status: 'pending', error: '' });
+        renderLinkRows();
+        var inputs = $('link-rows').querySelectorAll('input');
+        if (inputs.length) inputs[inputs.length - 1].focus();
+    }
+
+    $('btn-add-link').addEventListener('click', addLinkRow);
+    addLinkRow();
+
+    // ── 阶段状态更新 ──
+    function setStage(stageId, status) {
+        const el = $(`stage-${stageId}`);
+        if (!el) return;
+        el.className = `stage-card ${status}`;
+    }
+    function setPipelineProgress(pct, text) {
+        $('progress-bar').style.width = `${pct}%`;
+        $('pipeline-status-text').textContent = text;
+    }
+
+    // ── 渲染 HTML 预览 ──
+    async function renderPreviewHtml(html) {
+        const frame = $('preview-frame');
+        try {
+            const [cssR, jsR] = await Promise.all([fetch('assets/css/shared.css'), fetch('assets/js/shared.js')]);
+            const [css, js]   = await Promise.all([cssR.text(), jsR.text()]);
+            let preview = html;
+            if (css) preview = preview.split('<link rel="stylesheet" href="assets/css/shared.css">').join('<style>' + css + '</style>');
+            if (js) preview = preview.replace("assets/js/shared.js", "assets/js/shared.js");
+            frame.srcdoc = preview;
+        } catch { frame.srcdoc = html; }
+    }
+
+    // ── Tab 切换逻辑 ──
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            const target = $(`tab-${btn.dataset.tab}`);
+            if (target) target.classList.add('active');
+        });
+    });
+
+    // ── 核心多智能体生成流水线 ──
+    function createPipelineRunner() {
+        const provider = localStorage.getItem(LS_KEY_PROVIDER) || "deepseek";
+        const apiKey = (localStorage.getItem(LS_KEY_KEY) || "").replace(/[^ -~]/g, "");
+        const baseUrl = localStorage.getItem(LS_KEY_URL) || PROVIDER_DEFAULTS[provider].url;
+        const model = localStorage.getItem(LS_KEY_MODEL) || PROVIDER_DEFAULTS[provider].model;
+        if (!apiKey) {
+            $("modal-settings").classList.remove("hidden");
+            throw new Error("请先在右上角配置 API Key");
+        }
+        const adapter = new window.LlmAdapter({ provider: provider, apiKey: apiKey, baseUrl: baseUrl, model: model });
+        return new window.AgentPipelineRunner({ llmAdapter: adapter, schemaCore: window.ProposalSchemaCore });
+    }
+
+    async function callLlmApi({ system, userMsg }) {
+        const runnerAdapter = createPipelineRunner().llm;
+        return runnerAdapter.chatCompletion({ system: system, userMsg: userMsg, jsonMode: false });
+    }
+
+    async function runAgentPipeline() {
+        const brand = $("f-brand").value.trim();
+        const background = $("f-background").value.trim();
+        if (!brand || !background) {
+            showToast("请填写品牌名称与核心诉求", "error");
+            return;
+        }
+
+        $("empty-state").classList.add("hidden");
+        $("btn-generate").disabled = true;
+        $("btn-generate").innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i>Agent 协同推演中...';
+        $("btn-abort").classList.remove("hidden");
+        $("btn-export-pptx").classList.add("hidden");
+        $("btn-download-html").classList.add("hidden");
+        $("btn-copy").classList.add("hidden");
+        for (let i = 1; i <= 4; i++) setStage(i, "idle");
+
+        const stageMap = { research: 1, strategy: 2, critic: 3, compiler: 4 };
+        abortCtrl = new AbortController();
+
+        try {
+            const runner = createPipelineRunner();
+            const result = await runner.execute({
+                formValues: {
+                    brand: brand,
+                    industry: $("f-industry").value,
+                    campaignType: $("f-type").value,
+                    budget: $("f-budget").value,
+                    period: $("f-period").value,
+                    audience: $("f-audience").value,
+                    background: background,
+                    challenge: $("f-challenge").value
+                },
+                uploadedFiles: uploadedFiles,
+                linkMaterials: linkMaterials
+            }, {
+                signal: abortCtrl.signal,
+                onStageChange: function (stage, status) {
+                    const id = stageMap[stage];
+                    if (id) setStage(id, status);
+                },
+                onProgress: function (pct, text) {
+                    setPipelineProgress(Math.round(pct * 100), text);
+                },
+                onChunk: function (kind, chunk) {
+                    if (kind === "strategy") {
+                        $("proposal-json").textContent += chunk;
+                    } else if (kind === "html") {
+                        $("proposal-html").textContent += chunk;
+                    }
+                }
+            });
+
+            activeSchema = result.schema;
+            activeHtml = result.html;
+            activeCriticReport = result.critic;
+            $("proposal-json").textContent = JSON.stringify(activeSchema, null, 2);
+            $("proposal-html").textContent = activeHtml;
+            renderCriticView(result.critic);
+            await renderPreviewHtml(activeHtml);
+            $("btn-save-site").classList.remove("hidden");
+        $("btn-export-pptx").classList.remove("hidden");
+            $("btn-download-html").classList.remove("hidden");
+            $("btn-copy").classList.remove("hidden");
+            showToast("方案生成与质检完毕", "success", 4000);
+        } catch (err) {
+            if (err.name === "AbortError") {
+                showToast("已中止生成", "info");
+                setPipelineProgress(0, "生成已中止");
+            } else {
+                showToast("生成失败: " + err.message, "error", 5000);
+                setPipelineProgress(0, "出错: " + err.message);
+            }
+        } finally {
+            $("btn-generate").disabled = false;
+            $("btn-generate").innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>启动 AI Agent 流水线生成方案';
+            $("btn-abort").classList.add("hidden");
+            abortCtrl = null;
+        }
+    }
+
+    const CRITIC_DIM_LABELS = {
+        relevance: '战略针对性',
+        finance: '财务自洽性',
+        differentiation: '差异化力度',
+        feasibility: '执行可行性',
+        conviction: '客户说服力'
+    };
+
+    function renderCriticView(critic) {
+        const el = $('critic-content');
+        if (!critic) { el.innerHTML = '<p class="text-slate-400">暂无质检数据</p>'; return; }
+        const score = critic.total_score || 90;
+        const scoreColor = score >= 90 ? 'text-emerald-600 bg-emerald-50 border-emerald-200' : 'text-amber-600 bg-amber-50 border-amber-200';
+        const dims = critic.dimensions || {};
+        const dimKeys = ['relevance', 'finance', 'differentiation', 'feasibility', 'conviction'];
+        const dimBars = dimKeys.filter(function (k) { return typeof dims[k] === 'number'; }).map(function (k) {
+            const label = CRITIC_DIM_LABELS[k] || k;
+            const v = Math.max(0, Math.min(100, Math.round(dims[k])));
+            return '<div class="flex items-center gap-2">'
+                + '<span class="w-20 text-slate-600">' + label + '</span>'
+                + '<div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">'
+                + '<div class="h-full rounded-full ' + (v >= 90 ? 'bg-emerald-500' : v >= 75 ? 'bg-indigo-500' : 'bg-amber-500') + '" style="width:' + v + '%"></div>'
+                + '</div>'
+                + '<span class="w-8 text-right font-mono text-slate-500">' + v + '</span>'
+                + '</div>';
+        }).join('');
+
+        el.innerHTML = `
+            <div class="p-4 rounded-lg border ${scoreColor} flex items-center justify-between">
+                <div>
+                    <span class="text-xl font-bold font-mono">${score} 分</span>
+                    <span class="ml-2 font-medium">CMO 商业质检综合评分</span>
+                    <p class="text-slate-600 mt-1 text-xs">${critic.verdict || ''}</p>
+                </div>
+                <i class="fa-solid fa-stamp text-2xl opacity-60"></i>
+            </div>
+            ${dimBars ? '<div class="p-3 bg-white rounded-lg border border-slate-200 space-y-2">' + dimBars + '</div>' : ''}
+            <div class="p-3 bg-white rounded-lg border border-slate-200">
+                <h4 class="font-bold text-slate-800 mb-2">⭐ 方案核心亮点</h4>
+                <ul class="list-disc list-inside space-y-1 text-slate-600">
+                    ${(critic.strengths || ['方案逻辑自洽']).map(s => `<li>${s}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    // ── 导出与下载绑定 ──
+    $('btn-export-pptx').addEventListener('click', async () => {
+        if (!activeSchema) return;
+        try {
+            showToast('正在编译生成原生 PPTX 幻灯片...', 'info');
+            await window.PptxCompiler.exportProposalToPptx(activeSchema);
+            showToast('PPTX 下载成功 🎉', 'success');
+        } catch (e) {
+            showToast(`PPTX 导出失败: ${e.message}`, 'error');
+        }
+    });
+
+    $('btn-download-html').addEventListener('click', () => {
+        if (!activeHtml) return;
+        const name = (activeSchema?.meta?.brand_name || 'proposal').replace(/\s+/g, '_');
+        const blob = new Blob([activeHtml], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = Object.assign(document.createElement('a'), { href: url, download: `${name}_营销方案.html` });
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('HTML 文件已下载', 'success');
+    });
+
+    $('btn-copy').addEventListener('click', async () => {
+        const activeTab = document.querySelector('.tab-btn.active')?.dataset.tab;
+        let textToCopy = '';
+        if (activeTab === 'schema') textToCopy = JSON.stringify(activeSchema, null, 2);
+        else textToCopy = activeHtml;
+        if (textToCopy) {
+            await navigator.clipboard.writeText(textToCopy);
+            showToast('内容已复制到剪贴板', 'success');
+        }
+    });
+
+    $('btn-generate').addEventListener('click', runAgentPipeline);
+    $('btn-abort').addEventListener('click', () => { if (abortCtrl) abortCtrl.abort(); });
+
+    $('btn-fill-sample').addEventListener('click', () => {
+        $('f-brand').value = 'DR.COSMO';
+        $('f-industry').value = '美妆个护';
+        $('f-type').value = '全域整合营销方案';
+        $('f-budget').value = '120万';
+        $('f-period').value = '2026年Q3-Q4 (6个月)';
+        $('f-background').value = '韩国高机能院线级护肤品牌，主打院线胶原抗衰与修护，客单价400-600元。目前面临国内美妆红海竞争与流量成本高企，急需在抖音与小红书建立高客单专家心智，实现从纯种草到全域销售爆发。';
+        $('f-challenge').value = '高客单转化门槛高，新人群破圈与达人矩阵选拔机制需精准重构';
+        $('f-audience').value = '25-40岁一二线城市高知抗衰女性、医美泛人群';
+        showToast('已填入 DR.COSMO 品牌示例数据', 'info');
+    });
+
+    // ── 我的方案库（跟随登录账号）──
+    function currentUser() {
+        return sessionStorage.getItem('smc_user') || 'guest';
+    }
+
+    function accountLibrary() {
+        const token = (localStorage.getItem(LS_KEY_GH_TOKEN) || '').trim();
+        return new window.AccountLibrary({ token: token, username: currentUser() });
+    }
+
+    async function refreshAccountList() {
+        const wrap = document.getElementById('account-list');
+        if (!wrap) return;
+        const user = currentUser();
+        document.getElementById('account-user').textContent = user;
+        try {
+            const lib = accountLibrary();
+            const items = await lib.listProposals();
+            const htmls = items.filter(function (f) { return /[.]html$/i.test(f.name); });
+            if (!htmls.length) { wrap.innerHTML = '<p class="text-xs text-slate-400">该账号暂无已保存方案</p>'; return; }
+            wrap.innerHTML = '';
+            htmls.forEach(function (f) {
+                const slug = f.name.replace(/[.]html$/i, '');
+                const row = document.createElement('div');
+                row.className = 'flex items-center justify-between gap-2 p-2 border border-slate-200 rounded-lg bg-white cursor-pointer hover:border-indigo-300 hover:shadow-sm transition-all';
+                const label = f.account ? f.account + ' / ' + slug : slug;
+                // 构造 Pages 部署地址
+                const pagesUrl = 'https://zen-zeng.github.io/smart-marketing-collection/' + f.path;
+                row.innerHTML = '<span class="text-xs font-medium text-slate-700 truncate">' + label + '</span>'
+                    + '<span class="flex items-center gap-1">'
+                    + '<button class="text-slate-400 hover:text-amber-600 text-xs p-0.5 btn-toggle-public" data-slug="' + slug + '" data-path="' + f.path + '" title="公开/私密"><i class="fa-solid fa-lock"></i></button>'
+                    + '<a class="text-indigo-600 hover:text-indigo-800 text-xs eye-preview" target="_blank" rel="noopener noreferrer" href="' + pagesUrl + '" title="在新标签页打开"><i class="fa-solid fa-eye"></i></a>'
+                    + '<button class="text-emerald-600 hover:text-emerald-800 text-xs p-0.5" data-slug="' + slug + '" title="download"><i class="fa-solid fa-download"></i></button>'
+                    + '<button class="text-rose-500 hover:text-rose-700 text-xs p-0.5" data-slug="' + slug + '" title="delete"><i class="fa-solid fa-trash"></i></button>'
+                    + '</span>';
+                // 点击整行 → 加载方案到全部四个 Tab
+                row.addEventListener('click', function (ev) {
+                    if (ev.target.closest('.eye-preview, button')) return;
+                    (async function () {
+                        // 视觉演示
+                        var frame = document.getElementById('preview-frame');
+                        if (frame) frame.src = pagesUrl;
+                        // 尝试读取 data.json 填充其余三个 Tab
+                        try {
+                            var jsonText = await lib.readFile(f.path.replace(/[.]html$/i, '.data.json'));
+                            var parsed = JSON.parse(jsonText);
+                            if (parsed.schema) {
+                                activeSchema = parsed.schema;
+                                document.getElementById('proposal-json').textContent = JSON.stringify(parsed.schema, null, 2);
+                            }
+                            if (parsed.html) {
+                                activeHtml = parsed.html;
+                                document.getElementById('proposal-html').textContent = parsed.html;
+                            }
+                            // 质检报告：data.json 未存 critic，显示提示
+                            var criticEl = document.getElementById('critic-content');
+                            if (criticEl) {
+                                criticEl.innerHTML = '<div class="p-4 rounded-lg border border-slate-200 bg-slate-50 text-center">'
+                                    + '<i class="fa-solid fa-info-circle text-slate-400 mr-1.5"></i>'
+                                    + '<span class="text-slate-500">质检报告仅在方案生成时可用，从方案库加载的历史方案不含质检数据</span>'
+                                    + '</div>';
+                            }
+                            // 显示导出按钮
+                            ['btn-save-site','btn-export-pptx','btn-download-html','btn-copy'].forEach(function (id) {
+                                var el = document.getElementById(id);
+                                if (el) el.classList.remove('hidden');
+                            });
+                            showToast('已加载方案: ' + slug, 'success');
+                        } catch (e) {
+                            // data.json 不存在或读取失败 → 尝试通过 GitHub API 获取 HTML 原文
+                            try {
+                                var htmlText = await lib.readFile(f.path);
+                                activeHtml = htmlText;
+                                document.getElementById('proposal-html').textContent = htmlText;
+                            } catch (e2) {
+                                // HTML 也无法读取，忽略
+                            }
+                            // 无结构化数据
+                            document.getElementById('proposal-json').innerHTML = '<p class="text-slate-400 text-center p-8">该方案无结构化 JSON 数据（仅通过工作台生成的方案才有）</p>';
+                            // 无质检报告
+                            var criticEl = document.getElementById('critic-content');
+                            if (criticEl) {
+                                criticEl.innerHTML = '<div class="p-4 rounded-lg border border-slate-200 bg-slate-50 text-center">'
+                                    + '<i class="fa-solid fa-info-circle text-slate-400 mr-1.5"></i>'
+                                    + '<span class="text-slate-500">该方案为手动上传，无 AI 质检报告</span>'
+                                    + '</div>';
+                            }
+                            // 显示下载和复制按钮
+                            ['btn-download-html','btn-copy'].forEach(function (id) {
+                                var el = document.getElementById(id);
+                                if (el) el.classList.remove('hidden');
+                            });
+                            showToast('已加载方案: ' + slug + '（仅 HTML 源码）', 'info');
+                        }
+                        document.getElementById('tab-preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    })();
+                });
+                row.querySelectorAll('button[data-slug]').forEach(function (btn) {
+                    btn.addEventListener('click', async function () {
+                        if (btn.title === 'download') {
+                            try {
+                                const data = await lib.readFile(f.path.replace(/[.]html$/i, '.data.json'));
+                                const parsed = JSON.parse(data);
+                                const blob = new Blob([parsed.html], { type: 'text/html;charset=utf-8' });
+                                const url = URL.createObjectURL(blob);
+                                const a = Object.assign(document.createElement('a'), { href: url, download: slug + '.html' });
+                                a.click();
+                                URL.revokeObjectURL(url);
+                            } catch (e) { showToast('下载失败: ' + e.message, 'error'); }
+                        } else if (btn.title === 'delete') {
+                            if (!confirm('确认删除方案 ' + slug + ' 吗？')) return;
+                            showToast('删除功能需手动在仓库清理', 'info');
+                        }
+                    });
+                });
+                // 公开/私密切换按钮事件
+                const toggleBtn = row.querySelector('.btn-toggle-public');
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', async function (ev) {
+                        ev.stopPropagation();
+                        const btn = ev.currentTarget;
+                        const htmlPath = btn.dataset.path;
+                        const icon = btn.querySelector('i');
+                        const isCurrentlyPublic = icon.classList.contains('fa-lock-open');
+                        const newPublic = !isCurrentlyPublic;
+                        btn.disabled = true;
+                        icon.classList.add('fa-spin');
+                        try {
+                            await lib.togglePublic(htmlPath, newPublic);
+                            icon.classList.remove('fa-lock', 'fa-lock-open', 'fa-spin');
+                            icon.classList.add(newPublic ? 'fa-lock-open' : 'fa-lock');
+                            icon.classList.remove('text-slate-400', 'text-amber-500');
+                            icon.classList.add(newPublic ? 'text-amber-500' : 'text-slate-400');
+                            showToast(newPublic ? '方案已公开，无需登录即可访问' : '方案已设为私密，需登录访问', 'success');
+                        } catch (e) {
+                            showToast('切换失败: ' + e.message, 'error');
+                            icon.classList.remove('fa-spin');
+                        } finally {
+                            btn.disabled = false;
+                        }
+                    });
+                }
+                wrap.appendChild(row);
+            });
+        } catch (e) {
+            wrap.innerHTML = '<p class="text-xs text-rose-500">读取方案库失败: ' + e.message + '</p>';
+        }
+    }
+
+    async function saveToCollection() {
+        if (!activeSchema || !activeHtml) { showToast('请先生成方案', 'error'); return; }
+        const token = (localStorage.getItem(LS_KEY_GH_TOKEN) || '').trim();
+        if (!token) {
+            document.getElementById('modal-settings').classList.remove('hidden');
+            showToast('请先在模型配置中填写 GitHub Token', 'error');
+            return;
+        }
+        const btn = document.getElementById('btn-save-site');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i>提交中...';
+        try {
+            const lib = accountLibrary();
+            const result = await lib.saveProposal(activeSchema, activeHtml);
+            showToast('已保存到 ' + currentUser() + ' 的方案库', 'success', 4000);
+            refreshAccountList();
+        } catch (err) {
+            showToast('保存失败: ' + err.message, 'error', 6000);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-bookmark"></i>保存到我的方案库';
+        }
+    }
+
+    document.getElementById('btn-save-site').addEventListener('click', saveToCollection);
+    // 初始化账号方案库
+    refreshAccountList();
+    // ── 初始化检查 ──
+    loadSettings();
+})();
+</script>
+</body>
+</html>

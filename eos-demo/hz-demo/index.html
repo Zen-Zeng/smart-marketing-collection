@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EOS · 多平台 AI 商品上架系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--bg4:#24243e;
+  --text:#e0e0e0;--text2:#999;--accent:#00d4ff;--accent2:#0891b2;
+  --green:#10b981;--yellow:#f59e0b;--red:#ef4444;--orange:#f97316;--purple:#8b5cf6;
+  --radius:10px;--radius-sm:6px;--shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.nav{background:var(--bg2);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 24px;display:flex;align-items:center;height:60px;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.nav-logo{font-size:22px;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:8px;margin-right:40px;letter-spacing:-0.5px}
+.nav-logo i{font-size:24px}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{padding:8px 18px;border-radius:8px;border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.nav-tab:hover{color:var(--text);background:var(--bg3)}
+.nav-tab.active{color:var(--accent);background:var(--bg4)}
+.nav-status{margin-left:auto;display:flex;align-items:center;gap:16px}
+.status-dot{width:8px;height:8px;border-radius:50%;animation:pulse 2s infinite}
+.status-dot.online{background:var(--green)}
+.status-text{font-size:12px;color:var(--text2)}
+.main{padding:24px;max-width:1400px;margin:0 auto}
+.panel{display:none}
+.panel.active{display:block}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:20px;transition:all .3s}
+.stat-card:hover{border-color:var(--accent2);transform:translateY(-2px);box-shadow:var(--shadow)}
+.stat-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.stat-value{font-size:32px;font-weight:700;color:var(--accent);line-height:1}
+.stat-value small{font-size:14px;color:var(--text2);font-weight:400}
+.stat-footer{font-size:11px;color:var(--green);margin-top:6px}
+.queue-card{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:20px;margin-bottom:24px}
+.queue-title{font-size:14px;font-weight:600;margin-bottom:12px}
+.queue-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.queue-row:last-child{border:none}
+.queue-sku{font-family:monospace;font-size:12px;color:var(--accent);width:80px}
+.queue-name{flex:1;font-size:13px}
+.queue-platform{font-size:11px;color:var(--text2)}
+.queue-bar{width:120px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.queue-bar-fill{height:100%;background:var(--accent);border-radius:2px;animation:processBar 3s ease-in-out infinite}
+.queue-status{font-size:11px;font-weight:600}
+.queue-status.processing{color:var(--yellow)}
+.queue-status.complete{color:var(--green)}
+.platform-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.platform-card{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:20px;display:flex;align-items:center;gap:14px;transition:all .3s}
+.platform-card:hover{border-color:rgba(255,255,255,0.15)}
+.platform-icon{width:44px;height:44px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:20px}
+.platform-icon.amazon{background:rgba(255,153,0,0.15);color:#ff9900}
+.platform-icon.walmart{background:rgba(0,122,255,0.15);color:#007aff}
+.platform-icon.mercadolibre{background:rgba(255,230,0,0.15);color:#ffe600}
+.platform-icon.tiktok{background:rgba(0,0,0,0.3);color:#fff;position:relative}
+.platform-icon.tiktok i{filter:drop-shadow(0 0 6px rgba(0,242,234,0.6))}
+.platform-info{flex:1}
+.platform-name{font-size:15px;font-weight:600}
+.platform-detail{font-size:11px;color:var(--text2);margin-top:2px}
+.platform-badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.platform-badge.online{background:rgba(16,185,129,0.15);color:var(--green)}
+.action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.action-btn{background:var(--bg3);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:24px 20px;text-align:center;cursor:pointer;transition:all .3s;color:var(--text);font-family:inherit;font-size:13px;font-weight:600}
+.action-btn:hover{background:var(--bg4);border-color:var(--accent);transform:translateY(-2px)}
+.action-btn i{font-size:24px;color:var(--accent);margin-bottom:8px;display:block}
+.source-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--bg2);border-radius:var(--radius);padding:4px;width:fit-content}
+.source-tab{padding:8px 20px;border-radius:var(--radius-sm);border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.source-tab.active{background:var(--accent);color:#000}
+.source-tab:not(.active):hover{color:var(--text)}
+.table-wrapper{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead{background:var(--bg3)}
+th{text-align:left;padding:12px 16px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);font-weight:600}
+td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03)}
+tr:hover td{background:rgba(255,255,255,0.02);cursor:pointer}
+td .thumb{width:40px;height:40px;border-radius:4px;object-fit:cover;background:var(--bg4)}
+td .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.badge-uploaded{background:rgba(0,212,255,0.12);color:var(--accent)}
+.badge-scraped{background:rgba(139,92,246,0.12);color:var(--purple)}
+.badge-backup{background:rgba(245,158,11,0.12);color:var(--yellow)}
+.badge-ready{background:rgba(16,185,129,0.12);color:var(--green)}
+.pipeline-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.pipeline-step{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:24px;position:relative}
+.pipeline-step::after{content:'→';position:absolute;right:-18px;top:50%;transform:translateY(-50%);font-size:24px;color:var(--accent);z-index:1}
+.pipeline-step:last-child::after{display:none}
+.step-number{width:32px;height:32px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;margin-bottom:12px}
+.step-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.step-desc{font-size:12px;color:var(--text2);line-height:1.6}
+.step-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.step-tag{padding:4px 10px;background:var(--bg3);border-radius:4px;font-size:11px;color:var(--text2)}
+.comparison{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:24px}
+.comparison-title{font-size:16px;font-weight:700;margin-bottom:18px}
+.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.before-after{background:var(--bg);border-radius:var(--radius-sm);padding:16px}
+.before-after-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:10px}
+.before-after-img{width:100%;border-radius:4px;margin-bottom:8px}
+.before-after-caption{font-size:12px;color:var(--text2);text-align:center}
+.cp-header{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.cp-product-select{display:flex;gap:8px}
+.cp-product-btn{padding:8px 18px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.1);background:var(--bg2);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.cp-product-btn:hover{border-color:var(--accent2)}
+.cp-product-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.cp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.cp-column{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);overflow:hidden}
+.cp-column-header{padding:16px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.cp-column-header i{font-size:18px}
+.cp-column-header.amazon{background:rgba(255,153,0,0.08);color:#ff9900}
+.cp-column-header.walmart{background:rgba(0,122,255,0.08);color:#007aff}
+.cp-column-header.mercadolibre{background:rgba(255,230,0,0.08);color:#ffe600}
+.cp-column-header.tiktok{background:rgba(0,0,0,0.3);color:#fff}
+.cp-column-title{font-size:14px;font-weight:700}
+.cp-body{padding:16px 20px}
+.cp-field{margin-bottom:14px}
+.cp-field-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:4px;font-weight:600}
+.cp-field-value{font-size:13px;line-height:1.5}
+.cp-field-value.bullet::before{content:'• ';color:var(--accent)}
+.cp-field-value.price{font-size:18px;font-weight:700;color:var(--accent)}
+.cp-spec-table{width:100%;font-size:11px}
+.cp-spec-table td{padding:6px 0;border:none}
+.cp-spec-table td:first-child{color:var(--text2);width:100px}
+.cp-image{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--radius-sm);background:var(--bg);margin-bottom:8px}
+.cp-images-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.cp-images-row img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px;background:var(--bg)}
+.batch-header{display:flex;gap:12px;align-items:center;margin-bottom:24px;flex-wrap:wrap}
+.batch-check{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer}
+.batch-check input{accent-color:var(--accent)}
+.batch-platforms{display:flex;gap:8px;margin:0 16px}
+.batch-platform-chip{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;transition:all .2s;font-family:inherit;font-weight:500}
+.batch-platform-chip:hover{border-color:var(--accent2)}
+.batch-platform-chip.selected{background:var(--accent);color:#000;border-color:var(--accent)}
+.batch-launch{padding:10px 28px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.batch-launch:hover{opacity:.9;transform:scale(1.02)}
+.batch-progress{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.batch-progress-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin:12px 0}
+.batch-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:3px;transition:width .3s;width:0%}
+.batch-stats{display:flex;gap:24px;margin-bottom:16px;font-size:13px}
+.batch-log{background:var(--bg);border-radius:var(--radius-sm);padding:16px;max-height:200px;overflow-y:auto;font-family:monospace;font-size:12px;line-height:1.8}
+.batch-log .log-entry{color:var(--text2)}
+.batch-log .log-entry.success{color:var(--green)}
+.batch-log .log-entry.error{color:var(--red)}
+/* 营销主题选择器 */
+.cp-theme-row{display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.cp-theme-select{display:flex;gap:8px}
+.cp-theme-btn{padding:8px 18px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.1);background:var(--bg2);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;transition:all .25s;font-family:inherit;position:relative}
+.cp-theme-btn:hover{border-color:var(--accent2);transform:translateY(-1px)}
+.cp-theme-btn.active{color:#000;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.cp-theme-btn.default.active{background:var(--accent);border-color:var(--accent)}
+.cp-theme-btn.christmas.active{background:#ef4444;border-color:#ef4444;box-shadow:0 2px 12px rgba(239,68,68,0.4)}
+.cp-theme-btn.blackfriday.active{background:#000;border-color:#f59e0b;color:#f59e0b;font-weight:700}
+.cp-theme-btn.valentine.active{background:#ec4899;border-color:#ec4899;box-shadow:0 2px 12px rgba(236,72,153,0.4)}
+.cp-theme-btn.summer.active{background:#06b6d4;border-color:#06b6d4;box-shadow:0 2px 12px rgba(6,182,212,0.4)}
+/* 主题图片边框 */
+.cp-image.theme-border{border:2px solid var(--accent);transition:border-color .25s}
+.cp-image.theme-christmas{border-color:#ef4444;box-shadow:0 0 10px rgba(239,68,68,0.2)}
+.cp-image.theme-blackfriday{border-color:#f59e0b;box-shadow:0 0 10px rgba(245,158,11,0.2)}
+.cp-image.theme-valentine{border-color:#ec4899;box-shadow:0 0 10px rgba(236,72,153,0.2)}
+.cp-image.theme-summer{border-color:#06b6d4;box-shadow:0 0 10px rgba(6,182,212,0.2)}
+/* 主题描述横幅 */
+.cp-theme-banner{padding:6px 12px;border-radius:4px;font-size:11px;font-weight:600;margin-bottom:12px;display:inline-block;transition:all .25s}
+.cp-theme-banner.christmas{background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3)}
+.cp-theme-banner.blackfriday{background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)}
+.cp-theme-banner.valentine{background:rgba(236,72,153,0.15);color:#ec4899;border:1px solid rgba(236,72,153,0.3)}
+.cp-theme-banner.summer{background:rgba(6,182,212,0.15);color:#06b6d4;border:1px solid rgba(6,182,212,0.3)}
+/* TikTok 图片轮播 */
+.cp-tiktok-carousel{position:relative;margin-top:12px}
+.cp-tiktok-image{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:var(--radius-sm);background:var(--bg);display:none;transition:opacity .3s}
+.cp-tiktok-image.active{display:block}
+.cp-tiktok-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}
+.cp-tiktok-dot{width:6px;height:6px;border-radius:50%;background:var(--bg4);cursor:pointer;transition:all .2s}
+.cp-tiktok-dot.active{background:var(--accent)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes processBar{0%{width:10%}50%{width:85%}100%{width:10%}}
+.fade-in{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1280px){
+  .cp-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:1024px){
+  .stats-grid,.cp-grid{grid-template-columns:repeat(2,1fr)}
+  .pipeline-steps{grid-template-columns:1fr}
+  .pipeline-step::after{display:none}
+  .action-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .stats-grid,.platform-grid,.action-grid,.cp-grid{grid-template-columns:1fr}
+  .cp-theme-row{flex-direction:column;align-items:flex-start}
+  .nav{padding:0 12px}
+  .nav-tab{padding:6px 10px;font-size:11px}
+  .nav-logo{margin-right:12px;font-size:18px}
+  .main{padding:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo"><i class="fa-solid fa-cubes"></i> EOS</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-panel="dashboard">📊 总览</button>
+    <button class="nav-tab" data-panel="datasource">📦 数据源</button>
+    <button class="nav-tab" data-panel="pipeline">🤖 AI 流水线</button>
+    <button class="nav-tab" data-panel="crossplatform">🏪 多平台对比</button>
+    <button class="nav-tab" data-panel="themescroll">🎨 营销主题</button>
+    <button class="nav-tab" data-panel="batch">🚀 批量上架</button>
+  </div>
+  <div class="nav-status">
+    <span class="status-dot online"></span>
+    <span class="status-text">系统在线 · v3.2.0</span>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- ===== 总览面板 ===== -->
+<div class="panel active fade-in" id="panel-dashboard">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">今日处理</div>
+      <div class="stat-value">47</div>
+      <div class="stat-footer">↑ 12% 较昨日</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">商品总数</div>
+      <div class="stat-value">328 <small>SKU</small></div>
+      <div class="stat-footer">覆盖 4 个平台</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">AI 图片生成</div>
+      <div class="stat-value">1,284</div>
+      <div class="stat-footer">成功率 98.7%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">跨平台上架</div>
+      <div class="stat-value">892</div>
+      <div class="stat-footer">各平台活跃中</div>
+    </div>
+  </div>
+  <div class="queue-card">
+    <div class="queue-title" style="display:flex;justify-content:space-between">
+      <span>⏳ 实时处理队列</span>
+      <span style="font-size:11px;color:var(--text2)">4 个任务处理中</span>
+    </div>
+    <div class="queue-row"><span class="queue-sku">W7R001</span><span class="queue-name">极简几何堆叠戒指 → Amazon</span><span class="queue-platform"><i class="fa-brands fa-amazon"></i></span><div class="queue-bar"><div class="queue-bar-fill" style="width:68%"></div></div><span class="queue-status processing">处理中</span></div>
+    <div class="queue-row"><span class="queue-sku">W7N002</span><span class="queue-name">莫桑石网球项链 → Walmart</span><span class="queue-platform"><i class="fa-solid fa-store"></i></span><div class="queue-bar"><div class="queue-bar-fill" style="width:42%"></div></div><span class="queue-status processing">处理中</span></div>
+    <div class="queue-row"><span class="queue-sku">W6P001</span><span class="queue-name">珍珠耳钉 → Mercado Libre</span><span class="queue-platform"><i class="fa-solid fa-globe"></i></span><div class="queue-bar"><div class="queue-bar-fill" style="width:95%"></div></div><span class="queue-status processing">收尾中</span></div>
+    <div class="queue-row"><span class="queue-sku">W7N002</span><span class="queue-name">莫桑石网球项链 → TikTok Shop (CBT)</span><span class="queue-platform"><i class="fa-brands fa-tiktok"></i></span><div class="queue-bar"><div class="queue-bar-fill" style="width:32%"></div></div><span class="queue-status processing">处理中</span></div>
+  </div>
+  <div class="platform-grid">
+    <div class="platform-card">
+      <div class="platform-icon amazon"><i class="fa-brands fa-amazon"></i></div>
+      <div class="platform-info"><div class="platform-name">Amazon Seller Central</div><div class="platform-detail">北美市场 · 126 个 Listing</div></div>
+      <span class="platform-badge online">已连接</span>
+    </div>
+    <div class="platform-card">
+      <div class="platform-icon walmart"><i class="fa-solid fa-store"></i></div>
+      <div class="platform-info"><div class="platform-name">Walmart Seller Center</div><div class="platform-detail">美国市场 · 98 个 Listing</div></div>
+      <span class="platform-badge online">已连接</span>
+    </div>
+    <div class="platform-card">
+      <div class="platform-icon mercadolibre"><i class="fa-solid fa-globe"></i></div>
+      <div class="platform-info"><div class="platform-name">Mercado Libre</div><div class="platform-detail">墨西哥市场 · 104 个 Listing</div></div>
+      <span class="platform-badge online">已连接</span>
+    </div>
+    <div class="platform-card">
+      <div class="platform-icon tiktok"><i class="fa-brands fa-tiktok"></i></div>
+      <div class="platform-info"><div class="platform-name">TikTok Shop</div><div class="platform-detail">东南亚 + 美区 · 67 个 Listing</div></div>
+      <span class="platform-badge online">已连接</span>
+    </div>
+  </div>
+  <div class="action-grid">
+    <button class="action-btn" data-action="batch"><i class="fa-solid fa-rocket"></i> 批量上架</button>
+    <button class="action-btn" data-action="pipeline"><i class="fa-solid fa-wand-magic-sparkles"></i> AI 图片生成</button>
+    <button class="action-btn" data-action="datasource"><i class="fa-solid fa-cloud-arrow-up"></i> 数据导入</button>
+    <button class="action-btn" data-action="crossplatform"><i class="fa-solid fa-arrows-left-right"></i> 跨平台对比</button>
+  </div>
+</div>
+
+<!-- ===== 数据源面板 ===== -->
+<div class="panel fade-in" id="panel-datasource">
+  <div class="source-tabs">
+    <button class="source-tab active" data-source="upload">📤 主图上传</button>
+    <button class="source-tab" data-source="scrape">🔗 采集链接</button>
+    <button class="source-tab" data-source="backup">💾 硬盘备份</button>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>图片</th><th>SKU</th><th>商品名称</th><th>品类</th><th>来源</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td><img src="../images/wave7-editorial/W7R001-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">W7R001</td><td>WCJ 极简开放式几何堆叠戒指套装</td><td>戒指</td><td><span class="badge badge-uploaded">上传</span></td><td><span class="badge badge-ready">就绪</span></td></tr>
+        <tr><td><img src="../images/wave7-editorial/W7N002-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">W7N002</td><td>WCJ 925 银莫桑石网球项链</td><td>项链</td><td><span class="badge badge-scraped">采集</span></td><td><span class="badge badge-ready">就绪</span></td></tr>
+        <tr><td><img src="../images/wave6-editorial/P1-01-W6P001-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">W6P001</td><td>WCJ S999 银珍珠耳钉</td><td>耳环</td><td><span class="badge badge-backup">备份</span></td><td><span class="badge badge-ready">就绪</span></td></tr>
+        <tr><td><img src="../images/wave7-editorial/W7R002-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">W7R002</td><td>WCJ 极细银质堆叠戒指套装</td><td>戒指</td><td><span class="badge badge-uploaded">上传</span></td><td><span class="badge badge-ready">就绪</span></td></tr>
+        <tr><td><img src="../images/wave7-editorial/W7N001-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">W7N001</td><td>WCJ 星河意大利闪链项链</td><td>项链</td><td><span class="badge badge-scraped">采集</span></td><td><span class="badge badge-ready">就绪</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== AI 流水线面板 ===== -->
+<div class="panel fade-in" id="panel-pipeline">
+  <div class="pipeline-steps">
+    <div class="pipeline-step">
+      <div class="step-number">1</div>
+      <div class="step-title">图片处理</div>
+      <div class="step-desc">原始图片 → 背景消除 → 3 种输出变体：白底产品图、生活场景合成图、微距细节图。自动按目标平台规格调整尺寸。</div>
+      <div class="step-tags">
+        <span class="step-tag">背景消除</span><span class="step-tag">场景合成</span><span class="step-tag">微距裁剪</span><span class="step-tag">尺寸调整 ✓</span>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-number">2</div>
+      <div class="step-title">文案生成</div>
+      <div class="step-desc">AI 提取产品规格 → 生成 SEO 优化标题、卖点描述和结构化属性，适配各平台独有格式要求。</div>
+      <div class="step-tags">
+        <span class="step-tag">标题优化</span><span class="step-tag">卖点提炼</span><span class="step-tag">规格提取</span><span class="step-tag">关键词 SEO</span>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-number">3</div>
+      <div class="step-title">格式适配</div>
+      <div class="step-desc">一个产品 → 三个平台专属 Listing。映射字段、调整图片规格、转换货币，验证各平台上架规则。</div>
+      <div class="step-tags">
+        <span class="step-tag">Amazon → 200 字符标题</span><span class="step-tag">Walmart → WFS 字段</span><span class="step-tag">Mercado Libre → 西语</span><span class="step-tag">字段映射</span>
+      </div>
+    </div>
+  </div>
+  <div class="comparison">
+    <div class="comparison-title">原始图 / AI 处理后对比</div>
+    <div class="comparison-grid">
+      <div class="before-after">
+        <div class="before-after-label">📸 原始图片（ERP 来源）</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <img src="../images/wave7-editorial/W7R001-main.jpg" class="before-after-img" loading="lazy">
+          <img src="../images/wave7-editorial/W7N002-main.jpg" class="before-after-img" loading="lazy">
+          <img src="../images/wave6-editorial/P1-01-W6P001-main.jpg" class="before-after-img" loading="lazy">
+        </div>
+        <div class="before-after-caption">来自 ERP / 供应商的原始产品照片</div>
+      </div>
+      <div class="before-after">
+        <div class="before-after-label">✨ AI 增强输出（Amazon 就绪）</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <img src="../images/wave7-editorial/W7R001-model.jpg" class="before-after-img" loading="lazy">
+          <img src="../images/wave7-editorial/W7N002-model.jpg" class="before-after-img" loading="lazy">
+          <img src="../images/wave6-editorial/P1-02-W6P001-model.jpg" class="before-after-img" loading="lazy">
+        </div>
+        <div class="before-after-caption">背景消除 + 生活场景合成</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 跨平台对比面板 ===== -->
+<div class="panel fade-in" id="panel-crossplatform">
+  <div class="cp-header" id="cp-header-top">
+    <span style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2)">选择商品：</span>
+    <div class="cp-product-select">
+      <button class="cp-product-btn active" data-product="W7R001">💍 戒指</button>
+      <button class="cp-product-btn" data-product="W7N002">📿 项链</button>
+      <button class="cp-product-btn" data-product="W6P001">📿 耳环</button>
+    </div>
+  </div>
+  <div class="cp-theme-row" id="cp-theme-area">
+    <span style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2)">选择主题：</span>
+    <div class="cp-theme-select" id="cp-theme-select">
+      <button class="cp-theme-btn default active" data-theme="default">🔄 默认</button>
+      <button class="cp-theme-btn christmas" data-theme="christmas">🎄 圣诞节</button>
+      <button class="cp-theme-btn blackfriday" data-theme="blackfriday">🖤 黑五</button>
+      <button class="cp-theme-btn valentine" data-theme="valentine">❤️ 情人节</button>
+      <button class="cp-theme-btn summer" data-theme="summer">🌸 夏季</button>
+    </div>
+  </div>
+  <div class="cp-grid" id="cp-grid"></div>
+</div>
+
+<!-- ===== 批量上架面板 ===== -->
+<div class="panel fade-in" id="panel-batch">
+  <div class="batch-header" id="batch-controls">
+    <label class="batch-check"><input type="checkbox" checked id="select-all"> 全选 (3)</label>
+    <span style="color:var(--text2);font-size:12px">目标平台：</span>
+    <div class="batch-platforms" id="batch-platforms">
+      <span class="batch-platform-chip selected" data-platform="amazon">Amazon</span>
+      <span class="batch-platform-chip selected" data-platform="walmart">Walmart</span>
+      <span class="batch-platform-chip selected" data-platform="mercadolibre">Mercado Libre</span>
+    </div>
+    <button class="batch-launch" id="batch-launch-btn">🚀 开始批量上架</button>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th style="width:40px">✓</th><th>图片</th><th>SKU</th><th>商品名称</th><th>品类</th><th>上架目标</th></tr></thead>
+      <tbody>
+        <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="W7R001"></td><td><img src="../images/wave7-editorial/W7R001-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">W7R001</td><td>极简几何堆叠戒指套装</td><td>戒指</td><td><span style="font-size:12px;color:var(--text2)">Amazon + Walmart + ML</span></td></tr>
+        <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="W7N002"></td><td><img src="../images/wave7-editorial/W7N002-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">W7N002</td><td>莫桑石网球项链</td><td>项链</td><td><span style="font-size:12px;color:var(--text2)">Amazon + Walmart + ML</span></td></tr>
+        <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="W6P001"></td><td><img src="../images/wave6-editorial/P1-01-W6P001-main.jpg" class="thumb" loading="lazy"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">W6P001</td><td>S999 银珍珠耳钉</td><td>耳环</td><td><span style="font-size:12px;color:var(--text2)">Amazon + Walmart + ML</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="batch-progress" id="batch-progress" style="display:none;margin-top:24px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:600">🚀 批量上架进行中</span>
+      <span style="font-size:12px;color:var(--text2)" id="batch-progress-text">0 / 9 完成</span>
+    </div>
+    <div class="batch-progress-bar"><div class="batch-progress-fill" id="batch-progress-fill"></div></div>
+    <div class="batch-stats">
+      <span>✅ <b id="batch-success">0</b> 成功</span>
+      <span>❌ <b id="batch-fail">0</b> 失败</span>
+      <span>⏳ <b id="batch-pending">9</b> 待处理</span>
+    </div>
+    <div class="batch-log" id="batch-log"><div class="log-entry">就绪，等待启动...</div></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ============ 立即执行的弹窗切换（不依赖 DOMContentLoaded）============
+window.EOS = {
+  switchPanel: function(name) {
+    var panels = document.querySelectorAll('.panel');
+    for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
+    var tabs = document.querySelectorAll('.nav-tab');
+    for (i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+    var panel = document.getElementById('panel-' + name);
+    if (panel) panel.classList.add('active');
+    var tab = document.querySelector('.nav-tab[data-panel="' + name + '"]');
+    if (tab) tab.classList.add('active');
+  }
+};
+
+// ============ 产品数据 ============
+var PRODUCTS = {
+  W7R001: {
+    sku:'W7R001', title:'WCJ 极简开放式几何堆叠戒指套装',
+    category:'戒指', price:'$9.99', priceMXN:'MX$199',
+    desc:'3 件式几何堆叠戒指套装，925 银材质。极简开放设计，适合混搭造型。',
+    specs: {材质:'925 银', 风格:'几何极简', 重量:'2.5g', 件数:'3 枚戒指', 镀层:'铑'},
+    images:['../images/wave7-editorial/W7R001-main.jpg','../images/wave7-editorial/W7R001-model.jpg','../images/wave7-editorial/W7R001-macro.jpg']
+  },
+  W7N002: {
+    sku:'W7N002', title:'WCJ 925 银莫桑石网球项链',
+    category:'项链', price:'$19.99', priceMXN:'MX$399',
+    desc:'闪耀莫桑石网球项链，925 银配 18K 金镀层。璀璨光芒适合任意场合。',
+    specs: {材质:'925 银 + 18K 金镀层', 风格:'网球链/优雅', 重量:'8.5g', 长度:'16\"+2\"', 宝石:'莫桑石圆切'},
+    images:['../images/wave7-editorial/W7N002-main.jpg','../images/wave7-editorial/W7N002-model.jpg','../images/wave7-editorial/W7N002-macro.jpg']
+  },
+  W6P001: {
+    sku:'W6P001', title:'WCJ S999 银圆形珍珠耳钉',
+    category:'耳环', price:'$14.99', priceMXN:'MX$299',
+    desc:'优雅圆形珍珠耳钉，999 银材质。极简设计搭配天然珍珠光泽。',
+    specs: {材质:'S999 银 + 天然珍珠', 风格:'经典极简', 重量:'1.8g', 耳堵:'推入式', 尺寸:'8mm 珍珠'},
+    images:['../images/wave6-editorial/P1-01-W6P001-main.jpg','../images/wave6-editorial/P1-02-W6P001-model.jpg','../images/wave6-editorial/P1-03-W6P001-macro.jpg']
+  }
+};
+
+function limitTitle(t,max){return t.length<=max?t:t.substring(0,max-3)+'...'}
+function randNum(n){var s='';for(var i=0;i<n;i++)s+=Math.floor(Math.random()*10);return s}
+
+// ============ 主题配置 ============
+var THEMES = {
+  default:    {id:'default',    emoji:'🔄', name:'默认',     color:'#00d4ff', borderClass:'',          bannerClass:'',       suffix:'',            desc:''},
+  christmas:  {id:'christmas',  emoji:'🎄', name:'圣诞节',   color:'#ef4444', borderClass:'theme-christmas',  bannerClass:'christmas',  suffix:'🎄 Christmas Gift', desc:'🎄 节日限定 | Holiday Special'},
+  blackfriday:{id:'blackfriday',emoji:'🖤', name:'黑五',    color:'#f59e0b', borderClass:'theme-blackfriday',bannerClass:'blackfriday',suffix:'🖤 Black Friday Deal',desc:'🖤 黑五盛典 | Black Friday Exclusive'},
+  valentine:  {id:'valentine',  emoji:'❤️', name:'情人节',  color:'#ec4899', borderClass:'theme-valentine',  bannerClass:'valentine',  suffix:'❤️ Valentine Edition',desc:'❤️ 浪漫臻礼 | Valentine\'s Collection'},
+  summer:     {id:'summer',     emoji:'🌸', name:'夏季',    color:'#06b6d4', borderClass:'theme-summer',     bannerClass:'summer',     suffix:'🌸 Summer Collection',desc:'🌸 夏日风情 | Summer Collection'}
+};
+window.EOS.currentTheme = 'default';
+
+// ============ 渲染跨平台对比（含主题）============
+window.EOS.renderCrossPlatform = function(sku, themeId) {
+  var p = PRODUCTS[sku];
+  var grid = document.getElementById('cp-grid');
+  if (!grid) return;
+
+  var tid = themeId || window.EOS.currentTheme || 'default';
+  var th = THEMES[tid] || THEMES['default'];
+  var themeBorder = th.borderClass ? ' cp-image theme-border ' + th.borderClass : ' cp-image';
+  var bannerHtml = th.bannerClass ? '<div class="cp-theme-banner '+th.bannerClass+'">'+th.desc+'</div>' : '';
+
+  var amzTitle = limitTitle(p.title + (th.id!=='default'?' ':'') + th.suffix, 200);
+  var amzBullets = [
+    (th.id!=='default' ? th.desc + ' — ' : '') + '优质 '+p.specs.材质+' — 耐用、防过敏、抗变色',
+    '潮流极简设计 — 适合精品店选品和礼品套装',
+    '独立包装含品牌卡片 — 零售展柜即售即用',
+    '快速发货 — 48 小时内从 ISO 认证工厂发货',
+    'B2B 阶梯定价 — 联系获取批量折扣'
+  ];
+
+  var wmtTitle = limitTitle(p.title + (th.id!=='default'?' ':'') + th.suffix, 75);
+  var wmtFields = [
+    {l:'发货重量',v:'0.07 kg'},
+    {l:'发货时间',v:'3-5 个工作日'},
+    {l:'WFS 启用',v:'是 ✓'},
+    {l:'GTIN',v:randNum(12)},
+    {l:'库存',v:'250 件'},
+    {l:'分类',v:'珠宝 > '+p.category}
+  ];
+
+  var mlTitle = p.sku==='W7R001'?'Conjunto Geométrico de Anillos Apilables Plata 925':p.sku==='W7N002'?'Collar de Tenis Moissanita Plata 925':'Aretes de Perla Redonda Plata S999';
+  mlTitle = limitTitle(mlTitle, 60);
+  var mlAttrs = [
+    {l:'Material',v:'Plata Esterlina 925'},
+    {l:'Condición',v:'Nuevo'},
+    {l:'Envío',v:'Mercado Envíos Full'},
+    {l:'Garantía',v:'30 días'},
+    {l:'Categoría',v:'Joyas'}
+  ];
+  var mlVars = [{c:'Plata',s:'150'},{c:'Oro',s:'120'},{c:'Rosa',s:'80'}];
+
+  var tkTitle = limitTitle(p.title + (th.id!=='default'?' ':'') + th.suffix, 30);
+  var tkCommission = (Math.random()*4+1).toFixed(1);
+  var tkGmv = '$' + (Math.floor(Math.random()*9000)+1000).toLocaleString();
+
+  var html = '';
+
+  // Amazon column
+  html += '<div class="cp-column"><div class="cp-column-header amazon"><i class="fa-brands fa-amazon"></i><span class="cp-column-title">Amazon</span></div><div class="cp-body">';
+  if (th.id!=='default') html += bannerHtml;
+  html += '<div class="cp-field"><div class="cp-field-label">商品标题（上限 200 字符）</div><div class="cp-field-value">'+amzTitle+'</div></div>';
+  for (var j=0;j<amzBullets.length;j++) {
+    html += '<div class="cp-field"><div class="cp-field-label">卖点 '+ (j+1) +'</div><div class="cp-field-value bullet">'+amzBullets[j]+'</div></div>';
+  }
+  html += '<div class="cp-field"><div class="cp-field-label">价格</div><div class="cp-field-value price">'+p.price+'</div></div>';
+  html += '<div class="cp-field"><div class="cp-field-label">Product ID (ASIN)</div><div class="cp-field-value" style="font-family:monospace">B0'+randNum(8)+'</div></div>';
+  html += '<div class="cp-field"><div class="cp-field-label">图片规格</div><div class="cp-field-value" style="font-size:11px;color:var(--text2)">6-7 张：1 张主图（白底 1000×1000 px）+ 5-6 张附图</div></div>';
+  html += '<img src="'+p.images[0]+'" class="'+themeBorder+'" loading="lazy">';
+  html += '<div class="cp-images-row">';
+  for (var k=0;k<Math.min(p.images.length,4);k++) html += '<img src="'+p.images[k]+'" loading="lazy">';
+  html += '</div></div></div>';
+
+  // Walmart column
+  html += '<div class="cp-column"><div class="cp-column-header walmart"><i class="fa-solid fa-store"></i><span class="cp-column-title">Walmart</span></div><div class="cp-body">';
+  if (th.id!=='default') html += bannerHtml;
+  html += '<div class="cp-field"><div class="cp-field-label">商品名称（上限 75 字符）</div><div class="cp-field-value">'+wmtTitle+'</div></div>';
+  html += '<div class="cp-field"><div class="cp-field-label">价格</div><div class="cp-field-value price">'+p.price+'</div></div>';
+  html += '<table class="cp-spec-table">';
+  for (var m=0;m<wmtFields.length;m++) html += '<tr><td>'+wmtFields[m].l+'</td><td>'+wmtFields[m].v+'</td></tr>';
+  html += '</table>';
+  html += '<img src="'+p.images[0]+'" class="'+themeBorder+'" style="margin-top:12px" loading="lazy">';
+  html += '</div></div>';
+
+  // Mercado Libre column
+  html += '<div class="cp-column"><div class="cp-column-header mercadolibre"><i class="fa-solid fa-globe"></i><span class="cp-column-title">Mercado Libre</span></div><div class="cp-body">';
+  if (th.id!=='default') html += bannerHtml;
+  html += '<div class="cp-field"><div class="cp-field-label">Título（上限 60 字符）</div><div class="cp-field-value">'+mlTitle+'</div></div>';
+  html += '<div class="cp-field"><div class="cp-field-label">Precio</div><div class="cp-field-value price">'+p.priceMXN+' <small style="color:var(--text2);font-size:12px">('+p.price+')</small></div></div>';
+  for (var n=0;n<mlAttrs.length;n++) html += '<div class="cp-field"><div class="cp-field-label">'+mlAttrs[n].l+'</div><div class="cp-field-value">'+mlAttrs[n].v+'</div></div>';
+  html += '<div class="cp-field"><div class="cp-field-label">Variantes</div><div class="cp-field-value" style="font-size:12px">';
+  for (var q=0;q<mlVars.length;q++) html += '<span style="display:inline-block;margin:2px 6px 2px 0;padding:2px 8px;background:var(--bg3);border-radius:4px">'+mlVars[q].c+' · '+mlVars[q].s+' und.</span>';
+  html += '</div></div>';
+  html += '<img src="'+p.images[0]+'" class="'+themeBorder+'" style="margin-top:12px" loading="lazy">';
+  html += '</div></div>';
+
+  // TikTok Shop column
+  html += '<div class="cp-column"><div class="cp-column-header tiktok"><i class="fa-brands fa-tiktok"></i><span class="cp-column-title">TikTok Shop</span></div><div class="cp-body">';
+  if (th.id!=='default') html += bannerHtml;
+  html += '<div class="cp-field"><div class="cp-field-label">商品标题（上限 30 字符）</div><div class="cp-field-value">'+tkTitle+'</div></div>';
+  html += '<div class="cp-field"><div class="cp-field-label">价格</div><div class="cp-field-value price">'+p.price+'</div></div>';
+  html += '<div class="cp-field"><div class="cp-field-label">佣金率</div><div class="cp-field-value" style="color:var(--yellow);font-weight:600">'+tkCommission+'%</div></div>';
+  html += '<div class="cp-field"><div class="cp-field-label">GMV Max <span style="font-size:9px;color:var(--accent)">预估</span></div><div class="cp-field-value" style="color:var(--green);font-weight:600">'+tkGmv+'</div></div>';
+  html += '<div class="cp-field"><div class="cp-field-label">CBT 跨境直发</div><div class="cp-field-value" style="color:var(--green)">✅ 已启用 · 3-7 天</div></div>';
+  html += '<div class="cp-field"><div class="cp-field-label">产品视频要求</div><div class="cp-field-value" style="font-size:11px;color:var(--text2)">🎬 9:16 竖屏 · 15-60s · 720p+</div></div>';
+  html += '<div class="cp-tiktok-carousel" id="tk-carousel">';
+  html += '<img src="'+p.images[0]+'" class="cp-tiktok-image active '+themeBorder+'" loading="lazy">';
+  html += '<img src="'+p.images[Math.min(1,p.images.length-1)]+'" class="cp-tiktok-image '+themeBorder+'" loading="lazy">';
+  if (p.images.length>2) html += '<img src="'+p.images[Math.min(2,p.images.length-1)]+'" class="cp-tiktok-image '+themeBorder+'" loading="lazy">';
+  html += '<div class="cp-tiktok-dots">';
+  var imgCount = Math.min(p.images.length, 3);
+  for (var ti=0;ti<imgCount;ti++) html += '<span class="cp-tiktok-dot'+(ti===0?' active':'')+'" data-index="'+ti+'"></span>';
+  html += '</div></div></div></div>';
+
+  grid.innerHTML = html;
+
+  // Bind TikTok carousel dots after render
+  setTimeout(function(){
+    var dots = grid.querySelectorAll('.cp-tiktok-dot');
+    var images = grid.querySelectorAll('.cp-tiktok-image');
+    for (var di=0;di<dots.length;di++) {
+      dots[di].addEventListener('click', function(){
+        var idx = parseInt(this.dataset.index);
+        for (var x=0;x<dots.length;x++){dots[x].classList.remove('active');images[x].classList.remove('active');}
+        this.classList.add('active');
+        images[idx].classList.add('active');
+      });
+    }
+    // Auto carousel for TikTok
+    if (images.length>1) {
+      var tkIdx = 0;
+      clearInterval(window.EOS._tkCarouselTimer);
+      window.EOS._tkCarouselTimer = setInterval(function(){
+        var d = grid.querySelectorAll('.cp-tiktok-dot');
+        var im = grid.querySelectorAll('.cp-tiktok-image');
+        if (!d.length) {clearInterval(window.EOS._tkCarouselTimer);return;}
+        tkIdx = (tkIdx+1) % d.length;
+        for (var x=0;x<d.length;x++){d[x].classList.remove('active');im[x].classList.remove('active');}
+        d[tkIdx].classList.add('active');
+        im[tkIdx].classList.add('active');
+      }, 3000);
+    }
+  }, 50);
+};
+
+// ============ 批量上架模拟 ============
+window.EOS.batchRunning = false;
+window.EOS.startBatchListing = function() {
+  if (window.EOS.batchRunning) return;
+  window.EOS.batchRunning = true;
+
+  var platformEls = document.querySelectorAll('.batch-platform-chip.selected');
+  var platforms = [];
+  for (var i=0;i<platformEls.length;i++) platforms.push(platformEls[i].dataset.platform);
+
+  var checkedEls = document.querySelectorAll('.batch-checkbox:checked');
+  var skus = [];
+  for (var j=0;j<checkedEls.length;j++) skus.push(checkedEls[j].dataset.sku);
+
+  var total = skus.length * platforms.length;
+
+  document.getElementById('batch-progress').style.display = 'block';
+  document.getElementById('batch-progress-text').textContent = '0 / ' + total + ' 完成';
+  document.getElementById('batch-success').textContent = '0';
+  document.getElementById('batch-fail').textContent = '0';
+  document.getElementById('batch-pending').textContent = total;
+  document.getElementById('batch-progress-fill').style.width = '0%';
+
+  var log = document.getElementById('batch-log');
+  log.innerHTML = '<div class="log-entry">🚀 开始批量上架任务...</div>';
+
+  var success = 0, fail = 0, completed = 0;
+  function processNext() {
+    if (completed >= total) {
+      log.innerHTML += '<div class="log-entry success">🏁 批量上架完成！' + success + ' 成功 · ' + fail + ' 失败 · ' + total + ' 总计</div>';
+      log.scrollTop = log.scrollHeight;
+      window.EOS.batchRunning = false;
+      return;
+    }
+
+    var itemIdx = completed % skus.length;
+    var platIdx = Math.floor(completed / skus.length);
+    var sku = skus[itemIdx];
+    var plat = platforms[platIdx] || platforms[0];
+    var platName = plat === 'amazon' ? 'Amazon' : plat === 'walmart' ? 'Walmart' : 'Mercado Libre';
+
+    setTimeout(function() {
+      if (Math.random() > 0.08) {
+        success++;
+        log.innerHTML += '<div class="log-entry success">✅ ' + sku + ' → ' + platName + ' · 上架成功 · ID: ' + plat.toUpperCase() + '-' + randNum(6) + '</div>';
+      } else {
+        fail++;
+        log.innerHTML += '<div class="log-entry error">❌ ' + sku + ' → ' + platName + ' · 失败：图片尺寸低于 ' + platName + ' 最低要求</div>';
+      }
+      completed++;
+      document.getElementById('batch-progress-fill').style.width = (completed/total*100) + '%';
+      document.getElementById('batch-progress-text').textContent = completed + ' / ' + total + ' 完成';
+      document.getElementById('batch-success').textContent = success;
+      document.getElementById('batch-fail').textContent = fail;
+      document.getElementById('batch-pending').textContent = total - completed;
+      log.scrollTop = log.scrollHeight;
+      processNext();
+    }, 200 + Math.random() * 600);
+  }
+
+  processNext();
+};
+
+// ============ DOM 就绪后绑定事件 ============
+document.addEventListener('DOMContentLoaded', function() {
+  // Nav tabs
+  var navTabs = document.querySelectorAll('.nav-tab');
+  for (var i = 0; i < navTabs.length; i++) {
+    navTabs[i].addEventListener('click', function() {
+      EOS.switchPanel(this.dataset.panel);
+    });
+  }
+
+  // Dashboard action buttons
+  var actionBtns = document.querySelectorAll('.action-btn');
+  for (var j = 0; j < actionBtns.length; j++) {
+    actionBtns[j].addEventListener('click', function() {
+      var target = this.dataset.action;
+      if (target) EOS.switchPanel(target);
+    });
+  }
+
+  // Source tabs
+  var sourceTabs = document.querySelectorAll('.source-tab');
+  for (var k = 0; k < sourceTabs.length; k++) {
+    sourceTabs[k].addEventListener('click', function() {
+      var siblings = this.parentElement.querySelectorAll('.source-tab');
+      for (var x = 0; x < siblings.length; x++) siblings[x].classList.remove('active');
+      this.classList.add('active');
+    });
+  }
+
+  // Cross-platform product buttons
+  var cpBtns = document.querySelectorAll('.cp-product-btn');
+  for (var m = 0; m < cpBtns.length; m++) {
+    cpBtns[m].addEventListener('click', function() {
+      var siblings = this.parentElement.querySelectorAll('.cp-product-btn');
+      for (var x = 0; x < siblings.length; x++) siblings[x].classList.remove('active');
+      this.classList.add('active');
+      EOS.renderCrossPlatform(this.dataset.product, EOS.currentTheme);
+    });
+  }
+
+  // Theme buttons
+  var themeBtns = document.querySelectorAll('.cp-theme-btn');
+  for (var tm = 0; tm < themeBtns.length; tm++) {
+    themeBtns[tm].addEventListener('click', function() {
+      var siblings = this.parentElement.querySelectorAll('.cp-theme-btn');
+      for (var tx = 0; tx < siblings.length; tx++) siblings[tx].classList.remove('active');
+      this.classList.add('active');
+      EOS.currentTheme = this.dataset.theme;
+      var activeProduct = document.querySelector('.cp-product-btn.active');
+      var sku = activeProduct ? activeProduct.dataset.product : 'W7R001';
+      EOS.renderCrossPlatform(sku, this.dataset.theme);
+    });
+  }
+
+  // Batch platform chips
+  var chips = document.querySelectorAll('.batch-platform-chip');
+  for (var n = 0; n < chips.length; n++) {
+    chips[n].addEventListener('click', function() {
+      this.classList.toggle('selected');
+    });
+  }
+
+  // Batch launch button
+  var launchBtn = document.getElementById('batch-launch-btn');
+  if (launchBtn) {
+    launchBtn.addEventListener('click', function() {
+      EOS.startBatchListing();
+    });
+  }
+
+  // Select all checkbox
+  var selectAll = document.getElementById('select-all');
+  if (selectAll) {
+    selectAll.addEventListener('change', function() {
+      var checked = this.checked;
+      var boxes = document.querySelectorAll('.batch-checkbox');
+      for (var p = 0; p < boxes.length; p++) boxes[p].checked = checked;
+    });
+  }
+
+  // Initial render
+  EOS.renderCrossPlatform('W7R001', 'default');
+
+  // 「营销主题」nav tab: switch to crossplatform panel + scroll to theme area
+  var themeNavTab = document.querySelector('.nav-tab[data-panel="themescroll"]');
+  if (themeNavTab) {
+    themeNavTab.addEventListener('click', function() {
+      EOS.switchPanel('crossplatform');
+      setTimeout(function() {
+        var themeArea = document.getElementById('cp-theme-area');
+        if (themeArea) {
+          themeArea.scrollIntoView({behavior:'smooth',block:'center'});
+          themeArea.style.animation = 'none';
+          themeArea.offsetHeight;
+          themeArea.style.animation = '';
+          themeArea.style.transition = 'box-shadow .5s';
+          themeArea.style.boxShadow = '0 0 0 3px rgba(0,212,255,0.4)';
+          setTimeout(function(){themeArea.style.boxShadow='none';themeArea.style.transition='box-shadow .8s';},1500);
+        }
+      }, 200);
+    });
+  }
+});
+</script>
+
+</body>
+</html>

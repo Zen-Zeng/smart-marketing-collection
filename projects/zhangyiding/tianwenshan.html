@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta name="smc-public" content="true">
+<script src="../../assets/js/auth-check.js"></script>
+<link rel="stylesheet" href="../../assets/css/shared.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天问山黄精天猫自营店铺年度运营方案</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :root {
+    --primary: #4f46e5;
+    --dark: #312e81;
+    --light: #eef2ff;
+    --light-2: #e0e7ff;
+    --text: #1e1b4b;
+    --text-2: #4b5563;
+    --text-3: #6b7280;
+    --bg: #f8fafc;
+    --white: #ffffff;
+    --shadow: 0 1px 3px rgba(49, 46, 129, .08), 0 4px 12px rgba(49, 46, 129, .06);
+    --shadow-lg: 0 8px 24px rgba(49, 46, 129, .14);
+    --radius: 18px;
+    --radius-sm: 12px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+    color: #fff;
+    text-align: center;
+    padding: 88px 32px 72px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .06);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -140px;
+    left: -80px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .04);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, .15);
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-radius: 999px;
+    padding: 7px 22px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    backdrop-filter: blur(6px);
+  }
+  .hero h1 {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    line-height: 1.3;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, .2);
+  }
+  .hero-sub {
+    font-size: 17px;
+    opacity: .85;
+    margin-bottom: 36px;
+    letter-spacing: 1px;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .hero-chip {
+    background: rgba(255, 255, 255, .12);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 999px;
+    padding: 8px 22px;
+    font-size: 14px;
+    backdrop-filter: blur(4px);
+  }
+  .hero-chip strong {
+    color: #c7d2fe;
+    font-weight: 600;
+  }
+
+  /* SECTION */
+  .section {
+    margin: 64px 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .section-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--primary);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .section-title {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+  .section-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+    border-radius: 2px;
+  }
+
+  /* CARDS */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+  .card-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+  .card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .card p,
+  .card li {
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.7;
+  }
+  .card .hl {
+    color: var(--primary);
+    font-weight: 700;
+  }
+  .card .big-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.2;
+  }
+
+  /* OVERVIEW */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 24px;
+  }
+  .overview-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 34px;
+    position: relative;
+    overflow: hidden;
+  }
+  .overview-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: var(--primary);
+    border-radius: 0 4px 4px 0;
+  }
+  .overview-card.challenge::before {
+    background: #f59e0b;
+  }
+  .overview-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .overview-card p {
+    font-size: 15px;
+    color: var(--text-2);
+  }
+
+  /* DIRECTIVES */
+  .directives-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .directive-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    padding: 22px;
+    display: flex;
+    gap: 14px;
+    transition: all .25s ease;
+    border-top: 3px solid transparent;
+  }
+  .directive-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    border-top-color: var(--primary);
+  }
+  .directive-num {
+    min-width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .directive-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .directive-card p {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.55;
+  }
+
+  /* PILLAR */
+  .pillar {
+    background: var(--white);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    margin: 44px 0;
+    overflow: hidden;
+    border: 1px solid rgba(79, 70, 229, .06);
+  }
+  .pillar-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 36px 44px 0;
+  }
+  .pillar-num {
+    width: 54px;
+    height: 54px;
+    background: linear-gradient(135deg, var(--primary), var(--dark));
+    color: #fff;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, .35);
+  }
+  .pillar-title {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+  .pillar-body {
+    padding: 26px 44px 40px;
+  }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--light);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 20px 28px;
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 500;
+    margin-top: 20px;
+  }
+  .callout strong {
+    color: var(--primary);
+  }
+  .callout.warn {
+    background: #fffbeb;
+    border-left-color: #f59e0b;
+  }
+  .callout.warn strong {
+    color: #b45309;
+  }
+
+  /* PILLAR 1 */
+  .stat-number {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.2;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* PILLAR 2 */
+  .segment-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .segment-card::after {
+    content: '';
+    position: absolute;
+    right: -30px;
+    top: -30px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--light);
+    opacity: .6;
+  }
+  .segment-tag {
+    display: inline-block;
+    background: var(--light);
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  .key-moment {
+    background: linear-gradient(135deg, var(--dark), var(--primary));
+    color: #fff;
+    border-radius: var(--radius-sm);
+    padding: 24px 32px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 24px;
+    box-shadow: 0 4px 16px rgba(49, 46, 129, .25);
+  }
+  .key-moment strong {
+    color: #c7d2fe;
+  }
+
+  /* PILLAR 3 */
+  .positioning {
+    text-align: center;
+    padding: 32px 20px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--light), #ffffff);
+    border: 2px dashed var(--light-2);
+  }
+  .positioning .label {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--text-3);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .positioning .value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--dark);
+    margin-top: 6px;
+    letter-spacing: 2px;
+  }
+  .positioning .slogan {
+    font-size: 18px;
+    color: var(--primary);
+    font-weight: 600;
+    margin-top: 14px;
+  }
+  .trust-card {
+    text-align: center;
+    padding: 24px 16px;
+  }
+  .trust-card .trust-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  .trust-card h5 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .trust-card p {
+    font-size: 13px;
+    color: var(--text-2);
+  }
+
+  /* PILLAR 4 */
+  .time-block {
+    padding: 24px;
+  }
+  .time-badge {
+    display: inline-block;
+    background: var(--dark);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 4px 18px;
+    margin-bottom: 10px;
+  }
+  .product-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 24px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .product-table th {
+    background: var(--dark);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 18px;
+    text-align: left;
+  }
+  .product-table td {
+    background: #fff;
+    padding: 14px 18px;
+    font-size: 14px;
+    border-bottom: 1px solid #f1f5f9;
+    color: var(--text-2);
+  }
+  .product-table tr:last-child td {
+    border-bottom: none;
+  }
+  .product-table tr:hover td {
+    background: var(--light);
+  }
+  .product-type {
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  /* PILLAR 5 */
+  .channel-card {
+    padding: 26px;
+  }
+  .channel-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  /* PILLAR 6 */
+  .content-pillar-item {
+    padding: 20px;
+  }
+  .story-box {
+    background: linear-gradient(135deg, var(--light), #ffffff);
+    border: 2px dashed var(--light-2);
+    border-radius: var(--radius-sm);
+    padding: 26px 32px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+  .story-box .story-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--text-3);
+    font-weight: 600;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* PILLAR 7 TIMELINE */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    position: relative;
+    margin-top: 28px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--light-2), var(--primary));
+    border-radius: 3px;
+    z-index: 0;
+  }
+  .phase-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    position: relative;
+    z-index: 1;
+    transition: all .25s ease;
+    border-top: 3px solid var(--primary);
+  }
+  .phase-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+  .phase-dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, .3);
+  }
+  .phase-time {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .phase-name {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .phase-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 12px;
+  }
+  .phase-card li {
+    font-size: 13px;
+    color: var(--text-2);
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.6;
+    margin-bottom: 4px;
+  }
+  .phase-card li::before {
+    content: '›';
+    position: absolute;
+    left: 2px;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .phase-goal {
+    background: var(--light);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.4;
+  }
+
+  /* PILLAR 8 */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .kpi-card {
+    background: linear-gradient(135deg, var(--light), #ffffff);
+    border-radius: var(--radius-sm);
+    padding: 20px 16px;
+    text-align: center;
+    border: 1px solid var(--light-2);
+  }
+  .kpi-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.3;
+    display: block;
+  }
+  .kpi-label {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .risk-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 24px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .risk-table th {
+    background: var(--dark);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 18px;
+    text-align: left;
+    width: 30%;
+  }
+  .risk-table td {
+    background: #fff;
+    padding: 14px 18px;
+    font-size: 14px;
+    border-bottom: 1px solid #f1f5f9;
+    color: var(--text-2);
+  }
+  .risk-table tr:last-child td {
+    border-bottom: none;
+  }
+  .risk-table tr:hover td {
+    background: var(--light);
+  }
+  .risk-label {
+    font-weight: 700;
+    color: #b45309;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: linear-gradient(135deg, var(--dark), var(--primary));
+    color: rgba(255, 255, 255, .7);
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 80px;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+  .footer strong {
+    color: #fff;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .grid-2,
+    .grid-3,
+    .grid-4,
+    .overview-grid,
+    .directives-grid,
+    .timeline,
+    .kpi-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .pillar-header {
+      padding: 24px 20px 0;
+    }
+    .pillar-body {
+      padding: 16px 20px 28px;
+    }
+    .hero h1 {
+      font-size: 30px;
+    }
+    .timeline::before {
+      display: none;
+    }
+  }
+  @media (max-width: 600px) {
+    .page {
+      padding: 0 16px;
+    }
+    .grid-2,
+    .grid-3,
+    .grid-4,
+    .overview-grid,
+    .directives-grid,
+    .timeline,
+    .kpi-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero {
+      padding: 56px 20px 48px;
+    }
+    .hero h1 {
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+    .section-title {
+      font-size: 22px;
+    }
+    .pillar-title {
+      font-size: 18px;
+    }
+    .pillar-num {
+      width: 42px;
+      height: 42px;
+      font-size: 18px;
+      border-radius: 12px;
+    }
+    .product-table th,
+    .product-table td,
+    .risk-table th,
+    .risk-table td {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="hero-badge">☯ 医疗大健康 · 全域整合营销方案</span>
+      <h1>天问山黄精天猫自营店铺年度运营方案</h1>
+      <p class="hero-sub">以信任定义品类 · 以差异化驱动增长</p>
+      <div class="hero-meta">
+        <span class="hero-chip">🏷 品牌：<strong>天问山</strong></span>
+        <span class="hero-chip">📅 周期：<strong>一年</strong></span>
+        <span class="hero-chip">💰 预算：<strong>¥0</strong></span>
+        <span class="hero-chip">👥 人群：<strong>30岁+女性</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="page">
+
+    <!-- ===== OVERVIEW ===== -->
+    <section class="section" style="margin-top:48px;">
+      <div class="section-header">
+        <span class="section-eyebrow">Overview</span>
+        <span class="section-title">项目概览</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="overview-grid">
+        <div class="overview-card">
+          <h3>📌 项目背景</h3>
+          <p>天问山过往年销量近亿（企业口径），主要依赖达人分销，尚未建立自营店运营能力。现以天猫为切入搭建自营体系；前两个月以黄精果为主推品打基础，价格/规格与达播做差异化、不破价；第三个月起结合天猫平台策略对标喜纯开发新品。</p>
+        </div>
+        <div class="overview-card challenge">
+          <h3>⚡ 核心挑战</h3>
+          <p>自营销售额增长，达人分销保持现状。在<span class="hl">零预算</span>的前提下实现天猫自营从0到1的突破，并逐步建立消费者品牌认知。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STRATEGIC DIRECTIVES ===== -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-eyebrow">Action Plan</span>
+        <span class="section-title">战略行动指令</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="directives-grid">
+        <div class="directive-card">
+          <div class="directive-num">0</div>
+          <div>
+            <h4>财务模型</h4>
+            <p>建立精细化财务模型：产品定价、成本、毛利拆分、盈亏平衡，将月度目标与年度GMV对齐。</p>
+          </div>
+        </div>
+        <div class="directive-card">
+          <div class="directive-num">1</div>
+          <div>
+            <h4>预算分配</h4>
+            <p>分配预估GMV 10-15%做营销、产品开发与团队；若预算为零，则下调销售目标适配。</p>
+          </div>
+        </div>
+        <div class="directive-card">
+          <div class="directive-num">2</div>
+          <div>
+            <h4>路线图修订</h4>
+            <p>Phase1延长至3-4个月夯实基础；新品发布推迟至第5-6个月，待现金流回正后推进。</p>
+          </div>
+        </div>
+        <div class="directive-card">
+          <div class="directive-num">3</div>
+          <div>
+            <h4>资源计划</h4>
+            <p>招聘或合作天猫代运营机构，明确角色分工，设定自营团队搭建时间表。</p>
+          </div>
+        </div>
+        <div class="directive-card">
+          <div class="directive-num">4</div>
+          <div>
+            <h4>数据验证</h4>
+            <p>以权威来源验证市场数据，设置品类领导力里程碑，含竞品对标机制。</p>
+          </div>
+        </div>
+        <div class="directive-card">
+          <div class="directive-num">5</div>
+          <div>
+            <h4>搜索排名</h4>
+            <p>先聚焦长尾关键词与内容扩展，销售验证后再逐步投入付费搜索预算。</p>
+          </div>
+        </div>
+        <div class="directive-card">
+          <div class="directive-num">6</div>
+          <div>
+            <h4>达人资产</h4>
+            <p>利用现有达人内容、KOL名单、客户忠诚度，低成本驱动初期天猫流量。</p>
+          </div>
+        </div>
+        <div class="directive-card">
+          <div class="directive-num">7</div>
+          <div>
+            <h4>应急预算</h4>
+            <p>为合规审查、法律费、产品迭代预留应急预算；Phase1后设「继续/终止」评审。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PILLARS ===== -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-eyebrow">Pillars</span>
+        <span class="section-title">核心策略支柱</span>
+        <div class="section-line"></div>
+      </div>
+
+      <!-- PILLAR 1 -->
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-num">1</div>
+          <div class="pillar-title">市场洞察</div>
+        </div>
+        <div class="pillar-body">
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-icon">📈</div>
+              <h4>市场机会</h4>
+              <p><span class="big-num">3亿+</span>淘系黄精2024年销售额</p>
+              <p style="margin-top:6px;">2025Q1同比 <span class="hl">+25.57%</span></p>
+              <p>黄精成分线上销售同比 <span class="hl">+45.6%</span></p>
+              <p style="margin-top:6px;">品类正从药材向消费品转型，线上小品类高增长。</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">⚔️</div>
+              <h4>竞争格局</h4>
+              <p><strong>南强北弱：</strong>南方产区（九华/新化）和老字号占心智，北方寒地鸡头黄精尚无全国品牌。</p>
+              <p style="margin-top:8px;">竞品山川树以<span class="hl">39%多糖</span>做内容卡位，天问山<span class="hl">48.85%</span>可正面压制。</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🔬</div>
+              <h4>消费者信任</h4>
+              <p>行业乱象（洋姜冒充/硫熏/工序缩水）频发，买家第一决策障碍是<span class="hl">怕假货</span>。</p>
+              <p style="margin-top:8px;">可验证检测报告 = 最大卖点。</p>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>结论：</strong>天问山应抓住品类定义窗口期，以「寒地 + 高多糖检测」建立信任，在天猫完成从渠道品牌到消费者品牌的跨越。
+          </div>
+        </div>
+      </div>
+
+      <!-- PILLAR 2 -->
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-num">2</div>
+          <div class="pillar-title">目标人群</div>
+        </div>
+        <div class="pillar-body">
+          <div class="callout">
+            <strong>核心人群：</strong>30岁以上女性，有养生意识但缺乏辨别力，愿为安全品质付费。
+          </div>
+          <div class="grid-3" style="margin-top:24px;">
+            <div class="card segment-card">
+              <span class="segment-tag">💼 职场女性 30-40岁</span>
+              <h4>气色 · 精力 · 轻养生</h4>
+              <p>偏好即食/便携产品</p>
+              <p style="margin-top:8px;font-size:13px;color:var(--text-3);">📍 办公室下午茶、早餐代餐</p>
+            </div>
+            <div class="card segment-card">
+              <span class="segment-tag">🏠 熟龄女性 40-55岁</span>
+              <h4>气血 · 睡眠 · 调养</h4>
+              <p>愿为老字号/品质付溢价</p>
+              <p style="margin-top:8px;font-size:13px;color:var(--text-3);">📍 家庭滋补、节日送礼</p>
+            </div>
+            <div class="card segment-card">
+              <span class="segment-tag">📱 尝鲜型 30-45岁</span>
+              <h4>被种草 · 怕踩坑</h4>
+              <p>小红书/短视频种草后搜索攻略</p>
+              <p style="margin-top:8px;font-size:13px;color:var(--text-3);">📍 搜索攻略后购买入门装</p>
+            </div>
+          </div>
+          <div class="key-moment">
+            ⭐ <strong>关键时刻：</strong>第一次搜索「黄精怎么选」「黄精果真假」时，必须让天问山出现在答案里！
+          </div>
+        </div>
+      </div>
+
+      <!-- PILLAR 3 -->
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-num">3</div>
+          <div class="pillar-title">品牌定位与核心策略</div>
+        </div>
+        <div class="pillar-body">
+          <div class="positioning">
+            <span class="label">Brand Positioning</span>
+            <div class="value">寒地鸡头黄精 · 品类定义者</div>
+            <div class="slogan">「 寒地黑土 九蒸九晒 高多糖黄精 」</div>
+          </div>
+          <div class="grid-4" style="margin-top:24px;">
+            <div class="card trust-card">
+              <div class="trust-icon">🧪</div>
+              <h5>高多糖背书</h5>
+              <p>48.85%多糖，第三方检测公证</p>
+            </div>
+            <div class="card trust-card">
+              <div class="trust-icon">🏔️</div>
+              <h5>寒地产区</h5>
+              <p>昼夜温差大、生长周期长</p>
+            </div>
+            <div class="card trust-card">
+              <div class="trust-icon">🔥</div>
+              <h5>九蒸九晒</h5>
+              <p>工艺可视化，对抗工序缩水</p>
+            </div>
+            <div class="card trust-card">
+              <div class="trust-icon">🔗</div>
+              <h5>全链路溯源</h5>
+              <p>从种植到出厂全程可追溯</p>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>核心策略：</strong>自营不做低价跟卖，而做「信任 + 规格差异化」；沿用达播市场认知，但天猫店建立独立的品牌内容、会员与产品体验。
+          </div>
+        </div>
+      </div>
+
+      <!-- PILLAR 4 -->
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-num">4</div>
+          <div class="pillar-title">产品策略</div>
+        </div>
+        <div class="pillar-body">
+          <div class="grid-2">
+            <div class="card time-block">
+              <span class="time-badge">第1-2个月</span>
+              <h4 style="margin-bottom:8px;">主推黄精果</h4>
+              <p>天猫店主打<strong>礼盒装/周期装/组合装</strong>，与达人分销的引流装错位；折合单价不低于达播价，<span class="hl">不破价</span>。</p>
+            </div>
+            <div class="card time-block">
+              <span class="time-badge">第3个月起</span>
+              <h4 style="margin-bottom:8px;">开发新品</h4>
+              <p>对标喜纯开发<span class="hl">即食黄精小方/黄精芝麻丸/便携黄精饮</span>，形成天猫独家SKU，与达播货盘完全区隔。</p>
+            </div>
+          </div>
+          <table class="product-table">
+            <thead>
+              <tr><th>产品类型</th><th>示例</th><th>目的</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="product-type">引流款</td><td>黄精果小规格尝鲜装</td><td>拉新、起基础销量</td></tr>
+              <tr><td class="product-type">利润款</td><td>黄精果周期装/礼盒装</td><td>核心利润和复购</td></tr>
+              <tr><td class="product-type">形象款</td><td>寒地黄精高端礼盒</td><td>送礼场景、品牌溢价</td></tr>
+              <tr><td class="product-type">新品款</td><td>对标喜纯的即食黄精系列</td><td>差异化、锁定新人群</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PILLAR 5 -->
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-num">5</div>
+          <div class="pillar-title">渠道策略</div>
+        </div>
+        <div class="pillar-body">
+          <div class="grid-4">
+            <div class="card channel-card">
+              <div class="channel-icon">🏬</div>
+              <h4>天猫自营</h4>
+              <p>主阵地：承接搜索/会员/大促/品牌内容，建立旗舰店资产。</p>
+            </div>
+            <div class="card channel-card">
+              <div class="channel-icon">🎙️</div>
+              <h4>达人分销</h4>
+              <p>维持现状并隔离：主推款/价格/赠品不重叠，保护各渠道利益。</p>
+            </div>
+            <div class="card channel-card">
+              <div class="channel-icon">📕</div>
+              <h4>小红书</h4>
+              <p>种草导流：检测报告+对比实验做「黄精怎么选」搜索卡位；30+女性食养场景，评论/私信引导天猫。</p>
+            </div>
+            <div class="card channel-card">
+              <div class="channel-icon">🚀</div>
+              <h4>未来复制</h4>
+              <p>下半年跑通天猫模型后复制京东/小红书，首年天猫为唯一重点。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PILLAR 6 -->
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-num">6</div>
+          <div class="pillar-title">内容与传播策略</div>
+        </div>
+        <div class="pillar-body">
+          <div class="story-box">
+            <span class="story-label">Brand Story</span>
+            一棵寒地黄精的旅程：从北纬寒地黑土到九蒸九晒，再到48.85%的检测报告。
+          </div>
+          <div class="grid-4">
+            <div class="card content-pillar-item">
+              <div class="card-icon">🏔️</div>
+              <h4>产地溯源</h4>
+              <p>展示寒地环境，建立「寒地=高品质」认知</p>
+            </div>
+            <div class="card content-pillar-item">
+              <div class="card-icon">🔥</div>
+              <h4>工艺透明</h4>
+              <p>九蒸九晒全过程，对抗工序缩水乱象</p>
+            </div>
+            <div class="card content-pillar-item">
+              <div class="card-icon">🧪</div>
+              <h4>检测背书</h4>
+              <p>详解检测报告+洋姜/硫熏鉴别，解决信任危机</p>
+            </div>
+            <div class="card content-pillar-item">
+              <div class="card-icon">🌿</div>
+              <h4>女性食养</h4>
+              <p>30+女性日常搭配，营造生活方式</p>
+            </div>
+          </div>
+          <div class="grid-2" style="margin-top:24px;">
+            <div class="card">
+              <div class="card-icon">🛍️</div>
+              <h4>天猫内容</h4>
+              <p>详情页 = 信任状集合；逛逛/短视频发鉴别类内容；品牌号做会员内容沉淀。</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">📕</div>
+              <h4>小红书内容</h4>
+              <p>每周5篇笔记 + 2条视频，核心关键词：寒地黄精、黄精果测评、黄精怎么选；优先KOC样品置换，<span class="hl">0预算启动</span>。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PILLAR 7 -->
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-num">7</div>
+          <div class="pillar-title">执行路线图</div>
+        </div>
+        <div class="pillar-body">
+          <div class="timeline">
+            <div class="phase-card">
+              <div class="phase-dot">1</div>
+              <div class="phase-time">第1-2个月</div>
+              <div class="phase-name">搭建与启动</div>
+              <ul>
+                <li>完成旗舰店搭建与视觉升级</li>
+                <li>上架黄精果天猫专属规格</li>
+                <li>老客导流/天猫U先/CPS基础销量</li>
+                <li>启动小红书搜索占位</li>
+              </ul>
+              <div class="phase-goal">🎯 月销50万+，评价&买家秀积累，DSR全绿</div>
+            </div>
+            <div class="phase-card">
+              <div class="phase-dot">2</div>
+              <div class="phase-time">第3-6个月</div>
+              <div class="phase-name">新品与放量</div>
+              <ul>
+                <li>开发并上架对标喜纯新品</li>
+                <li>报名天猫健康/滋补品类活动</li>
+                <li>上线周期购/会员日</li>
+                <li>小红书KOC矩阵放量</li>
+              </ul>
+              <div class="phase-goal">🎯 月销150万+，复购率≥20%</div>
+            </div>
+            <div class="phase-card">
+              <div class="phase-dot">3</div>
+              <div class="phase-time">第7-9个月</div>
+              <div class="phase-name">大促蓄水</div>
+              <ul>
+                <li>99/双11蓄水</li>
+                <li>会员私域预热</li>
+                <li>启动店播补充自营直播</li>
+                <li>天猫专属礼盒大促爆发</li>
+              </ul>
+              <div class="phase-goal">🎯 大促单月峰值300万+</div>
+            </div>
+            <div class="phase-card">
+              <div class="phase-dot">4</div>
+              <div class="phase-time">第10-12个月</div>
+              <div class="phase-name">复盘与复制</div>
+              <ul>
+                <li>双11复盘</li>
+                <li>方法论沉淀</li>
+                <li>筹备京东/小红书店复制</li>
+                <li>年货节收官</li>
+              </ul>
+              <div class="phase-goal">🎯 全年GMV 1200-1500万</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PILLAR 8 -->
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-num">8</div>
+          <div class="pillar-title">预算、KPI与风险管理</div>
+        </div>
+        <div class="pillar-body">
+          <div class="callout warn">
+            <strong>预算原则：</strong>预算为0 —— 以自然流量、平台活动、CPS淘客、样品置换、现有达人素材复用为主；若验证可行，建议将自营GMV的<strong>5-8%</strong>投入付费推广。
+          </div>
+          <h4 style="margin-top:28px;font-size:16px;font-weight:700;">📊 KPI 指标体系</h4>
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <span class="kpi-value">1200-1500万</span>
+              <span class="kpi-label">年度GMV</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-value">50 → 300万</span>
+              <span class="kpi-label">月度GMV阶梯</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-value">5万人<br>25%+</span>
+              <span class="kpi-label">会员数 / 复购率</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-value">前10</span>
+              <span class="kpi-label">「黄精果」搜索排名</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-value">30篇+</span>
+              <span class="kpi-label">小红书占位笔记</span>
+            </div>
+          </div>
+          <h4 style="margin-top:28px;font-size:16px;font-weight:700;">⚠️ 风险管理</h4>
+          <table class="risk-table">
+            <thead>
+              <tr><th>风险</th><th>应对措施</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="risk-label">达播价盘冲突</td>
+                <td>天猫专供规格/组合装，不参与达播；任何活动守住最低价红线，用赠品/服务代替降价。</td>
+              </tr>
+              <tr>
+                <td class="risk-label">0预算冷启动慢</td>
+                <td>首月靠老客/私域/CPS破零，同时卡位平台免费活动与搜索长尾词。</td>
+              </tr>
+              <tr>
+                <td class="risk-label">功效宣称违规</td>
+                <td>所有素材过违禁词，只说食养/成分/工艺，不放任何治疗暗示。</td>
+              </tr>
+              <tr>
+                <td class="risk-label">新品开发不及预期</td>
+                <td>提前2个月锁产能，首单小批量测试，根据生意参谋数据快速迭代。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p><strong>天问山</strong> · 寒地鸡头黄精 · 品类定义者</p>
+    <p style="margin-top:6px;font-size:13px;opacity:.7;">以信任建立品牌 · 以差异化实现增长</p>
+  </footer>
+
+<script src="../../assets/js/shared.js"></script>
+</body>
+</html>

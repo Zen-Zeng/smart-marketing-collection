@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EOS · 东南亚三平台 AI 商品上架系统 — Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--bg4:#24243e;
+  --text:#e0e0e0;--text2:#999;--accent:#00d4ff;--accent2:#0891b2;
+  --green:#10b981;--yellow:#f59e0b;--red:#ef4444;--orange:#f97316;--purple:#8b5cf6;
+  --radius:10px;--radius-sm:6px;--shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.nav{background:var(--bg2);border-bottom:1px solid rgba(255,255,255,.06);padding:0 24px;display:flex;align-items:center;height:60px;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.nav-logo{font-size:22px;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:8px;margin-right:40px;letter-spacing:-.5px}
+.nav-logo i{font-size:24px}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{padding:8px 18px;border-radius:8px;border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.nav-tab:hover{color:var(--text);background:var(--bg3)}
+.nav-tab.active{color:var(--accent);background:var(--bg4)}
+.nav-status{margin-left:auto;display:flex;align-items:center;gap:16px}
+.status-dot{width:8px;height:8px;border-radius:50%;animation:pulse 2s infinite}
+.status-dot.online{background:var(--green)}
+.status-text{font-size:12px;color:var(--text2)}
+.main{padding:24px;max-width:1400px;margin:0 auto}
+.panel{display:none}
+.panel.active{display:block}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:20px;transition:all .3s}
+.stat-card:hover{border-color:var(--accent2);transform:translateY(-2px);box-shadow:var(--shadow)}
+.stat-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.stat-value{font-size:32px;font-weight:700;color:var(--accent);line-height:1}
+.stat-value small{font-size:14px;color:var(--text2);font-weight:400}
+.stat-footer{font-size:11px;color:var(--green);margin-top:6px}
+.queue-card{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:20px;margin-bottom:24px}
+.queue-title{font-size:14px;font-weight:600;margin-bottom:12px}
+.queue-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.queue-row:last-child{border:none}
+.queue-sku{font-family:monospace;font-size:12px;color:var(--accent);width:90px}
+.queue-name{flex:1;font-size:13px}
+.queue-platform{font-size:11px;color:var(--text2)}
+.queue-bar{width:120px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.queue-bar-fill{height:100%;background:var(--accent);border-radius:2px;animation:processBar 3s ease-in-out infinite}
+.queue-status{font-size:11px;font-weight:600}
+.queue-status.processing{color:var(--yellow)}
+.platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.platform-card{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:20px;display:flex;align-items:center;gap:14px;transition:all .3s}
+.platform-card:hover{border-color:rgba(255,255,255,.15)}
+.platform-icon{width:44px;height:44px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:20px}
+.platform-icon.shopee{background:rgba(238,77,46,.15);color:#ee4d2e}
+.platform-icon.lazada{background:rgba(0,153,255,.15);color:#0099ff}
+.platform-icon.tiktokshop{background:rgba(255,0,80,.15);color:#ff0050}
+.platform-info{flex:1}
+.platform-name{font-size:15px;font-weight:600}
+.platform-detail{font-size:11px;color:var(--text2);margin-top:2px}
+.platform-badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.platform-badge.online{background:rgba(16,185,129,.15);color:var(--green)}
+.action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.action-btn{background:var(--bg3);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:24px 20px;text-align:center;cursor:pointer;transition:all .3s;color:var(--text);font-family:inherit;font-size:13px;font-weight:600}
+.action-btn:hover{background:var(--bg4);border-color:var(--accent);transform:translateY(-2px)}
+.action-btn i{font-size:24px;color:var(--accent);margin-bottom:8px;display:block}
+.source-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--bg2);border-radius:var(--radius);padding:4px;width:fit-content}
+.source-tab{padding:8px 20px;border-radius:var(--radius-sm);border:none;background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.source-tab.active{background:var(--accent);color:#000}
+.source-tab:not(.active):hover{color:var(--text)}
+.table-wrapper{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead{background:var(--bg3)}
+th{text-align:left;padding:12px 16px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);font-weight:600}
+td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.03)}
+tr:hover td{background:rgba(255,255,255,.02);cursor:pointer}
+td .thumb{width:40px;height:56px;border-radius:4px;object-fit:cover;background:var(--bg4)}
+td .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.badge-factory{background:rgba(245,158,11,.12);color:var(--yellow)}
+.badge-ready{background:rgba(16,185,129,.12);color:var(--green)}
+.pipeline-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.pipeline-step{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:24px;position:relative}
+.pipeline-step::after{content:'→';position:absolute;right:-18px;top:50%;transform:translateY(-50%);font-size:24px;color:var(--accent);z-index:1}
+.pipeline-step:last-child::after{display:none}
+.step-number{width:32px;height:32px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;margin-bottom:12px}
+.step-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.step-desc{font-size:12px;color:var(--text2);line-height:1.6}
+.step-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.step-tag{padding:4px 10px;background:var(--bg3);border-radius:4px;font-size:11px;color:var(--text2)}
+.comparison{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:24px}
+.comparison-title{font-size:16px;font-weight:700;margin-bottom:18px}
+.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.before-after{background:var(--bg);border-radius:var(--radius-sm);padding:16px}
+.before-after-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:10px}
+.before-after-img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:4px;margin-bottom:8px;background:var(--bg4)}
+.before-after-caption{font-size:12px;color:var(--text2);text-align:center}
+/* Placeholder image */
+.placeholder-img{background:linear-gradient(135deg,var(--bg3),var(--bg4));display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:13px;text-align:center;padding:20px;aspect-ratio:3/4}
+.cp-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.cp-product-select{display:flex;gap:8px}
+.cp-product-btn{padding:8px 18px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.1);background:var(--bg2);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.cp-product-btn:hover{border-color:var(--accent2)}
+.cp-product-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.cp-theme-select{display:flex;gap:8px;margin-left:16px}
+.cp-theme-btn{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:var(--bg2);color:var(--text);font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+.cp-theme-btn:hover{border-color:var(--accent2)}
+.cp-theme-btn.active{color:#fff}
+.cp-theme-btn.default-theme.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.cp-theme-btn.xmas.active{background:#dc2626;border-color:#dc2626}
+.cp-theme-btn.bf.active{background:#111;border-color:#f59e0b}
+.cp-theme-btn.vday.active{background:#db2777;border-color:#db2777}
+.cp-theme-btn.summer.active{background:#0891b2;border-color:#0891b2}
+.cp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cp-column{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);overflow:hidden}
+.cp-column-header{padding:16px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.cp-column-header i{font-size:18px}
+.cp-column-header.shopee{background:rgba(238,77,46,.08);color:#ee4d2e}
+.cp-column-header.lazada{background:rgba(0,153,255,.08);color:#0099ff}
+.cp-column-header.tiktokshop{background:rgba(255,0,80,.08);color:#ff0050}
+.cp-column-header.multistore{background:rgba(139,92,246,.08);color:#8b5cf6}
+.cp-column-title{font-size:14px;font-weight:700}
+.cp-body{padding:16px 20px}
+.cp-field{margin-bottom:12px}
+.cp-field-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:3px;font-weight:600}
+.cp-field-value{font-size:12px;line-height:1.5}
+.cp-field-value.price{font-size:18px;font-weight:700;color:var(--accent)}
+.cp-image{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:var(--radius-sm);background:var(--bg);margin-bottom:8px}
+.cp-image-placeholder{width:100%;aspect-ratio:3/4;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px;text-align:center;padding:20px;margin-bottom:8px;border:1px dashed rgba(255,255,255,.08)}
+.cp-images-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.cp-images-row .cp-image-placeholder{aspect-ratio:1;font-size:10px;padding:8px}
+.batch-header{display:flex;gap:12px;align-items:center;margin-bottom:24px;flex-wrap:wrap}
+.batch-check{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer}
+.batch-check input{accent-color:var(--accent)}
+.batch-platforms{display:flex;gap:8px;margin:0 16px}
+.batch-platform-chip{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;transition:all .2s;font-family:inherit;font-weight:500}
+.batch-platform-chip:hover{border-color:var(--accent2)}
+.batch-platform-chip.selected{background:var(--accent);color:#000;border-color:var(--accent)}
+.batch-launch{padding:10px 28px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.batch-launch:hover{opacity:.9;transform:scale(1.02)}
+.batch-progress{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.batch-progress-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin:12px 0}
+.batch-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:3px;transition:width .3s;width:0%}
+.batch-stats{display:flex;gap:24px;margin-bottom:16px;font-size:13px}
+.batch-log{background:var(--bg);border-radius:var(--radius-sm);padding:16px;max-height:200px;overflow-y:auto;font-family:monospace;font-size:12px;line-height:1.8}
+.batch-log .log-entry{color:var(--text2)}
+.batch-log .log-entry.success{color:var(--green)}
+.batch-log .log-entry.error{color:var(--red)}
+.theme-xmas{border:2px solid #dc2626!important}
+.theme-bf{border:2px solid #f59e0b!important}
+.theme-vday{border:2px solid #db2777!important}
+.theme-summer{border:2px solid #0891b2!important}
+.source-intro{background:var(--bg2);border:1px solid rgba(245,158,11,.2);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.source-intro strong{color:#f59e0b}
+.source-intro p{font-size:13px;color:var(--text2);margin-top:6px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes processBar{0%{width:10%}50%{width:85%}100%{width:10%}}
+.fade-in{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1024px){.stats-grid,.cp-grid{grid-template-columns:repeat(2,1fr)}.pipeline-steps{grid-template-columns:1fr}.pipeline-step::after{display:none}.action-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.stats-grid,.platform-grid,.action-grid,.cp-grid{grid-template-columns:1fr}.nav{padding:0 12px}.nav-tab{padding:6px 10px;font-size:11px}.nav-logo{margin-right:12px;font-size:18px}.main{padding:12px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo"><i class="fa-solid fa-cubes"></i> EOS</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-panel="dashboard">📊 总览</button>
+    <button class="nav-tab" data-panel="datasource">📦 素材管理</button>
+    <button class="nav-tab" data-panel="pipeline">🤖 AI 流水线</button>
+    <button class="nav-tab" data-panel="crossplatform">🔄 跨平台对比</button>
+    <button class="nav-tab" data-panel="batch">🚀 批量上架</button>
+    <button class="nav-tab" data-panel="settings">⚙️ 系统设置</button>
+  </div>
+  <div class="nav-status">
+    <span class="status-dot online"></span>
+    <span class="status-text">系统在线 · 东南亚三平台 v2.1</span>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- ===== Dashboard ===== -->
+<div class="panel active fade-in" id="panel-dashboard">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">今日处理</div><div class="stat-value">47</div><div class="stat-footer">↑ 15% 较昨日</div></div>
+    <div class="stat-card"><div class="stat-label">商品总数</div><div class="stat-value">328 <small>SKU</small></div><div class="stat-footer">全品类 · 3 平台覆盖</div></div>
+    <div class="stat-card"><div class="stat-label">AI 图片生成</div><div class="stat-value">1,284</div><div class="stat-footer">成功率 98.2%</div></div>
+    <div class="stat-card"><div class="stat-label">多店铺管理</div><div class="stat-value">8 <small>店</small></div><div class="stat-footer">⚙️ 详见系统设置</div></div>
+  </div>
+  <div class="queue-card">
+    <div class="queue-title" style="display:flex;justify-content:space-between"><span>⏳ 实时处理队列</span><span style="font-size:11px;color:var(--text2)">3 个任务处理中</span></div>
+    <div class="queue-row"><span class="queue-sku">HS-DR001</span><span class="queue-name">V领收腰A字连衣裙→ Shopee 店1/2/3</span><span class="queue-platform"><i class="fa-solid fa-bag-shopping"></i></span><div class="queue-bar"><div class="queue-bar-fill" style="width:72%"></div></div><span class="queue-status processing">处理中</span></div>
+    <div class="queue-row"><span class="queue-sku">HS-DR002</span><span class="queue-name">法式碎花V领中长裙→ Lazada 店1</span><span class="queue-platform"><i class="fa-solid fa-globe"></i></span><div class="queue-bar"><div class="queue-bar-fill" style="width:45%"></div></div><span class="queue-status processing">处理中</span></div>
+    <div class="queue-row"><span class="queue-sku">HS-DR003</span><span class="queue-name">度假风收腰吊带长裙→ TikTok Shop</span><span class="queue-platform"><i class="fa-brands fa-tiktok"></i></span><div class="queue-bar"><div class="queue-bar-fill" style="width:88%"></div></div><span class="queue-status processing">收尾中</span></div>
+  </div>
+  <div class="platform-grid">
+    <div class="platform-card"><div class="platform-icon shopee"><i class="fa-solid fa-bag-shopping"></i></div><div class="platform-info"><div class="platform-name">Shopee</div><div class="platform-detail">5 店铺 · 东南亚市场 · 326 Listing</div></div><span class="platform-badge online">已连接</span></div>
+    <div class="platform-card"><div class="platform-icon lazada"><i class="fa-solid fa-globe"></i></div><div class="platform-info"><div class="platform-name">Lazada</div><div class="platform-detail">2 店铺 · 东南亚市场 · 218 Listing</div></div><span class="platform-badge online">已连接</span></div>
+    <div class="platform-card"><div class="platform-icon tiktokshop"><i class="fa-brands fa-tiktok"></i></div><div class="platform-info"><div class="platform-name">TikTok Shop</div><div class="platform-detail">1 店铺 · 全球市场 · 156 Listing</div></div><span class="platform-badge online">已连接</span></div>
+  </div>
+  <div class="action-grid">
+    <button class="action-btn" data-action="batch"><i class="fa-solid fa-rocket"></i> 批量上架</button>
+    <button class="action-btn" data-action="pipeline"><i class="fa-solid fa-wand-magic-sparkles"></i> AI 图片生成</button>
+    <button class="action-btn" data-action="datasource"><i class="fa-solid fa-cloud-arrow-up"></i> 素材管理</button>
+    <button class="action-btn" data-action="crossplatform"><i class="fa-solid fa-arrows-left-right"></i> 跨平台对比</button>
+  </div>
+</div>
+
+<!-- ===== Data Source ===== -->
+<div class="panel fade-in" id="panel-datasource">
+  <div class="source-intro">
+    <strong>📸 素材来源：工厂白底产品图</strong>
+    <p>工厂只提供白底产品照片（平铺或人台），AI 管道自动完成背景消除、场景合成、模特试穿生成，按三平台尺寸规范输出标准化商品图。</p>
+  </div>
+  <div class="source-tabs">
+    <button class="source-tab active">📤 工厂白底图</button>
+  </div>
+  <div class="table-wrapper"><table>
+    <thead><tr><th>素材</th><th>SKU</th><th>商品名称</th><th>品类</th><th>来源</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td><div class="placeholder-img" style="width:40px;height:56px;aspect-ratio:auto;font-size:10px">👗</div></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HS-DR001</td><td>V领收腰A字连衣裙</td><td>连衣裙</td><td><span class="badge badge-factory">工厂白底</span></td><td><span class="badge badge-ready">AI处理中</span></td></tr>
+      <tr><td><div class="placeholder-img" style="width:40px;height:56px;aspect-ratio:auto;font-size:10px">👗</div></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HS-DR002</td><td>法式碎花V领中长裙</td><td>连衣裙</td><td><span class="badge badge-factory">工厂白底</span></td><td><span class="badge badge-ready">AI处理中</span></td></tr>
+      <tr><td><div class="placeholder-img" style="width:40px;height:56px;aspect-ratio:auto;font-size:10px">👗</div></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HS-DR003</td><td>度假风收腰吊带长裙</td><td>连衣裙</td><td><span class="badge badge-factory">工厂白底</span></td><td><span class="badge badge-ready">待上架</span></td></tr>
+      <tr><td><div class="placeholder-img" style="width:40px;height:56px;aspect-ratio:auto;font-size:10px">👗</div></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HS-DR004</td><td>短袖圆领纯色通勤连衣裙</td><td>连衣裙</td><td><span class="badge badge-factory">工厂白底</span></td><td><span class="badge badge-ready">待上架</span></td></tr>
+      <tr><td><div class="placeholder-img" style="width:40px;height:56px;aspect-ratio:auto;font-size:10px">👗</div></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HS-DR005</td><td>一字肩荷叶边度假连衣裙</td><td>连衣裙</td><td><span class="badge badge-factory">工厂白底</span></td><td><span class="badge badge-ready">就绪</span></td></tr>
+    </tbody>
+  </table></div>
+</div>
+
+<!-- ===== AI Pipeline ===== -->
+<div class="panel fade-in" id="panel-pipeline">
+  <div class="pipeline-steps">
+    <div class="pipeline-step"><div class="step-number">1</div><div class="step-title">工厂白底图 → AI 生成电商图</div><div class="step-desc">工厂提供的白底产品图（平铺/人台）→ 背景消除 → AI 场景合成（模特试穿/场景穿搭）→ 微距细节（面料/剪裁特写）。三平台尺寸规范统一适配。</div><div class="step-tags"><span class="step-tag">背景消除</span><span class="step-tag">模特试穿生成</span><span class="step-tag">场景合成</span><span class="step-tag">面料细节</span><span class="step-tag">尺寸适配</span></div></div>
+    <div class="pipeline-step"><div class="step-number">2</div><div class="step-title">AI 标题 &amp; 属性 &amp; 文案</div><div class="step-desc">从白底图智能识别服装属性（领型/袖型/版型/面料/裙长/风格）→ 生成 SEO 标题和卖点文案 → 自动映射各平台品类树（Shopee 服装分类 + Lazada 品类 + TikTok 类目）。</div><div class="step-tags"><span class="step-tag">智能识别属性</span><span class="step-tag">标题生成</span><span class="step-tag">卖点提炼</span><span class="step-tag">品类树映射</span></div></div>
+    <div class="pipeline-step"><div class="step-number">3</div><div class="step-title">格式适配 &amp; 多店铺上架</div><div class="step-desc">Shopee（120 字符标题+双层变体 尺码/颜色）、Lazada（LazOP 2.0 同步+商品视频）、TikTok Shop（30 字符标题+竖屏短视频）。支持多店铺同时分发。</div><div class="step-tags"><span class="step-tag">Shopee → 120 字符</span><span class="step-tag">Lazada → 同步 API</span><span class="step-tag">TikTok → 30 字符+视频</span><span class="step-tag">多店铺分发</span></div></div>
+  </div>
+  <div class="comparison">
+    <div class="comparison-title">工厂白底图 / AI 生成后对比</div>
+    <div class="comparison-grid">
+      <div class="before-after"><div class="before-after-label">📸 原始素材（工厂白底图）</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div class="placeholder-img" style="font-size:12px">👗<br>HS-DR001<br>〈 工厂白底平铺图 〉</div>
+          <div class="placeholder-img" style="font-size:12px">👗<br>HS-DR002<br>〈 工厂白底平铺图 〉</div>
+          <div class="placeholder-img" style="font-size:12px">👗<br>HS-DR003<br>〈 工厂白底人台图 〉</div>
+        </div><div class="before-after-caption">工厂提供的原始白底产品照片</div></div>
+      <div class="before-after"><div class="before-after-label">✨ AI 生成（三平台就绪）</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div class="placeholder-img" style="background:linear-gradient(135deg,rgba(0,212,255,.12),rgba(139,92,246,.12));font-size:12px">✨<br>V领收腰A字裙<br>〈 AI 模特试穿 + 场景 〉</div>
+          <div class="placeholder-img" style="background:linear-gradient(135deg,rgba(0,212,255,.12),rgba(139,92,246,.12));font-size:12px">✨<br>法式碎花中长裙<br>〈 AI 场景穿搭 〉</div>
+          <div class="placeholder-img" style="background:linear-gradient(135deg,rgba(0,212,255,.12),rgba(139,92,246,.12));font-size:12px">✨<br>度假吊带长裙<br>〈 AI 海滩场景 〉</div>
+        </div><div class="before-after-caption">AI 自动生成：模特试穿 + 场景合成 + 微距面料细节</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Cross-Platform ===== -->
+<div class="panel fade-in" id="panel-crossplatform">
+  <div class="cp-header">
+    <span style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text2)">选择商品：</span>
+    <div class="cp-product-select">
+      <button class="cp-product-btn active" data-product="HS-DR001">👗 V领A字裙 ¥89</button>
+      <button class="cp-product-btn" data-product="HS-DR002">👗 法式碎花裙 ¥129</button>
+      <button class="cp-product-btn" data-product="HS-DR003">👗 度假吊带裙 ¥169</button>
+    </div>
+    <div class="cp-theme-select" style="display:flex;align-items:center;gap:4px">
+      <span style="font-size:11px;color:var(--text2);margin-right:4px">主题：</span>
+      <button class="cp-theme-btn default-theme active" data-theme="default">默认</button>
+      <button class="cp-theme-btn xmas" data-theme="xmas">🎄 圣诞</button>
+      <button class="cp-theme-btn bf" data-theme="bf">🖤 黑五</button>
+      <button class="cp-theme-btn vday" data-theme="vday">❤️ 情人</button>
+      <button class="cp-theme-btn summer" data-theme="summer">🌸 夏季</button>
+    </div>
+  </div>
+  <div class="cp-grid" id="cp-grid"></div>
+</div>
+
+<!-- ===== Batch ===== -->
+<div class="panel fade-in" id="panel-batch">
+  <div class="batch-header">
+    <label class="batch-check"><input type="checkbox" checked id="select-all"> 全选 (3)</label>
+    <span style="color:var(--text2);font-size:12px">目标平台：</span>
+    <div class="batch-platforms" id="batch-platforms">
+      <span class="batch-platform-chip selected" data-platform="shopee">Shopee</span>
+      <span class="batch-platform-chip selected" data-platform="lazada">Lazada</span>
+      <span class="batch-platform-chip selected" data-platform="tiktokshop">TikTok Shop</span>
+    </div>
+    <button class="batch-launch" id="batch-launch-btn">🚀 开始批量上架</button>
+  </div>
+  <div class="table-wrapper"><table>
+    <thead><tr><th>✓</th><th>SKU</th><th>商品名称</th><th>品类</th><th>尺寸</th><th>目标店铺</th></tr></thead>
+    <tbody>
+      <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="HS-DR001"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HS-DR001</td><td>V领收腰A字连衣裙</td><td>连衣裙</td><td>S/M/L/XL</td><td><span style="font-size:11px;color:var(--text2)">Shopee 店1/2/3</span></td></tr>
+      <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="HS-DR002"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HS-DR002</td><td>法式碎花V领中长裙</td><td>连衣裙</td><td>S/M/L</td><td><span style="font-size:11px;color:var(--text2)">Lazada 店1/Shopee 店4</span></td></tr>
+      <tr><td><input type="checkbox" checked class="batch-checkbox" data-sku="HS-DR003"></td><td style="font-family:monospace;font-size:12px;color:var(--accent)">HS-DR003</td><td>度假风收腰吊带长裙</td><td>连衣裙</td><td>S/M/L/XL</td><td><span style="font-size:11px;color:var(--text2)">TikTok Shop 店1</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="batch-progress" id="batch-progress" style="display:none;margin-top:24px">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:600">🚀 批量上架进行中</span><span style="font-size:12px;color:var(--text2)" id="batch-progress-text">0 / 9 完成</span></div>
+    <div class="batch-progress-bar"><div class="batch-progress-fill" id="batch-progress-fill"></div></div>
+    <div class="batch-stats"><span>✅ <b id="batch-success">0</b> 成功</span><span>❌ <b id="batch-fail">0</b> 失败</span><span>⏳ <b id="batch-pending">9</b> 待处理</span></div>
+    <div class="batch-log" id="batch-log"><div class="log-entry">就绪，点击按钮开始模拟...</div></div>
+  </div>
+</div>
+
+<!-- ===== 系统设置 · 店铺管理 ===== -->
+<div class="panel fade-in" id="panel-settings">
+  <div class="stats-grid" style="margin-bottom:24px">
+    <div class="stat-card"><div class="stat-label">平台总数</div><div class="stat-value">3</div><div class="stat-footer">Shopee + Lazada + TikTok</div></div>
+    <div class="stat-card"><div class="stat-label">店铺总数</div><div class="stat-value">8</div><div class="stat-footer">已全部认证</div></div>
+    <div class="stat-card"><div class="stat-label">Token 状态</div><div class="stat-value" style="color:var(--green)">✓</div><div class="stat-footer">全部自动刷新</div></div>
+    <div class="stat-card"><div class="stat-label">今日分发</div><div class="stat-value">47</div><div class="stat-footer">跨 8 店</div></div>
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:24px">
+    <div style="font-size:16px;font-weight:700;margin-bottom:16px">🏪 店铺管理</div>
+    <div class="table-wrapper"><table>
+      <thead><tr><th>平台</th><th>店铺名称</th><th>市场</th><th>Seller ID</th><th>商品数</th><th>Token 状态</th><th>操作</th></tr></thead>
+      <tbody>
+        <tr><td><span style="color:#ee4d2e;font-weight:600">Shopee</span></td><td>旗舰店</td><td>SG 🇸🇬</td><td style="font-family:monospace;font-size:12px">SP-SG-001</td><td>126</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#ee4d2e;font-weight:600">Shopee</span></td><td>马来店</td><td>MY 🇲🇾</td><td style="font-family:monospace;font-size:12px">SP-MY-002</td><td>89</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#ee4d2e;font-weight:600">Shopee</span></td><td>泰国站</td><td>TH 🇹🇭</td><td style="font-family:monospace;font-size:12px">SP-TH-003</td><td>72</td><td><span style="color:var(--yellow)">⚠ 即将到期</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">续期</span></td></tr>
+        <tr><td><span style="color:#ee4d2e;font-weight:600">Shopee</span></td><td>菲律宾站</td><td>PH 🇵🇭</td><td style="font-family:monospace;font-size:12px">SP-PH-004</td><td>35</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#ee4d2e;font-weight:600">Shopee</span></td><td>越南站</td><td>VN 🇻🇳</td><td style="font-family:monospace;font-size:12px">SP-VN-005</td><td>4</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#0099ff;font-weight:600">Lazada</span></td><td>新加坡旗舰</td><td>SG 🇸🇬</td><td style="font-family:monospace;font-size:12px">LZ-SG-001</td><td>156</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#0099ff;font-weight:600">Lazada</span></td><td>印尼旗舰</td><td>ID 🇮🇩</td><td style="font-family:monospace;font-size:12px">LZ-ID-002</td><td>62</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+        <tr><td><span style="color:#ff0050;font-weight:600">TikTok Shop</span></td><td>全球店</td><td>Southeast Asia</td><td style="font-family:monospace;font-size:12px">TK-GL-001</td><td>156</td><td><span style="color:var(--green)">✅ 有效</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer">详情</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <div style="display:flex;gap:16px;margin-top:20px">
+      <div style="flex:1;background:var(--bg);border-radius:var(--radius-sm);padding:20px">
+        <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">店铺资产隔离</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.8">
+          ✅ 每店独立 Token<br>
+          ✅ 库存各自管理<br>
+          ✅ 订单按店汇总<br>
+          ✅ API 调用隔离
+        </div>
+      </div>
+      <div style="flex:1;background:var(--bg);border-radius:var(--radius-sm);padding:20px">
+        <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">跨店铺操作</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.8">
+          🚀 选品→多店分发<br>
+          📊 运营数据汇总<br>
+          🔄 价格同步调整<br>
+          📋 批量上架统一管理
+        </div>
+      </div>
+      <div style="flex:1;background:var(--bg);border-radius:var(--radius-sm);padding:20px">
+        <div style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">通知 & 告警</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.8">
+          ⚠ Token 过期预警<br>
+          📧 上架结果通知<br>
+          📉 异常店铺告警<br>
+          🔔 品类树更新通知
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+var currentTheme='default',currentSku='HS-DR001';
+
+var PRODUCTS={
+  'HS-DR001':{
+    sku:'HS-DR001',name:'V领收腰A字连衣裙',cat:'连衣裙',price:'¥89',material:'雪纺',neck:'V领',sleeve:'短袖',fit:'收腰A字',length:'中长裙',style:'通勤/淑女',
+    sizes:['S','M','L','XL'],colors:['黑','白','藏蓝','酒红']
+  },
+  'HS-DR002':{
+    sku:'HS-DR002',name:'法式碎花V领中长裙',cat:'连衣裙',price:'¥129',material:'雪纺',neck:'V领',sleeve:'短袖',fit:'收腰A字',length:'中长裙',style:'法式/田园',
+    sizes:['S','M','L'],colors:['碎花蓝','碎花粉','碎花白']
+  },
+  'HS-DR003':{
+    sku:'HS-DR003',name:'度假风收腰吊带长裙',cat:'连衣裙',price:'¥169',material:'雪纺',neck:'V领/吊带',sleeve:'无袖',fit:'收腰大摆',length:'长裙',style:'度假/波西米亚',
+    sizes:['S','M','L','XL'],colors:['白','蓝','碎花']
+  }
+};
+
+function limitTitle(t,m){return t.length<=m?t:t.substring(0,m-3)+'...'}
+
+var themeData={
+  'default':{border:'',prefix:'',badge:'',btnBg:'',btnClr:''},
+  'xmas':{border:'theme-xmas',prefix:'🎄',badge:'圣诞特辑·节日穿搭',descPre:'圣诞季优雅之选：'},
+  'bf':{border:'theme-bf',prefix:'🖤',badge:'黑五专享·限时折扣',descPre:'黑五必入爆款：'},
+  'vday':{border:'theme-vday',prefix:'❤️',badge:'情人节限定·气质之选',descPre:'约会穿搭首选：'},
+  'summer':{border:'theme-summer',prefix:'🌸',badge:'夏季上新·清凉连衣裙',descPre:'夏日出行必备：'}
+};
+
+function imagePlaceholder(w,h,text,extra){
+  return '<div class="cp-image-placeholder" style="'+(extra||'')+'">'+text+'</div>';
+}
+
+EOS={};
+EOS.switchPanel=function(name){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active')});
+  var panel=document.getElementById('panel-'+name);if(panel)panel.classList.add('active');
+  var tab=document.querySelector('.nav-tab[data-panel="'+name+'"]');if(tab)tab.classList.add('active');
+};
+
+EOS.renderCrossPlatform=function(){
+  var p=PRODUCTS[currentSku],grid=document.getElementById('cp-grid');
+  if(!grid)return;
+  var tm=themeData[currentTheme],h='';
+  var imgText=(tm.badge||'默认主题')+'<br><small>AI生成模特图</small>';
+  var thumbText='<small>AI生成</small>';
+
+  // Shopee
+  h+='<div class="cp-column"><div class="cp-column-header shopee"><i class="fa-solid fa-bag-shopping"></i><span class="cp-column-title">Shopee</span></div><div class="cp-body">';
+  h+='<div class="cp-field"><div class="cp-field-label">商品标题（上限120字符）</div><div class="cp-field-value">'+tm.prefix+' '+p.name+' · '+p.material+' · '+p.style+'</div></div>';
+  if(tm.badge)h+='<div class="cp-field"><div class="cp-field-label">主题标识</div><div class="cp-field-value" style="color:var(--accent)">'+tm.badge+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">品类树路径</div><div class="cp-field-value" style="color:var(--text2)">女装 > '+p.cat+' > '+p.length+' > '+p.fit+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">双层变体</div><div class="cp-field-value" style="color:var(--text2)">颜色: '+p.colors.join(' / ')+' · 尺码: '+p.sizes.join(' / ')+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">必填属性</div><div class="cp-field-value" style="color:var(--text2)">面料: '+p.material+' · 领型: '+p.neck+' · 袖型: '+p.sleeve+' · 版型: '+p.fit+' · 裙长: '+p.length+' · 风格: '+p.style+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">价格</div><div class="cp-field-value price">'+p.price+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">图片要求</div><div class="cp-field-value" style="color:var(--text2)">主图≤10MB，JPG/PNG，media_space 上传</div></div>';
+  h+=imagePlaceholder(0,0,imgText,tm.border?'border:'+tm.border.replace('theme-','2px solid ').replace('xmas','#dc2626').replace('bf','#111;border-left:4px solid #f59e0b').replace('vday','#db2777').replace('summer','#0891b2'):'');
+  h+='<div class="cp-images-row">';
+  for(var i=0;i<3;i++)h+=imagePlaceholder(0,0,'AI图'+(i+1),'');
+  h+='</div></div></div>';
+
+  // Lazada
+  h+='<div class="cp-column"><div class="cp-column-header lazada"><i class="fa-solid fa-globe"></i><span class="cp-column-title">Lazada</span></div><div class="cp-body">';
+  h+='<div class="cp-field"><div class="cp-field-label">Título（上限100字符）</div><div class="cp-field-value">'+tm.prefix+' '+p.name+' • '+p.material+' • '+p.style+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">LazOP 2.0 同步API</div><div class="cp-field-value" style="color:var(--green)">✅ JSON 同步 · 无需等Feed 队列</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">产品属性</div><div class="cp-field-value" style="color:var(--text2)">面料: '+p.material+' · 领型: '+p.neck+' · 袖型: '+p.sleeve+' · 版型: '+p.fit+' · 裙长: '+p.length+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">视频支持</div><div class="cp-field-value" style="color:var(--green)">✅ Media Center API ≤100MB · 模特展示视频</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">Precio</div><div class="cp-field-value price">'+p.price+'</div></div>';
+  h+=imagePlaceholder(0,0,'Lazada AI 图<br><small>含模特展示</small>',tm.border?'border:'+tm.border.replace('theme-xmas','2px solid #dc2626').replace('theme-bf','2px solid #111').replace('theme-vday','2px solid #db2777').replace('theme-summer','2px solid #0891b2'):'');
+  h+='</div></div>';
+
+  // TikTok Shop
+  h+='<div class="cp-column"><div class="cp-column-header tiktokshop"><i class="fa-brands fa-tiktok"></i><span class="cp-column-title">TikTok Shop</span></div><div class="cp-body">';
+  h+='<div class="cp-field"><div class="cp-field-label">Title（上限30字符）</div><div class="cp-field-value">'+limitTitle(tm.prefix+' '+p.name,30)+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">视频内容要求</div><div class="cp-field-value" style="color:var(--text2)">9:16 竖屏 · 15-60s · 模特上身展示 · 面料特写</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">GMV Max 广告</div><div class="cp-field-value" style="color:var(--text2)">自动投放 · 全服装类目佣金 3.5%</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">CBT 跨境直发</div><div class="cp-field-value" style="color:var(--green)">✅ 泉州仓库→美/东南亚· 可配</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">尺码</div><div class="cp-field-value" style="color:var(--text2)">'+p.sizes.join(' / ')+'</div></div>';
+  h+='<div class="cp-field"><div class="cp-field-label">价格</div><div class="cp-field-value price">'+p.price+'</div></div>';
+  h+=imagePlaceholder(0,0,'<i class="fa-brands fa-tiktok"></i><br>TikTok短视频<br><small>9:16竖屏·AI生成</small>',tm.border?'border:'+tm.border.replace('theme-xmas','2px solid #dc2626').replace('theme-bf','2px solid #111').replace('theme-vday','2px solid #db2777').replace('theme-summer','2px solid #0891b2'):'');
+  h+='</div></div>';
+
+
+    grid.innerHTML=h;
+};
+
+EOS.batchRunning=false;
+EOS.startBatchListing=function(){
+  if(EOS.batchRunning)return;EOS.batchRunning=true;
+  var platforms=[],chips=document.querySelectorAll('.batch-platform-chip.selected');
+  var platNames={shopee:'Shopee',lazada:'Lazada',tiktokshop:'TikTok Shop'};
+  for(var i=0;i<chips.length;i++)platforms.push(chips[i].dataset.platform);
+  var skus=[],cbs=document.querySelectorAll('.batch-checkbox:checked');
+  for(var j=0;j<cbs.length;j++)skus.push(cbs[j].dataset.sku);
+  var total=skus.length*platforms.length;
+  var stores={shopee:['店1','店2','店3'],lazada:['店1'],tiktokshop:['店1']};
+  document.getElementById('batch-progress').style.display='block';
+  document.getElementById('batch-progress-text').textContent='0 / '+total+' 完成';
+  document.getElementById('batch-success').textContent='0';
+  document.getElementById('batch-fail').textContent='0';
+  document.getElementById('batch-pending').textContent=total;
+  document.getElementById('batch-progress-fill').style.width='0%';
+  var log=document.getElementById('batch-log');
+  log.innerHTML='<div class="log-entry">🚀 开始批量上架任务（含多店铺分发）...</div>';
+  var success=0,fail=0,completed=0;
+  function nextStep(){
+    if(completed>=total){log.innerHTML+='<div class="log-entry success">🏁 批量上架完成！'+success+' 成功 · '+fail+' 失败 · 共 '+total+' 次分发</div>';log.scrollTop=log.scrollHeight;EOS.batchRunning=false;return}
+    var sku=skus[completed%skus.length],plat=platforms[Math.floor(completed/skus.length)];
+    var platName=platNames[plat]||plat;
+    var storeList=stores[plat]||['店1'];
+    var store=storeList[Math.floor(Math.random()*storeList.length)];
+    setTimeout(function(){
+      if(Math.random()>.08){success++;log.innerHTML+='<div class="log-entry success">✅ '+sku+' → '+platName+' · '+store+' · 上架成功</div>'}
+      else{fail++;log.innerHTML+='<div class="log-entry error">❌ '+sku+' → '+platName+' · '+store+' · 服装品类ID校验失败，请检查属性映射</div>'}
+      completed++;document.getElementById('batch-progress-fill').style.width=(completed/total*100)+'%';
+      document.getElementById('batch-progress-text').textContent=completed+' / '+total+' 完成';
+      document.getElementById('batch-success').textContent=success;
+      document.getElementById('batch-fail').textContent=fail;
+      document.getElementById('batch-pending').textContent=total-completed;
+      log.scrollTop=log.scrollHeight;nextStep();
+    },200+Math.random()*600);
+  }
+  nextStep();
+};
+
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.nav-tab').forEach(function(t){t.addEventListener('click',function(){EOS.switchPanel(this.dataset.panel)})});
+  document.querySelectorAll('.action-btn').forEach(function(b){b.addEventListener('click',function(){var t=this.dataset.action;if(t)EOS.switchPanel(t)})});
+  document.querySelectorAll('.source-tab').forEach(function(s){s.addEventListener('click',function(){var p=this.parentElement;if(p)p.querySelectorAll('.source-tab').forEach(function(x){x.classList.remove('active')});this.classList.add('active')})});
+  document.querySelectorAll('.cp-product-btn').forEach(function(b){b.addEventListener('click',function(){var p=this.parentElement;if(p)p.querySelectorAll('.cp-product-btn').forEach(function(x){x.classList.remove('active')});this.classList.add('active');currentSku=this.dataset.product;EOS.renderCrossPlatform()})});
+  document.querySelectorAll('.cp-theme-btn').forEach(function(b){b.addEventListener('click',function(){var p=this.parentElement;if(p)p.querySelectorAll('.cp-theme-btn').forEach(function(x){x.classList.remove('active')});this.classList.add('active');currentTheme=this.dataset.theme;EOS.renderCrossPlatform()})});
+  document.querySelectorAll('.batch-platform-chip').forEach(function(c){c.addEventListener('click',function(){this.classList.toggle('selected')})});
+  var lb=document.getElementById('batch-launch-btn');if(lb)lb.addEventListener('click',function(){EOS.startBatchListing()});
+  var sa=document.getElementById('select-all');if(sa)sa.addEventListener('change',function(){var v=this.checked;document.querySelectorAll('.batch-checkbox').forEach(function(c){c.checked=v})});
+  EOS.renderCrossPlatform();
+});
+</script>
+</body>
+</html>
