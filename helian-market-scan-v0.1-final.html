@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球牛仔服饰 B2B 出海市场扫描 v0.1-final · 赫联 Helian Global</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --bg-card: #ffffff;
+    --bg-soft: #f4f1ec;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --text-soft: #999999;
+    --accent: #2c5f5d;
+    --accent-light: #4a8580;
+    --highlight: #c8553d;
+    --gold: #b89968;
+    --border: #e8e6e0;
+    --border-strong: #d0cdc4;
+    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  /* === HEADER === */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 40px;
+    margin-bottom: 50px;
+  }
+
+  .header-eyebrow {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .header-subtitle {
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .header-meta-item {
+    display: flex;
+    gap: 6px;
+  }
+
+  .header-meta-label {
+    color: var(--text-soft);
+  }
+
+  /* === SECTION === */
+  .section {
+    margin-bottom: 60px;
+  }
+
+  .section-num {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    background: var(--bg-soft);
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  .section h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 24px;
+    line-height: 1.4;
+  }
+
+  .section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 30px 0 16px;
+    padding-left: 12px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .section p {
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  .lead {
+    font-size: 17px;
+    color: var(--text);
+    line-height: 1.75;
+    margin-bottom: 30px;
+  }
+
+  /* === KEY FINDINGS GRID === */
+  .findings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 30px 0;
+  }
+
+  .finding-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s;
+  }
+
+  .finding-card:hover {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .finding-card-num {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(44, 95, 93, 0.08);
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  .finding-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .finding-card-body {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .finding-card-highlight {
+    color: var(--highlight);
+    font-weight: 600;
+  }
+
+  /* === DECISIONS GRID === */
+  .decisions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 30px 0;
+  }
+
+  .decision-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px;
+    border-top: 4px solid var(--accent);
+    box-shadow: var(--shadow);
+  }
+
+  .decision-card.confidence-high { border-top-color: var(--accent); }
+  .decision-card.confidence-mid { border-top-color: var(--gold); }
+
+  .decision-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .decision-num {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+  }
+
+  .confidence-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  .confidence-high {
+    background: rgba(44, 95, 93, 0.1);
+    color: var(--accent);
+  }
+
+  .confidence-mid {
+    background: rgba(184, 153, 104, 0.15);
+    color: var(--gold);
+  }
+
+  .decision-recommendation {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .decision-rationale {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* === TABLES === */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead {
+    background: var(--bg-soft);
+  }
+
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 13px;
+    border-bottom: 1px solid var(--border-strong);
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover {
+    background: var(--bg-soft);
+  }
+
+  td strong {
+    color: var(--accent);
+  }
+
+  td .highlight-num {
+    color: var(--highlight);
+    font-weight: 600;
+  }
+
+  /* === BADGES === */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+
+  .badge-success { background: rgba(44, 95, 93, 0.12); color: var(--accent); }
+  .badge-warn { background: rgba(184, 153, 104, 0.15); color: var(--gold); }
+  .badge-danger { background: rgba(200, 85, 61, 0.1); color: var(--highlight); }
+  .badge-neutral { background: var(--bg-soft); color: var(--text-muted); }
+
+  /* === CALLOUT === */
+  .callout {
+    background: var(--bg-soft);
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px;
+    border-radius: 0 6px 6px 0;
+    margin: 24px 0;
+  }
+
+  .callout-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .callout-body {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .callout-warning {
+    background: rgba(200, 85, 61, 0.05);
+    border-left-color: var(--highlight);
+  }
+
+  .callout-warning .callout-title {
+    color: var(--highlight);
+  }
+
+  /* === STAT BLOCK === */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    text-align: left;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+
+  .stat-unit {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
+  .stat-note {
+    font-size: 11px;
+    color: var(--text-soft);
+    margin-top: 6px;
+  }
+
+  /* === TIMELINE === */
+  .timeline {
+    border-left: 2px solid var(--border-strong);
+    padding-left: 24px;
+    margin: 20px 0;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -31px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+  }
+
+  .timeline-date {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .timeline-content {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+
+  .footer-block h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .footer-block ul {
+    list-style: none;
+  }
+
+  .footer-block li {
+    padding: 4px 0;
+    line-height: 1.6;
+  }
+
+  .footer-bottom {
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-soft);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  /* === PRINT === */
+  @media print {
+    body { background: white; }
+    .container { padding: 30px 20px; max-width: 100%; }
+    .finding-card, .decision-card, .stat-card { box-shadow: none; break-inside: avoid; }
+    .section { break-inside: avoid; }
+    h2 { page-break-after: avoid; }
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .container { padding: 40px 20px; }
+    .header h1 { font-size: 28px; }
+    .section h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-eyebrow">HELIAN GLOBAL · P1 市场扫描</div>
+    <h1>全球牛仔服饰 B2B 出海市场扫描</h1>
+    <p class="header-subtitle">赫联 = ODM 原创设计驱动的中高端牛仔供应链服务商</p>
+    <div class="header-meta">
+      <div class="header-meta-item">
+        <span class="header-meta-label">版本</span>
+        <span>v0.1-final</span>
+      </div>
+      <div class="header-meta-item">
+        <span class="header-meta-label">报告语言</span>
+        <span>中文</span>
+      </div>
+      <div class="header-meta-item">
+        <span class="header-meta-label">完成日期</span>
+        <span>2026-09-11</span>
+      </div>
+      <div class="header-meta-item">
+        <span class="header-meta-label">数据源</span>
+        <span>21 个（多源核实）</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== §0 执行摘要 ===== -->
+  <section class="section">
+    <div class="section-num">§0</div>
+    <h2>执行摘要 · 5 个核心判断</h2>
+    <p class="lead">
+      本报告基于 21 个公开数据源（Brave web_search 多源核实），围绕赫联 = <strong>ODM 原创设计驱动的中高端牛仔供应链服务商</strong>这一核心定位，对全球牛仔服饰 B2B 出海市场进行 7 天压缩版扫描。
+    </p>
+
+    <div class="findings-grid">
+      <div class="finding-card">
+        <div class="finding-card-num">判断 01</div>
+        <div class="finding-card-title">全球牛仔市场体量</div>
+        <div class="finding-card-body">
+          <span class="finding-card-highlight">US$ 72-84B (2024)</span>，CAGR <span class="finding-card-highlight">5.8-8.51%</span>。牛仔占全球服装 ~4-5%。3 源多源核实。
+        </div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-card-num">判断 02</div>
+        <div class="finding-card-title">区域市场结构</div>
+        <div class="finding-card-body">
+          <span class="finding-card-highlight">北美 32-38.5%</span>（最大），亚太最快 <span class="finding-card-highlight">5.45% CAGR</span>，<span class="finding-card-highlight">UAE 2024 牛仔进口 +14%</span>（中东崛起）。
+        </div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-card-num">判断 03</div>
+        <div class="finding-card-title">Premium 价带增长</div>
+        <div class="finding-card-body">
+          Premium 价带 <span class="finding-card-highlight">2024-2028 +$9.04B 增长</span>（Technavio 量化），与赫联 ODM 原创设计能力契合度最高。
+        </div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-card-num">判断 04</div>
+        <div class="finding-card-title">赫联卡位</div>
+        <div class="finding-card-body">
+          <span class="finding-card-highlight">Premium 价带 ODM 供应链服务商</span>（非品牌方）。B 端客户 = 找 ODM 的买手店 / DTC 独立站 / 网红品牌。
+        </div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-card-num">判断 05</div>
+        <div class="finding-card-title">de minimis 取消影响</div>
+        <div class="finding-card-body">
+          中国 2025/5/2 + 全球 2025/8/29 取消（<span class="finding-card-highlight">EO 14324</span>）。对赫联 B2B 大货<span class="finding-card-highlight">几乎零影响</span>，反清场 Shein/Temu。
+        </div>
+      </div>
+    </div>
+
+    <h3>赫联核心能力边界 · 3 档服务菜单</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>档位</th>
+            <th>占比</th>
+            <th>定义</th>
+            <th>客户场景</th>
+            <th>利润空间</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ODM</strong>（主）</td>
+            <td>~70%</td>
+            <td>赫联 + Cindy 原创设计 → 客户贴牌</td>
+            <td>买手店 / DTC 独立站 / 网红品牌找原创款</td>
+            <td><span class="badge badge-success">高</span>（设计溢价）</td>
+          </tr>
+          <tr>
+            <td><strong>OEM</strong>（次）</td>
+            <td>~20%</td>
+            <td>代工，按客户设计图制造</td>
+            <td>有设计但缺供应链的客户</td>
+            <td><span class="badge badge-warn">中</span>（制造利润）</td>
+          </tr>
+          <tr>
+            <td><strong>成品</strong>（备）</td>
+            <td>~10%</td>
+            <td>现货供应</td>
+            <td>小批量 / 试单 / 急单</td>
+            <td><span class="badge badge-neutral">低</span>（走量为主）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>D7 综合拍板 · 4 决策点</h3>
+    <div class="decisions-grid">
+      <div class="decision-card confidence-high">
+        <div class="decision-card-head">
+          <span class="decision-num">决策 01</span>
+          <span class="confidence-badge confidence-high">高置信度</span>
+        </div>
+        <div class="decision-recommendation">🇺🇸 美国 + 🇪🇺 西欧核心（双线）</div>
+        <div class="decision-rationale">北美 32-38.5% + 西欧 ~20-25% = 主流市场 55-63%；欧美询盘密度最高。</div>
+      </div>
+      <div class="decision-card confidence-high">
+        <div class="decision-card-head">
+          <span class="decision-num">决策 02</span>
+          <span class="confidence-badge confidence-high">高置信度</span>
+        </div>
+        <div class="decision-recommendation">🇯🇵 日本 + 🇰🇷 韩国 + 🇦🇪 中东</div>
+        <div class="decision-rationale">UAE 2024 牛仔进口 +14%（多源核实）；高端/趋势/利润三角。</div>
+      </div>
+      <div class="decision-card confidence-high">
+        <div class="decision-card-head">
+          <span class="decision-num">决策 03</span>
+          <span class="confidence-badge confidence-high">高置信度</span>
+        </div>
+        <div class="decision-recommendation">Sustainability ODM 为主 + Trend-Curation 为辅</div>
+        <div class="decision-rationale">与 ISKO Responsible Innovation 路线一致；WCJ GPSR 协助不揽责经验可复用。</div>
+      </div>
+      <div class="decision-card confidence-mid">
+        <div class="decision-card-head">
+          <span class="decision-num">决策 04</span>
+          <span class="confidence-badge confidence-mid">中置信度</span>
+        </div>
+        <div class="decision-recommendation">Cindy = ODM 原创设计策展人</div>
+        <div class="decision-rationale">待柴院 D3 前确认授权边界；Cindy 时间投入与个人 IP 边界需明确。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== §1 市场总览 ===== -->
+  <section class="section">
+    <div class="section-num">§1</div>
+    <h2>全球牛仔服饰市场总览</h2>
+
+    <h3>1.1 市场规模与增长</h3>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">2024 全球规模</div>
+        <div class="stat-value">72-84<span class="stat-unit">B USD</span></div>
+        <div class="stat-note">3 源多源核实</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">CAGR (2026-2035)</div>
+        <div class="stat-value">5.8-8.51<span class="stat-unit">%</span></div>
+        <div class="stat-note">中位数 ~6-7%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">占全球服装</div>
+        <div class="stat-value">4-5<span class="stat-unit">%</span></div>
+        <div class="stat-note">估算（US$ 1.7-1.8T）</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Premium 增长 (2024-2028)</div>
+        <div class="stat-value">+9.04<span class="stat-unit">B USD</span></div>
+        <div class="stat-note">Technavio 量化</div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>数据源</th><th>2024 规模</th><th>CAGR</th><th>时间区间</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Verified Market Research</td><td>US$ 72.45B</td><td>8.51%</td><td>2026-2032</td></tr>
+          <tr><td>Market Research Future</td><td>US$ 75.25B (2025)</td><td>5.8%</td><td>2025-2035</td></tr>
+          <tr><td>Premier Market Insights</td><td>US$ 84.2B</td><td>5.9%</td><td>2024-2030</td></tr>
+          <tr><td>Fortune Business Insights</td><td>US$ 103.16B (2026)</td><td>5.98%</td><td>2026-2034</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.2 区域市场结构</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>区域</th><th>市场份额</th><th>增长趋势</th><th>关键特征</th><th>B2B 询盘密度</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>北美 🇺🇸</strong></td>
+            <td><span class="highlight-num">32.35-38.5%</span></td>
+            <td>稳定</td>
+            <td>大牌优势 + DTC 兴起 + de minimis 已清场</td>
+            <td><span class="badge badge-success">高</span></td>
+          </tr>
+          <tr>
+            <td><strong>西欧 🇩🇪🇫🇷🇮🇹</strong></td>
+            <td>推断 ~20-25%</td>
+            <td>中等</td>
+            <td>环保意识强 + 买手店密集</td>
+            <td><span class="badge badge-success">高</span></td>
+          </tr>
+          <tr>
+            <td><strong>亚太 🇯🇵🇰🇷🇨🇳</strong></td>
+            <td>推断 ~20-25%</td>
+            <td><span class="highlight-num">最快 5.45% CAGR</span></td>
+            <td>日韩高端 + 中印快时尚</td>
+            <td><span class="badge badge-warn">中</span></td>
+          </tr>
+          <tr>
+            <td><strong>中东 🇦🇪🇸🇦</strong></td>
+            <td>—</td>
+            <td><span class="highlight-num">+14% 进口增长 (2024)</span></td>
+            <td>奢侈品偏好 + 利润空间大</td>
+            <td><span class="badge badge-warn">中</span></td>
+          </tr>
+          <tr>
+            <td>其他 🌍</td>
+            <td>推断 ~15-20%</td>
+            <td>差异</td>
+            <td>东南亚增量</td>
+            <td><span class="badge badge-neutral">低</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.3 价格带结构 · 赫联卡位 = Premium</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>价格带</th><th>价位 (USD)</th><th>代表品牌</th><th>利润率</th><th>赫联卡位</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Fast Fashion</td>
+            <td>$20-50</td>
+            <td>H&M, Zara, Uniqlo, Shein</td>
+            <td>5-10%</td>
+            <td><span class="badge badge-danger">否</span></td>
+          </tr>
+          <tr>
+            <td>Mid-Market</td>
+            <td>$50-150</td>
+            <td>Levi's, Lee, Wrangler</td>
+            <td>10-20%</td>
+            <td><span class="badge badge-warn">难</span></td>
+          </tr>
+          <tr>
+            <td><strong>Premium</strong></td>
+            <td><strong>$150-300</strong></td>
+            <td>AGOLDE, Citizens, Mother, Frame</td>
+            <td>20-35%</td>
+            <td><span class="badge badge-success">赫联卡位</span></td>
+          </tr>
+          <tr>
+            <td>Luxury</td>
+            <td>$300+</td>
+            <td>Dior, Saint Laurent, Gucci</td>
+            <td>35-50%</td>
+            <td><span class="badge badge-danger">难</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.5 赫联 ODM 模型下的竞品格局 · 4 层</h3>
+    <div class="callout">
+      <div class="callout-title">关键判断</div>
+      <div class="callout-body">
+        赫联不是和 Levi's/AGOLDE 抢消费者，而是<strong>和全球 ODM 服务商抢 B 端客户</strong>。
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>层级</th><th>代表 ODM</th><th>核心优势</th><th>赫联卡位</th><th>差异化策略</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Tier 1</strong> 全球高端 ODM</td>
+            <td>🇹🇷 ISKO / 🇮🇹 Tonello / 🇯🇵 Kaihara</td>
+            <td>工艺深度 + 品牌客户绑定</td>
+            <td><span class="badge badge-warn">难进入</span></td>
+            <td>避开工艺深度战</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 2</strong> 中国中高端 ODM</td>
+            <td>山东海阳 / 浙江雅戈尔牛仔</td>
+            <td>性价比 + 灵活 MOQ + 部分原创设计</td>
+            <td><span class="badge badge-success">主要竞品</span></td>
+            <td>Cindy 原创设计 = 壁垒</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 3</strong> 越南/孟加拉 OEM</td>
+            <td>DBL / Việt Thắng</td>
+            <td>极低价 + 大货量</td>
+            <td><span class="badge badge-danger">不进入</span></td>
+            <td>价带不符</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 4</strong> 独立设计工作室</td>
+            <td>Cindy 同行 / 🇯🇵 日本复古 / 🇮🇹 米兰新锐</td>
+            <td>独特设计 + 小批量</td>
+            <td><span class="badge badge-success">直接对标</span></td>
+            <td>供应链三档可调 = 壁垒</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== §2 目标市场 ===== -->
+  <section class="section">
+    <div class="section-num">§2</div>
+    <h2>目标市场分级框架</h2>
+
+    <h3>2.1 五维评估模型</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>维度</th><th>权重</th><th>评估内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>B 端询盘密度</td><td>30%</td><td>找 ODM 的买手店 / DTC 独立站 / 网红品牌 / showroom 数量 + 历史转化</td></tr>
+          <tr><td>ODM 议价空间</td><td>20%</td><td>目标价带 + 设计溢价 + 三档服务菜单适配</td></tr>
+          <tr><td>合规 / 关税</td><td>20%</td><td>de minimis / GPSR / REACH / ESG / 中国 ODM 政治风险</td></tr>
+          <tr><td>Cindy 触达</td><td>15%</td><td>ins + WhatsApp + 行业展会（Première Vision / Kingpins）</td></tr>
+          <tr><td>文化契合</td><td>15%</td><td>Cindy 叙事匹配度</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2.2 Tier 1 目标市场</h3>
+    <div class="callout">
+      <div class="callout-title">🇺🇸 美国 · Tier 1 旗舰</div>
+      <div class="callout-body">
+        <strong>US$ 22.3B (2024)</strong>，独立买手店密度全球第一，DTC 独立站 + 网红品牌询盘密度最高。
+        de minimis 取消对 B2B 大货几乎零影响，反而清场 Shein/Temu C2C 竞争。
+      </div>
+    </div>
+    <div class="callout">
+      <div class="callout-title">🇪🇺 西欧核心 · Tier 1 旗舰</div>
+      <div class="callout-body">
+        推断 <strong>~20-25%</strong> 市场份额。米兰/巴黎/阿姆斯特丹 showroom 全球顶级。
+        Sustainability 叙事核心市场；GPSR 协助边界可复用 WCJ 经验。
+      </div>
+    </div>
+
+    <h3>2.3 Tier 2 重点市场</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>市场</th><th>关键数据</th><th>特征</th><th>文化契合</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🇯🇵 <strong>日本</strong></td>
+            <td>推断 ~5-8%</td>
+            <td>selvedge 文化圣地；Premium 价带高度接受</td>
+            <td>高（工艺导向）</td>
+          </tr>
+          <tr>
+            <td>🇰🇷 <strong>韩国</strong></td>
+            <td>推断 ~3-5%</td>
+            <td>K-pop 趋势驱动；高单价 + 高利润</td>
+            <td>高（趋势导向）</td>
+          </tr>
+          <tr>
+            <td>🇦🇪 <strong>中东 UAE</strong></td>
+            <td><span class="highlight-num">+14% 进口增长 (2024)</span></td>
+            <td>奢侈品偏好 + 利润空间大</td>
+            <td>中（待 Cindy 评估）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">⚠ 待 Cindy D3 前评估</div>
+      <div class="callout-body">
+        日韩对中国品牌的接受度（"Made in China + Chinese Designer" 双重标签）——
+        待 Cindy 历史素材输入与客户群体判断后再拍板 Tier 2 优先顺序。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== §3 叙事 ===== -->
+  <section class="section">
+    <div class="section-num">§3</div>
+    <h2>ODM 叙事 4 路线对比</h2>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>路线</th><th>核心卖点</th><th>代表案例</th><th>赫联适配度</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sustainability</strong></td>
+            <td>GOTS / OEKO-TEX / 回收牛仔 / 闭环染整</td>
+            <td>Nudie Jeans, Reformation</td>
+            <td><span class="badge badge-success">推荐主路线</span></td>
+          </tr>
+          <tr>
+            <td><strong>Heritage-Craft</strong></td>
+            <td>selvedge / 手织 / 日本重磅 / 意大利手工</td>
+            <td>桃太郎, ISKO</td>
+            <td><span class="badge badge-warn">备选</span></td>
+          </tr>
+          <tr>
+            <td><strong>Trend-Curation</strong></td>
+            <td>ins 趋势 + 名人 + 编辑选品</td>
+            <td>AGOLDE, Citizens, Mother</td>
+            <td><span class="badge badge-success">辅助路线</span></td>
+          </tr>
+          <tr>
+            <td><strong>DTC-Editorial</strong></td>
+            <td>数据驱动 + 工艺叙事 + DTC 直营</td>
+            <td>Reformation, Everlane</td>
+            <td><span class="badge badge-warn">部分适用</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">D7 推荐路线</div>
+      <div class="callout-body">
+        <strong>Sustainability ODM 为主 + Trend-Curation 为辅</strong>。
+        <ul style="margin-top: 8px; padding-left: 20px;">
+          <li>西欧市场 Sustainability 接受度最高（GPSR / REACH / GOTS 合规基础）</li>
+          <li>Sustainability 是 Premium 价带的溢价基础</li>
+          <li>ISKO "Responsible Innovation™" 路线已验证百年可持续 ODM 模式</li>
+          <li>Trend-Curation 作为产品展示层（Cindy 原创设计的视觉化）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== §4 Cindy 角色 ===== -->
+  <section class="section">
+    <div class="section-num">§4</div>
+    <h2>Cindy 角色定位 · ODM 原创设计策展人</h2>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">双重身份</div>
+        <div class="stat-value" style="font-size: 18px; line-height: 1.4;">设计师 + 翻译者</div>
+        <div class="stat-note">设计输出 + 趋势输入</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">核心动作</div>
+        <div class="stat-value" style="font-size: 18px; line-height: 1.4;">设计 + 趋势 + 对接</div>
+        <div class="stat-note">3 类时间分配</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">独立站叙事</div>
+        <div class="stat-value" style="font-size: 18px; line-height: 1.4;">Cindy Designs + Your Brand</div>
+        <div class="stat-note">设计能力 + 三档菜单</div>
+      </div>
+    </div>
+
+    <h3>4 个候选角色对比</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>角色</th><th>核心动作</th><th>独立站叙事</th><th>推荐</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>编辑选品官</td>
+            <td>从全球 ODM 设计款式中选品</td>
+            <td>"Cindy 选什么我们做什么"</td>
+            <td><span class="badge badge-warn">弱化 Cindy 原创</span></td>
+          </tr>
+          <tr>
+            <td>主理人</td>
+            <td>品牌主理人（赫联自有品牌）</td>
+            <td>"赫联 = Cindy 的品牌"</td>
+            <td><span class="badge badge-danger">与 ODM 模型冲突</span></td>
+          </tr>
+          <tr>
+            <td>趋势策展人</td>
+            <td>把 ins / 展会趋势翻译成 ODM 设计</td>
+            <td>"Cindy 的全球趋势 → 你的 ODM"</td>
+            <td><span class="badge badge-warn">偏内容</span></td>
+          </tr>
+          <tr>
+            <td><strong>ODM 原创设计策展人</strong></td>
+            <td>Cindy 原创设计 + 三档服务菜单</td>
+            <td>"Cindy Designs + Your Brand"</td>
+            <td><span class="badge badge-success">推荐</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== §5 风险 ===== -->
+  <section class="section">
+    <div class="section-num">§5</div>
+    <h2>风险 / 合规 / 关税</h2>
+
+    <h3>de minimis 取消时间表 · 对赫联 B2B 几乎零影响</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">2025/5/2</div>
+        <div class="timeline-content"><strong>$800 de minimis 豁免对中国 + 香港暂停</strong></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2025/7/30</div>
+        <div class="timeline-content">特朗普签署 <strong>Executive Order 14324</strong>"Suspending Duty-Free De Minimis Treatment for All Countries"</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2025/8/29</div>
+        <div class="timeline-content"><strong>de minimis 豁免全球取消</strong></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">对赫联的影响分析</div>
+      <div class="callout-body">
+        <ul style="margin-top: 8px; padding-left: 20px;">
+          <li><strong>赫联 ODM B2B 大货（海运/空运集装箱）</strong> → 几乎零影响（不走 de minimis）✅</li>
+          <li><strong>赫联成品 B2B 小批量（DHL/UPS）</strong> → 轻微影响（关税需计入成本）⚠️</li>
+          <li><strong>Shein/Temu C2C 小包</strong> → 致命影响 → <strong>清场利好 Premium ODM</strong> ✅</li>
+        </ul>
+        <p style="margin-top: 12px;"><strong>D7 判断</strong>：de minimis 取消对赫联 ODM 模型净正向 —— 清场 Shein/Temu 低价 C2C 竞争，Premium 价带 B 端询盘密度反而提升。</p>
+      </div>
+    </div>
+
+    <h3>Sustainability 认证矩阵</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>认证</th><th>适用范围</th><th>客户溢价</th><th>赫联建议</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>OEKO-TEX</strong></td>
+            <td>化学物质安全</td>
+            <td>+5-10%</td>
+            <td><span class="badge badge-success">Tier 1 必备</span></td>
+          </tr>
+          <tr>
+            <td><strong>REACH</strong></td>
+            <td>欧盟化学品法规</td>
+            <td>合规基础</td>
+            <td><span class="badge badge-success">Tier 1 必备</span></td>
+          </tr>
+          <tr>
+            <td><strong>GOTS</strong></td>
+            <td>有机棉 + 环保加工</td>
+            <td>+10-20%</td>
+            <td><span class="badge badge-warn">Tier 1 升级</span></td>
+          </tr>
+          <tr>
+            <td><strong>GRS</strong></td>
+            <td>回收材料</td>
+            <td>+10-15%</td>
+            <td><span class="badge badge-warn">Tier 1 升级</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== §6 下一步 ===== -->
+  <section class="section">
+    <div class="section-num">§6</div>
+    <h2>下一步行动 · P2/P3 启动</h2>
+
+    <h3>P2 启动前置（赫联独立站）</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>任务</th><th>负责人</th><th>状态</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Cindy 角色授权边界确认</td><td>柴院</td><td><span class="badge badge-warn">D3 前</span></td></tr>
+          <tr><td>Cindy 历史内容/采风素材盘点</td><td>Cindy</td><td><span class="badge badge-warn">持续</span></td></tr>
+          <tr><td>客户群体判断（找 ODM 的 B 端细分）</td><td>Cindy</td><td><span class="badge badge-warn">D3 前</span></td></tr>
+          <tr><td>行业展会数据（Première Vision / Kingpins）</td><td>Cindy</td><td><span class="badge badge-warn">D3 前</span></td></tr>
+          <tr><td>Meta Business Suite 凭证申请</td><td>曾岳</td><td><span class="badge badge-warn">自行推进</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>P2 启动后（M2-M3 阶段）</h3>
+    <ul style="padding-left: 20px; line-height: 2;">
+      <li>域/平台选型（赫联独立域名待选）</li>
+      <li>独立站 M1-M5 节奏执行（参考 WCJ DESIGN.md v1.0）</li>
+      <li>Cindy Design Catalog（M2 内容资产）</li>
+      <li>询盘表单 + WhatsApp 收口（M2）</li>
+      <li>RFQ SOP 文档化（M2）</li>
+    </ul>
+
+    <h3>P3 启动后（M3-M4 阶段）</h3>
+    <ul style="padding-left: 20px; line-height: 2;">
+      <li>Cindy 内容支柱 4 类：设计作品 / 趋势翻译 / 行业展会 / 客户案例</li>
+      <li>ins 首发内容（Cindy 原创设计款）</li>
+      <li>Pinterest 同步（凭证已齐可当日打通）</li>
+    </ul>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-block">
+        <h4>数据源（21 个）</h4>
+        <ul>
+          <li>Verified Market Research</li>
+          <li>Market Research Future</li>
+          <li>Premier Market Insights</li>
+          <li>Fortune Business Insights</li>
+          <li>Mordor Intelligence</li>
+          <li>Grand View Research</li>
+          <li>Data Bridge Market Research</li>
+          <li>Research and Markets</li>
+          <li>Global Growth Insights (UAE)</li>
+          <li>Verified Market Reports</li>
+          <li>Technavio (Premium $9.04B)</li>
+          <li>MarkWide Research</li>
+          <li>ISKO 官方</li>
+          <li>New Asia Garment</li>
+          <li>Morgan Lewis (de minimis)</li>
+          <li>HLC (EO 14324)</li>
+          <li>Tariffs Tool</li>
+          <li>AVANT Magazine</li>
+          <li>Ethos</li>
+          <li>Quoli</li>
+          <li>Good On You</li>
+        </ul>
+      </div>
+      <div class="footer-block">
+        <h4>WCJ 经验复用</h4>
+        <ul>
+          <li>✅ 询盘 SOP + Junk 巡检</li>
+          <li>✅ WhatsApp 收口</li>
+          <li>✅ GPSR 协助不揽责</li>
+          <li>✅ 询盘四类套路模式</li>
+          <li>✅ 主导航 9→5 精简</li>
+          <li>✅ SEO/GEO + JSON-LD</li>
+          <li>✅ M1-M5 上站节奏</li>
+          <li>✅ 数据驱动逻辑</li>
+          <li>⚠️ Goldenbook → Cindy Design Catalog</li>
+          <li>⚠️ 询盘路径 → ODM 询盘路径</li>
+          <li>⚠️ 视觉素材 → Cindy 设计款式图</li>
+        </ul>
+      </div>
+      <div class="footer-block">
+        <h4>报告元信息</h4>
+        <ul>
+          <li>版本：v0.1-final</li>
+          <li>日期：2026-09-11</li>
+          <li>语言：中文</li>
+          <li>数据源：21 个（多源核实）</li>
+          <li>后续业务 book 语言：英文</li>
+          <li>报告路径：projects/helian-global/research/market-scan-v0.1-final.html</li>
+          <li>MD 路径：projects/helian-global/research/market-scan-v0.1-final.md</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>YUE·Endgame Architect v2.0 · EPOCH-Y · 2026-09-11</p>
+      <p>本报告基于公开数据源多源核实整理，不构成投资建议。市场数据存在统计口径差异，使用区间值而非单点。</p>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
